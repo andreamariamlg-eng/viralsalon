@@ -1,5 +1,6 @@
 import os
 import re
+import stripe
 from datetime import datetime
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
@@ -11,6 +12,9 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "viralsalon-secret-2024")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///viralsalon.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -27,7 +31,12 @@ class User(UserMixin, db.Model):
     especialidad = db.Column(db.String(120))
     ciudad = db.Column(db.String(120))
     creado = db.Column(db.DateTime, default=datetime.utcnow)
+    stripe_customer_id = db.Column(db.String(120), nullable=True)
+    subscription_status = db.Column(db.String(50), default="none")
     guiones = db.relationship('Guion', backref='autor', lazy=True)
+
+    def puede_acceder(self):
+        return self.subscription_status in ['active', 'trialing']
 
 class Guion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -63,41 +72,71 @@ DEVS = {
     "emocional": "EMOCIONAL: Cuenta una historia breve y real (tuya o de una clienta) con la que el cliente ideal se sienta identificado. 'La semana pasada me llegó una clienta que...'. Hazle sentir que ese video es para ella. Máximo 5-6 frases."
 }
 
+# ── HELPER STRIPE ─────────────────────────────────────────────────────────────
+
+def buscar_suscripcion_stripe(email):
+    """Busca si el email tiene una suscripción activa o en trial en Stripe."""
+    try:
+        customers = stripe.Customer.list(email=email, limit=1)
+        if not customers.data:
+            return None, None
+        customer = customers.data[0]
+        subs = stripe.Subscription.list(customer=customer.id, limit=1)
+        if not subs.data:
+            return customer.id, "none"
+        sub = subs.data[0]
+        return customer.id, sub.status
+    except Exception:
+        return None, None
+
 # ── RUTAS DE AUTENTICACIÓN ────────────────────────────────────────────────────
 
 @app.route("/registro", methods=["GET", "POST"])
 def registro():
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("generador"))
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
         nombre_salon = request.form.get("nombre_salon", "").strip()
         especialidad = request.form.get("especialidad", "").strip()
         ciudad = request.form.get("ciudad", "").strip()
+
         if not all([email, password, nombre_salon]):
             flash("Rellena todos los campos obligatorios.", "error")
             return redirect(url_for("registro"))
+
         if User.query.filter_by(email=email).first():
-            flash("Ya existe una cuenta con ese email.", "error")
+            flash("Ya existe una cuenta con ese email. Inicia sesión.", "error")
+            return redirect(url_for("login"))
+
+        # Verificar suscripción en Stripe
+        customer_id, status = buscar_suscripcion_stripe(email)
+
+        if status not in ['active', 'trialing']:
+            flash("No encontramos una suscripción activa con ese email. Empieza tu prueba gratuita primero.", "error")
             return redirect(url_for("registro"))
+
         user = User(
             email=email,
             password=generate_password_hash(password),
             nombre_salon=nombre_salon,
             especialidad=especialidad,
-            ciudad=ciudad
+            ciudad=ciudad,
+            stripe_customer_id=customer_id,
+            subscription_status=status
         )
         db.session.add(user)
         db.session.commit()
         login_user(user)
-        return redirect(url_for("index"))
+        return redirect(url_for("generador"))
+
     return render_template("registro.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("generador"))
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
@@ -105,8 +144,20 @@ def login():
         if not user or not check_password_hash(user.password, password):
             flash("Email o contraseña incorrectos.", "error")
             return redirect(url_for("login"))
+        # Actualizar estado suscripción al hacer login
+        if user.stripe_customer_id:
+            try:
+                subs = stripe.Subscription.list(customer=user.stripe_customer_id, limit=1)
+                if subs.data:
+                    user.subscription_status = subs.data[0].status
+                    db.session.commit()
+            except Exception:
+                pass
         login_user(user)
-        return redirect(url_for("index"))
+        if not user.puede_acceder():
+            flash("Tu suscripción ha caducado. Renuévala para continuar.", "error")
+            return redirect(url_for("suscripcion_caducada"))
+        return redirect(url_for("generador"))
     return render_template("login.html")
 
 @app.route("/logout")
@@ -114,6 +165,40 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for("login"))
+
+@app.route("/suscripcion-caducada")
+def suscripcion_caducada():
+    return render_template("suscripcion_caducada.html")
+
+# ── WEBHOOK STRIPE ────────────────────────────────────────────────────────────
+
+@app.route("/webhook/stripe", methods=["POST"])
+def stripe_webhook():
+    payload = request.data
+    sig_header = request.headers.get("Stripe-Signature")
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, STRIPE_WEBHOOK_SECRET)
+    except Exception:
+        return jsonify({"error": "Invalid signature"}), 400
+
+    if event["type"] in ["customer.subscription.updated", "customer.subscription.created"]:
+        sub = event["data"]["object"]
+        customer_id = sub["customer"]
+        status = sub["status"]
+        user = User.query.filter_by(stripe_customer_id=customer_id).first()
+        if user:
+            user.subscription_status = status
+            db.session.commit()
+
+    elif event["type"] == "customer.subscription.deleted":
+        sub = event["data"]["object"]
+        customer_id = sub["customer"]
+        user = User.query.filter_by(stripe_customer_id=customer_id).first()
+        if user:
+            user.subscription_status = "canceled"
+            db.session.commit()
+
+    return jsonify({"ok": True})
 
 # ── RUTAS PRINCIPALES ─────────────────────────────────────────────────────────
 
@@ -126,17 +211,23 @@ def landing():
 @app.route("/app")
 @login_required
 def generador():
+    if not current_user.puede_acceder():
+        return redirect(url_for("suscripcion_caducada"))
     return render_template("index.html", user=current_user)
 
 @app.route("/biblioteca")
 @login_required
 def biblioteca():
+    if not current_user.puede_acceder():
+        return redirect(url_for("suscripcion_caducada"))
     guiones = Guion.query.filter_by(user_id=current_user.id).order_by(Guion.creado.desc()).all()
     return render_template("biblioteca.html", guiones=guiones, user=current_user)
 
 @app.route("/planificador")
 @login_required
 def planificador():
+    if not current_user.puede_acceder():
+        return redirect(url_for("suscripcion_caducada"))
     guiones = Guion.query.filter_by(user_id=current_user.id).order_by(Guion.creado.desc()).all()
     return render_template("planificador.html", guiones=guiones, user=current_user)
 
@@ -166,6 +257,8 @@ def eliminar_guion(guion_id):
 @app.route("/generar", methods=["POST"])
 @login_required
 def generar():
+    if not current_user.puede_acceder():
+        return jsonify({"error": "Suscripción no activa"}), 403
 
     data = request.json
     nombre = data.get("nombre") or current_user.nombre_salon
@@ -236,7 +329,6 @@ REGLAS DE ESCRITURA:
         cta_txt = cm.group(1).strip() if cm else f"Comenta {palabra} y te mando {regalo}."
         palabras = len(texto.replace('[HOOK]','').replace('[DESARROLLO]','').replace('[CTA]','').split())
 
-        # Guardar en base de datos
         guion = Guion(
             user_id=current_user.id,
             servicio=servicio,
