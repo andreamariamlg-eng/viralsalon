@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViralSalon by Andrea Maria — El Sistema de Contenido que Convierte</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --gold: #C9A84C; --gold-light: #E8CB7A; --gold-dark: #8a6c28;
+  --black: #000; --black2: #0D0D0D; --black3: #141414; --black4: #1E1E1E; --black5: #282828;
+  --white: #FFF; --white-dim: rgba(255,255,255,0.7);
+  --border: rgba(201,168,76,0.2); --border-strong: rgba(201,168,76,0.5);
+  --hook-bg: #0f0c02; --dev-bg: #020c0f; --cta-bg: #0f0202;
+}
+body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--black); color:var(--white); line-height:1.6; overflow-x:hidden; }
+
+.topbar { background:var(--black); border-bottom:1px solid var(--border); padding:12px 32px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:999; }
+.logo-wrap { display:flex; align-items:center; gap:14px; }
+.logo-icon { width:36px; height:36px; background:linear-gradient(135deg,var(--gold),var(--gold-dark)); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+.logo-text { font-size:1.2rem; font-weight:800; }
+.logo-text span { color:var(--gold); }
+.logo-by { font-size:0.7rem; color:var(--white-dim); }
+.ig-link { color:var(--white-dim); text-decoration:none; font-size:0.82rem; font-weight:600; display:flex; align-items:center; gap:6px; transition:color 0.2s; }
+.ig-link:hover { color:var(--gold); }
+
+.hero { background:var(--black); padding:80px 20px 70px; text-align:center; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:600px; height:600px; background:radial-gradient(circle,rgba(201,168,76,0.08) 0%,transparent 70%); pointer-events:none; }
+.hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(201,168,76,0.1); border:1px solid var(--border-strong); border-radius:20px; padding:6px 16px; font-size:0.78rem; font-weight:700; color:var(--gold-light); letter-spacing:1px; text-transform:uppercase; margin-bottom:28px; }
+.hero h1 { font-size:clamp(2rem,5vw,3.8rem); font-weight:900; line-height:1.1; max-width:800px; margin:0 auto 24px; letter-spacing:-1px; }
+.hero h1 .gold { color:var(--gold); }
+.hero h1 .ul { text-decoration:underline; text-decoration-color:var(--gold); text-decoration-thickness:3px; text-underline-offset:6px; }
+.hero-sub { font-size:1.1rem; color:var(--white-dim); max-width:580px; margin:0 auto 40px; line-height:1.7; }
+
+.creator-card { background:var(--black3); border:1px solid var(--border-strong); border-radius:16px; padding:24px 32px; display:flex; align-items:center; gap:20px; text-align:left; max-width:680px; margin:0 auto 60px; }
+.creator-avatar { width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-dark)); display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; border:2px solid var(--gold); }
+.creator-name { font-size:1.1rem; font-weight:800; }
+.creator-title { font-size:0.82rem; color:var(--gold); margin-top:2px; font-weight:600; }
+.creator-desc { font-size:0.84rem; color:var(--white-dim); margin-top:8px; line-height:1.5; }
+.creator-ig { display:inline-flex; align-items:center; gap:5px; margin-top:10px; color:var(--gold-light); text-decoration:none; font-size:0.82rem; font-weight:700; }
+.creator-ig:hover { color:var(--white); }
+
+.how-section { background:var(--black2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:60px 20px; }
+.section-label { text-align:center; font-size:0.72rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+.section-heading { text-align:center; font-size:clamp(1.5rem,3vw,2.2rem); font-weight:900; margin-bottom:40px; }
+.steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; max-width:900px; margin:0 auto; }
+.step { background:var(--black3); border:1px solid var(--border); border-radius:14px; padding:22px; }
+.step-num { font-size:2rem; font-weight:900; color:var(--border-strong); line-height:1; margin-bottom:10px; }
+.step h3 { font-size:0.95rem; font-weight:800; margin-bottom:6px; color:var(--gold-light); }
+.step p { font-size:0.82rem; color:var(--white-dim); line-height:1.5; }
+
+.main { max-width:860px; margin:0 auto; padding:50px 20px 80px; }
+.form-heading { text-align:center; margin-bottom:36px; }
+.form-heading h2 { font-size:1.8rem; font-weight:900; }
+.form-heading p { color:var(--white-dim); font-size:0.9rem; margin-top:8px; }
+
+.card { background:var(--black3); border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:16px; }
+.card:focus-within { border-color:var(--border-strong); }
+.card-title { font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:2.5px; color:var(--gold); margin-bottom:22px; display:flex; align-items:center; gap:10px; }
+.card-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border-strong),transparent); }
+
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:580px){ .form-grid{grid-template-columns:1fr} .creator-card{flex-direction:column;text-align:center} .topbar .ig-link{display:none} }
+.form-group { display:flex; flex-direction:column; gap:6px; }
+.form-group.full { grid-column:1/-1; }
+label { font-size:0.75rem; font-weight:700; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; }
+input[type="text"],select,textarea { background:var(--black4); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:var(--white); padding:11px 14px; font-size:0.95rem; font-family:inherit; transition:border-color 0.2s,background 0.2s; width:100%; }
+input:focus,select:focus,textarea:focus { outline:none; border-color:var(--gold); background:#1a1500; }
+select option { background:#1a1a1a; }
+textarea { resize:vertical; min-height:78px; }
+.hint { font-size:0.73rem; color:#555; font-style:italic; }
+
+.chips { display:flex; flex-wrap:wrap; gap:7px; margin-top:7px; }
+.chip { background:var(--black5); border:1px solid rgba(255,255,255,0.12); border-radius:20px; padding:4px 12px; font-size:0.73rem; cursor:pointer; color:rgba(255,255,255,0.5); transition:all 0.15s; }
+.chip:hover { border-color:var(--gold); color:var(--gold-light); }
+
+.hook-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); gap:10px; }
+.hook-opt { position:relative; }
+.hook-opt input { position:absolute; opacity:0; pointer-events:none; }
+.hook-lbl { display:flex; flex-direction:column; gap:5px; padding:14px; border:1px solid rgba(255,255,255,0.1); border-radius:10px; cursor:pointer; transition:all 0.2s; background:var(--black4); height:100%; }
+.hook-opt input:checked+.hook-lbl { border-color:var(--gold); background:#1a1500; box-shadow:0 0 20px rgba(201,168,76,0.1); }
+.hook-emoji { font-size:1.3rem; }
+.hook-name { font-size:0.83rem; font-weight:800; }
+.hook-ex { font-size:0.7rem; color:rgba(255,255,255,0.4); line-height:1.4; }
+
+.dev-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.dev-opt { position:relative; }
+.dev-opt input { position:absolute; opacity:0; pointer-events:none; }
+.dev-lbl { display:block; padding:20px 18px; border:1px solid rgba(255,255,255,0.1); border-radius:12px; cursor:pointer; transition:all 0.2s; background:var(--black4); text-align:center; }
+.dev-opt input:checked+.dev-lbl { border-color:var(--gold); background:#1a1500; }
+.dev-icon { font-size:1.8rem; display:block; margin-bottom:8px; }
+.dev-name { font-weight:800; font-size:1rem; color:var(--gold-light); }
+.dev-desc { font-size:0.78rem; color:rgba(255,255,255,0.45); margin-top:6px; line-height:1.5; }
+
+.btn-gen { width:100%; background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark)); color:#000; border:none; border-radius:12px; padding:20px; font-size:1.1rem; font-weight:900; cursor:pointer; letter-spacing:0.3px; transition:all 0.25s; margin-top:20px; display:flex; align-items:center; justify-content:center; gap:10px; text-transform:uppercase; }
+.btn-gen:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(201,168,76,0.35); }
+.btn-gen:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
+
+.loading { display:none; text-align:center; padding:50px 20px; }
+.spinner { width:44px; height:44px; border:3px solid rgba(201,168,76,0.2); border-top-color:var(--gold); border-radius:50%; animation:spin 0.7s linear infinite; margin:0 auto 16px; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.loading p { color:var(--white-dim); }
+.loading .sub { font-size:0.8rem; color:#444; margin-top:6px; }
+
+.error-msg { display:none; background:#120404; border:1px solid rgba(200,74,74,0.3); border-radius:10px; padding:14px 18px; color:#e87a7a; margin-top:14px; font-size:0.88rem; }
+
+.result { display:none; margin-top:28px; }
+.result-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
+.result-title { font-size:1.05rem; font-weight:800; display:flex; align-items:center; gap:8px; }
+.success-dot { width:8px; height:8px; background:#4caf50; border-radius:50%; box-shadow:0 0 8px #4caf50; display:inline-block; }
+.btn-copy-all { background:var(--black5); border:1px solid var(--border); color:var(--white-dim); padding:8px 18px; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:600; transition:all 0.2s; font-family:inherit; }
+.btn-copy-all:hover { border-color:var(--gold); color:var(--gold); }
+
+.script-block { border-radius:12px; overflow:hidden; margin-bottom:12px; }
+.block-header { display:flex; align-items:center; justify-content:space-between; padding:11px 16px; font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:2px; }
+.block-hook .block-header { background:#1a1500; color:var(--gold); border-bottom:1px solid #2a2200; }
+.block-dev .block-header { background:#001a1a; color:#7adde8; border-bottom:1px solid #002a2a; }
+.block-cta .block-header { background:#1a0000; color:#e87a7a; border-bottom:1px solid #2a0000; }
+.block-body { padding:18px 20px; font-size:1rem; line-height:1.85; white-space:pre-wrap; }
+.block-hook .block-body { background:var(--hook-bg); }
+.block-dev .block-body { background:var(--dev-bg); }
+.block-cta .block-body { background:var(--cta-bg); }
+.btn-copy { background:transparent; border:1px solid currentColor; color:inherit; padding:4px 10px; border-radius:6px; cursor:pointer; font-size:0.7rem; opacity:0.6; transition:opacity 0.2s; font-family:inherit; }
+.btn-copy:hover { opacity:1; }
+
+.metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px; }
+.metric { background:var(--black3); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; }
+.metric-val { font-size:1.6rem; font-weight:900; color:var(--gold); line-height:1; }
+.metric-lbl { font-size:0.7rem; color:rgba(255,255,255,0.4); margin-top:4px; }
+
+.btn-regen { width:100%; background:transparent; border:1px solid var(--border-strong); color:var(--gold); border-radius:10px; padding:14px; font-size:0.9rem; font-weight:700; cursor:pointer; margin-top:14px; transition:all 0.2s; font-family:inherit; }
+.btn-regen:hover { background:rgba(201,168,76,0.05); }
+
+.footer { background:var(--black2); border-top:1px solid var(--border); padding:40px 20px; text-align:center; }
+.footer-logo { font-size:1.4rem; font-weight:900; margin-bottom:8px; }
+.footer-logo span { color:var(--gold); }
+.footer-credit { font-size:0.82rem; color:rgba(255,255,255,0.4); margin-bottom:6px; }
+.footer-credit strong { color:var(--gold-light); }
+.footer-ig { display:inline-flex; align-items:center; gap:5px; color:var(--gold); text-decoration:none; font-size:0.85rem; font-weight:700; margin-top:4px; }
+.footer-ig:hover { color:var(--white); }
+.footer-line { width:40px; height:1px; background:var(--border); margin:20px auto; }
+.footer-copy { font-size:0.72rem; color:#333; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo-wrap">
+    <div class="logo-icon">✨</div>
+    <div>
+      <div class="logo-text">Viral<span>Salon</span></div>
+      <div class="logo-by">by Andrea Maria</div>
+    </div>
+  </div>
+  <a href="https://instagram.com/andreamariaoficiaal" target="_blank" class="ig-link">📸 @andreamariaoficiaal</a>
+</header>
+
+<section class="hero">
+  <div class="hero-badge">✦ Metodología de Conversión Real</div>
+  <h1>Deja de preguntarte<br><span class="gold">qué publicar</span> y empieza a<br><span class="ul">convertir seguidores en clientes</span></h1>
+  <p class="hero-sub">El primer generador de guiones virales creado específicamente para salones de belleza, basado en el sistema de conversión de contenido de Andrea Maria.</p>
+  <div class="creator-card">
+    <div class="creator-avatar">👩</div>
+    <div>
+      <div class="creator-name">Andrea Maria</div>
+      <div class="creator-title">Experta en Contenido para Salones de Belleza</div>
+      <div class="creator-desc">Después de años ayudando a salones a crecer en redes sociales, he creado el único sistema de guiones que sigue una estructura de conversión probada. No más improvisar. No más dudar si tu contenido funciona. Cada guión responde la pregunta exacta que frena a tu cliente a comprar.</div>
+      <a href="https://instagram.com/andreamariaoficiaal" target="_blank" class="creator-ig">📸 @andreamariaoficiaal</a>
+    </div>
+  </div>
+</section>
+
+<section class="how-section">
+  <div class="section-label">¿Cómo funciona?</div>
+  <h2 class="section-heading">Un sistema, no una herramienta más</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><h3>Identificas la pregunta clave</h3><p>Cada video responde UNA sola pregunta que frena a tu cliente a comprar. El profesional que la responde primero se lleva al cliente.</p></div>
+    <div class="step"><div class="step-num">02</div><h3>Hook que detiene el scroll</h3><p>5 tipos de hook probados. Ningún relleno. Ninguna frase innecesaria. Si no engancha en 2 segundos, el video muere.</p></div>
+    <div class="step"><div class="step-num">03</div><h3>Desarrollo que convence</h3><p>Posiciónate como experta con datos reales o conecta emocionalmente con una historia. Los dos convierten, por razones distintas.</p></div>
+    <div class="step"><div class="step-num">04</div><h3>CTA que genera citas</h3><p>"Comenta PALABRA y te mando INFO." Se automatiza con ManyChat. Comentarios → conversaciones → citas reales.</p></div>
+  </div>
+</section>
+
+<div class="main">
+  <div class="form-heading">
+    <h2>Crea tu guión viral</h2>
+    <p>Rellena los datos de tu salón y el sistema genera el guión perfecto para ti. Sin API Key. Sin complicaciones.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💅 Tu salón</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Nombre del salón</label><input type="text" id="nombre" placeholder="Ej: Golden Hall Beauty"></div>
+      <div class="form-group"><label>Especialidad</label>
+        <select id="especialidad">
+          <option value="">Elige tu especialidad</option>
+          <option>Peluquería</option><option>Estética y Tratamientos Faciales</option><option>Uñas y Nail Art</option><option>Cejas y Pestañas</option><option>Centro Integral de Belleza</option><option>Micropigmentación</option><option>Extensiones de Cabello</option><option>Láser y Depilación</option><option>Masajes y Spa</option><option>Maquillaje Profesional</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Ciudad</label><input type="text" id="ciudad" placeholder="Ej: Sevilla, Triana"></div>
+      <div class="form-group"><label>Servicio del video</label><input type="text" id="servicio" placeholder="Ej: Keratina brasileña"></div>
+      <div class="form-group full">
+        <label>¿Quién es tu cliente ideal?</label>
+        <input type="text" id="cliente_ideal" placeholder="Ej: Mujer de 30-50 años con cabello dañado que quiere un resultado duradero">
+        <div class="chips">
+          <span class="chip" onclick="sf('cliente_ideal','Mujer 25-45 años que quiere cabello liso sin plancha')">Liso sin plancha</span>
+          <span class="chip" onclick="sf('cliente_ideal','Mujer que lleva años teñiéndose y tiene el cabello muy dañado')">Cabello dañado</span>
+          <span class="chip" onclick="sf('cliente_ideal','Clienta que nunca se ha hecho uñas en gel y tiene miedo de que se dañen')">Uñas primeriza</span>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label>❗ Pregunta que frena a tu cliente a comprar <span style="color:var(--gold);font-size:0.8em;">(LO MÁS IMPORTANTE)</span></label>
+        <input type="text" id="pregunta" placeholder="Ej: ¿La keratina estropea el cabello? ¿Duele el láser?">
+        <div class="hint">Todo el guión gira alrededor de esta pregunta. Quien la responde primero, se lleva a la clienta.</div>
+        <div class="chips">
+          <span class="chip" onclick="sf('pregunta','¿La keratina estropea el cabello?')">¿Keratina estropea?</span>
+          <span class="chip" onclick="sf('pregunta','¿Cuánto dura el tinte y cuándo tengo que repetirlo?')">¿Duración del tinte?</span>
+          <span class="chip" onclick="sf('pregunta','¿Las uñas de gel dañan la uña natural?')">¿Gel daña uñas?</span>
+          <span class="chip" onclick="sf('pregunta','¿El láser duele mucho?')">¿Duele el láser?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎣 Tipo de Hook</div>
+    <p style="font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:16px;">Las primeras 1-3 frases. Si no detienen el scroll en 2 segundos, el video muere.</p>
+    <div class="hook-grid">
+      <div class="hook-opt"><input type="radio" name="hook" id="h1" value="pregunta_directa" checked><label class="hook-lbl" for="h1"><span class="hook-emoji">❓</span><span class="hook-name">Pregunta Directa</span><span class="hook-ex">"¿Cuánto dura realmente la keratina?"</span></label></div>
+      <div class="hook-opt"><input type="radio" name="hook" id="h2" value="mito_destruido"><label class="hook-lbl" for="h2"><span class="hook-emoji">💥</span><span class="hook-name">Mito Destruido</span><span class="hook-ex">"Si te han dicho que el gel destruye tus uñas, te han mentido."</span></label></div>
+      <div class="hook-opt"><input type="radio" name="hook" id="h3" value="comparacion"><label class="hook-lbl" for="h3"><span class="hook-emoji">⚖️</span><span class="hook-name">Comparación</span><span class="hook-ex">"¿Qué es mejor, keratina o alisado japonés?"</span></label></div>
+      <div class="hook-opt"><input type="radio" name="hook" id="h4" value="secuencia"><label class="hook-lbl" for="h4"><span class="hook-emoji">📋</span><span class="hook-name">Secuencia</span><span class="hook-ex">"3 cosas que nadie te cuenta antes de hacerte extensiones."</span></label></div>
+      <div class="hook-opt"><input type="radio" name="hook" id="h5" value="dato_importante"><label class="hook-lbl" for="h5"><span class="hook-emoji">⚠️</span><span class="hook-name">Dato Importante</span><span class="hook-ex">"Si tienes el cabello teñido, no puedes hacerte esto sin antes..."</span></label></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📖 Tipo de Desarrollo</div>
+    <div class="dev-grid">
+      <div class="dev-opt"><input type="radio" name="desarrollo" id="d1" value="experto" checked><label class="dev-lbl" for="d1"><span class="dev-icon">🔬</span><span class="dev-name">EXPERTO</span><span class="dev-desc">Datos reales y hechos técnicos que te posicionan como la referencia de tu sector.</span></label></div>
+      <div class="dev-opt"><input type="radio" name="desarrollo" id="d2" value="emocional"><label class="dev-lbl" for="d2"><span class="dev-icon">❤️</span><span class="dev-name">EMOCIONAL</span><span class="dev-desc">Una historia con la que tu cliente se identifica. Conecta con su dolor o deseo.</span></label></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 CTA para ManyChat</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Palabra clave</label><input type="text" id="palabra_cta" placeholder="Ej: CITA, INFO, REGALO"><div class="chips"><span class="chip" onclick="sf('palabra_cta','CITA')">CITA</span><span class="chip" onclick="sf('palabra_cta','INFO')">INFO</span><span class="chip" onclick="sf('palabra_cta','GRATIS')">GRATIS</span><span class="chip" onclick="sf('palabra_cta','GUIA')">GUIA</span></div></div>
+      <div class="form-group"><label>¿Qué envías a cambio?</label><input type="text" id="regalo" placeholder="Ej: la lista de precios, una guía"><div class="chips"><span class="chip" onclick="sf('regalo','los precios y disponibilidad')">Precios</span><span class="chip" onclick="sf('regalo','una guía de cuidados posterior')">Guía cuidados</span><span class="chip" onclick="sf('regalo','un 20% de descuento')">Descuento</span></div></div>
+    </div>
+  </div>
+
+  <button class="btn-gen" id="btn-gen" onclick="generar()">✨ Generar mi Guión Viral</button>
+  <div class="error-msg" id="err"></div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Creando tu guión viral...</p>
+    <p class="sub">Analizando la pregunta que frena a tu cliente ideal</p>
+  </div>
+
+  <div class="result card" id="result">
+    <div class="result-top">
+      <div class="result-title"><span class="success-dot"></span> Tu Guión Viral está listo</div>
+      <button class="btn-copy-all" onclick="copiarTodo()">📋 Copiar todo</button>
+    </div>
+    <div class="script-block block-hook" id="blk-hook">
+      <div class="block-header">🎣 Hook<button class="btn-copy" onclick="copiarBloque('blk-hook')">Copiar</button></div>
+      <div class="block-body" id="txt-hook"></div>
+    </div>
+    <div class="script-block block-dev" id="blk-dev">
+      <div class="block-header">📖 Desarrollo<button class="btn-copy" onclick="copiarBloque('blk-dev')">Copiar</button></div>
+      <div class="block-body" id="txt-dev"></div>
+    </div>
+    <div class="script-block block-cta" id="blk-cta">
+      <div class="block-header">🎯 CTA<button class="btn-copy" onclick="copiarBloque('blk-cta')">Copiar</button></div>
+      <div class="block-body" id="txt-cta"></div>
+    </div>
+    <div class="metrics" id="metrics"></div>
+    <button class="btn-regen" onclick="generar()">🔄 Generar otra versión</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-logo">Viral<span>Salon</span></div>
+  <div class="footer-credit">Creado por <strong>Andrea Maria</strong> — Experta en Contenido para Salones de Belleza</div>
+  <a href="https://instagram.com/andreamariaoficiaal" target="_blank" class="footer-ig">📸 @andreamariaoficiaal</a>
+  <div class="footer-line"></div>
+  <div class="footer-copy">Sistema Hook + Desarrollo + CTA para ManyChat · Diseñado para convertir contenido en citas reales</div>
+</footer>
+
+<script>
+function sf(id,val){document.getElementById(id).value=val}
+function gv(id){return document.getElementById(id).value.trim()}
+function gr(name){return document.querySelector(`input[name="${name}"]:checked`)?.value||''}
+
+async function generar(){
+  const data={
+    nombre:gv('nombre'), especialidad:gv('especialidad'), ciudad:gv('ciudad'),
+    servicio:gv('servicio'), cliente_ideal:gv('cliente_ideal'), pregunta:gv('pregunta'),
+    hook:gr('hook'), desarrollo:gr('desarrollo'), palabra_cta:gv('palabra_cta'), regalo:gv('regalo')
+  };
+  document.getElementById('err').style.display='none';
+  if(!data.especialidad) return err('Elige tu especialidad.');
+  if(!data.servicio) return err('Escribe el servicio del video.');
+  if(!data.cliente_ideal) return err('Describe a tu cliente ideal.');
+  if(!data.pregunta) return err('La pregunta que frena a tu cliente es lo más importante.');
+  if(!data.palabra_cta) return err('Escribe la palabra clave para ManyChat.');
+  if(!data.regalo) return err('¿Qué envías a la clienta que comenta?');
+
+  document.getElementById('btn-gen').disabled=true;
+  document.getElementById('loading').style.display='block';
+  document.getElementById('result').style.display='none';
+
+  try{
+    const res=await fetch('/generar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    const json=await res.json();
+    if(json.error) throw new Error(json.error);
+    document.getElementById('txt-hook').textContent=json.hook;
+    document.getElementById('txt-dev').textContent=json.desarrollo;
+    document.getElementById('txt-cta').textContent=json.cta;
+    const secs=Math.round(json.palabras/2.5);
+    document.getElementById('metrics').innerHTML=`
+      <div class="metric"><div class="metric-val">${json.palabras}</div><div class="metric-lbl">Palabras</div></div>
+      <div class="metric"><div class="metric-val">3</div><div class="metric-lbl">Secciones</div></div>
+      <div class="metric"><div class="metric-val">~${secs}s</div><div class="metric-lbl">Duración Reel</div></div>`;
+    document.getElementById('result').style.display='block';
+    document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){err('Error: '+e.message)}
+  finally{document.getElementById('btn-gen').disabled=false;document.getElementById('loading').style.display='none';}
+}
+
+function err(msg){
+  document.getElementById('btn-gen').disabled=false;
+  document.getElementById('loading').style.display='none';
+  const el=document.getElementById('err');
+  el.textContent='⚠️ '+msg; el.style.display='block';
+  el.scrollIntoView({behavior:'smooth'});
+}
+function copiarBloque(id){
+  const b=document.querySelector(`#${id} .block-body`);
+  if(!b)return;
+  navigator.clipboard.writeText(b.textContent.trim());
+  const btn=document.querySelector(`#${id} .btn-copy`);
+  const o=btn.textContent; btn.textContent='✓';
+  setTimeout(()=>btn.textContent=o,1500);
+}
+function copiarTodo(){
+  const h=document.getElementById('txt-hook').textContent.trim();
+  const d=document.getElementById('txt-dev').textContent.trim();
+  const c=document.getElementById('txt-cta').textContent.trim();
+  navigator.clipboard.writeText(`HOOK\n${h}\n\nDESARROLLO\n${d}\n\nCTA\n${c}`);
+  const btn=document.querySelector('.btn-copy-all');
+  btn.textContent='✓ Copiado';
+  setTimeout(()=>btn.textContent='📋 Copiar todo',2000);
+}
+</script>
+</body>
+</html>
