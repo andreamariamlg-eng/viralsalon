@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biblioteca — ViralSalon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#C9A84C;--gold-light:#E8CB7A;--gold-dark:#8a6c28;--black:#000;--black2:#0D0D0D;--black3:#141414;--black4:#1E1E1E;--black5:#282828;--white:#FFF;--white-dim:rgba(255,255,255,0.7);--border:rgba(201,168,76,0.2);--border-strong:rgba(201,168,76,0.5)}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:var(--white);line-height:1.6}
+.topbar{background:var(--black);border-bottom:1px solid var(--border);padding:12px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99}
+.logo{font-size:1.2rem;font-weight:900}.logo span{color:var(--gold)}
+.nav{display:flex;align-items:center;gap:6px}
+.nav a{color:var(--white-dim);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s}
+.nav a:hover,.nav a.active{background:rgba(201,168,76,0.1);color:var(--gold)}
+.nav .logout{color:rgba(255,255,255,0.3);margin-left:8px;font-size:0.8rem}
+.main{max-width:960px;margin:0 auto;padding:40px 20px}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:14px}
+.page-header h1{font-size:1.6rem;font-weight:900}
+.page-header p{font-size:0.85rem;color:var(--white-dim);margin-top:4px}
+.btn-new{background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark));color:#000;border:none;border-radius:10px;padding:10px 20px;font-size:0.9rem;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.filters{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.filter-btn{background:var(--black4);border:1px solid rgba(255,255,255,0.1);color:var(--white-dim);border-radius:20px;padding:5px 14px;font-size:0.78rem;cursor:pointer;transition:all 0.2s;font-family:inherit}
+.filter-btn.active,.filter-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.08)}
+.empty{text-align:center;padding:60px 20px;color:var(--white-dim)}
+.empty h3{font-size:1.2rem;margin-bottom:10px}
+.empty a{color:var(--gold);text-decoration:none;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.guion-card{background:var(--black3);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color 0.2s}
+.guion-card:hover{border-color:var(--border-strong)}
+.card-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.card-servicio{font-size:0.92rem;font-weight:800;color:var(--gold-light)}
+.card-fecha{font-size:0.72rem;color:rgba(255,255,255,0.3)}
+.card-body{padding:14px 16px}
+.card-hook{font-size:0.82rem;color:var(--white-dim);line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tag{background:var(--black5);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:3px 9px;font-size:0.68rem;color:rgba(255,255,255,0.45)}
+.tag.publicado{background:rgba(76,175,80,0.1);border-color:rgba(76,175,80,0.3);color:#81c784}
+.tag.pendiente{background:rgba(255,193,7,0.1);border-color:rgba(255,193,7,0.3);color:#ffd54f}
+.card-actions{display:flex;gap:8px}
+.btn-copy{background:transparent;border:1px solid var(--border);color:var(--white-dim);border-radius:7px;padding:6px 12px;font-size:0.75rem;cursor:pointer;font-family:inherit;transition:all 0.2s;flex:1}
+.btn-copy:hover{border-color:var(--gold);color:var(--gold)}
+.btn-pub{background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);color:#81c784;border-radius:7px;padding:6px 10px;font-size:0.75rem;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.btn-pub:hover{background:rgba(76,175,80,0.2)}
+.btn-del{background:rgba(200,74,74,0.1);border:1px solid rgba(200,74,74,0.2);color:#e87a7a;border-radius:7px;padding:6px 10px;font-size:0.75rem;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.btn-del:hover{background:rgba(200,74,74,0.2)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.stat{background:var(--black3);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.stat-val{font-size:2rem;font-weight:900;color:var(--gold);line-height:1}
+.stat-lbl{font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:4px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo">Viral<span>Salon</span></div>
+  <nav class="nav">
+    <a href="/">✨ Generar</a>
+    <a href="/biblioteca" class="active">📚 Biblioteca</a>
+    <a href="/planificador">📅 Planificador</a>
+    <a href="/logout" class="logout">Salir</a>
+  </nav>
+</header>
+
+<div class="main">
+  <div class="page-header">
+    <div>
+      <h1>📚 Biblioteca de Guiones</h1>
+      <p>{{ user.nombre_salon }} — todos tus guiones guardados</p>
+    </div>
+    <a href="/" class="btn-new">✨ Nuevo guión</a>
+  </div>
+
+  {% set total = guiones|length %}
+  {% set publicados = guiones|selectattr('publicado')|list|length %}
+  {% set pendientes = total - publicados %}
+  <div class="stats">
+    <div class="stat"><div class="stat-val">{{ total }}</div><div class="stat-lbl">Guiones creados</div></div>
+    <div class="stat"><div class="stat-val">{{ publicados }}</div><div class="stat-lbl">Publicados</div></div>
+    <div class="stat"><div class="stat-val">{{ pendientes }}</div><div class="stat-lbl">Pendientes</div></div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filtrar('todos',this)">Todos</button>
+    <button class="filter-btn" onclick="filtrar('pendientes',this)">Pendientes</button>
+    <button class="filter-btn" onclick="filtrar('publicados',this)">Publicados</button>
+  </div>
+
+  {% if guiones %}
+  <div class="grid" id="grid">
+    {% for g in guiones %}
+    <div class="guion-card" data-estado="{{ 'publicado' if g.publicado else 'pendiente' }}" id="card-{{ g.id }}">
+      <div class="card-header">
+        <span class="card-servicio">{{ g.servicio }}</span>
+        <span class="card-fecha">{{ g.creado.strftime('%d/%m/%Y') }}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-hook">{{ g.hook }}</div>
+        <div class="card-tags">
+          <span class="tag">{{ g.hook_tipo.replace('_',' ').title() }}</span>
+          <span class="tag">{{ g.dev_tipo.title() }}</span>
+          <span class="tag {{ 'publicado' if g.publicado else 'pendiente' }}">{{ '✓ Publicado' if g.publicado else '⏳ Pendiente' }}</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-copy" onclick="copiarGuion({{ g.id }}, '{{ g.hook|replace("'","\\'") }}', '{{ g.desarrollo|replace("'","\\'") }}', '{{ g.cta|replace("'","\\'") }}')">📋 Copiar</button>
+          <button class="btn-pub" onclick="togglePublicado({{ g.id }}, {{ 'true' if g.publicado else 'false' }})">{{ '↩ Deshacer' if g.publicado else '✓ Publicado' }}</button>
+          <button class="btn-del" onclick="eliminarGuion({{ g.id }})">🗑</button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">
+    <h3>Aún no tienes guiones guardados</h3>
+    <p>Cada guión que generes se guardará aquí automáticamente.<br><a href="/">Genera tu primer guión →</a></p>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+function filtrar(tipo, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.guion-card').forEach(card => {
+    if (tipo === 'todos') card.style.display = '';
+    else card.style.display = card.dataset.estado === tipo ? '' : 'none';
+  });
+}
+function copiarGuion(id, hook, dev, cta) {
+  const txt = `HOOK\n${hook}\n\nDESARROLLO\n${dev}\n\nCTA\n${cta}`;
+  navigator.clipboard.writeText(txt);
+  const btn = document.querySelector(`#card-${id} .btn-copy`);
+  btn.textContent = '✓ Copiado'; setTimeout(() => btn.textContent = '📋 Copiar', 1500);
+}
+async function togglePublicado(id, actual) {
+  const r = await fetch(`/guion/${id}/publicar`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({publicado:!actual})});
+  if (r.ok) location.reload();
+}
+async function eliminarGuion(id) {
+  if (!confirm('¿Eliminar este guión?')) return;
+  const r = await fetch(`/guion/${id}`, {method:'DELETE'});
+  if (r.ok) document.getElementById(`card-${id}`).remove();
+}
+</script>
+</body>
+</html>
