@@ -118,8 +118,14 @@ def logout():
 # ── RUTAS PRINCIPALES ─────────────────────────────────────────────────────────
 
 @app.route("/")
+def landing():
+    if current_user.is_authenticated:
+        return redirect(url_for("generador"))
+    return render_template("landing.html")
+
+@app.route("/app")
 @login_required
-def index():
+def generador():
     return render_template("index.html", user=current_user)
 
 @app.route("/biblioteca")
@@ -160,6 +166,7 @@ def eliminar_guion(guion_id):
 @app.route("/generar", methods=["POST"])
 @login_required
 def generar():
+
     data = request.json
     nombre = data.get("nombre") or current_user.nombre_salon
     esp = data.get("especialidad") or current_user.especialidad or ""
