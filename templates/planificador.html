@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planificador — ViralSalon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#C9A84C;--gold-light:#E8CB7A;--gold-dark:#8a6c28;--black:#000;--black2:#0D0D0D;--black3:#141414;--black4:#1E1E1E;--black5:#282828;--white:#FFF;--white-dim:rgba(255,255,255,0.7);--border:rgba(201,168,76,0.2);--border-strong:rgba(201,168,76,0.5)}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:var(--white);line-height:1.6}
+.topbar{background:var(--black);border-bottom:1px solid var(--border);padding:12px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99}
+.logo{font-size:1.2rem;font-weight:900}.logo span{color:var(--gold)}
+.nav{display:flex;align-items:center;gap:6px}
+.nav a{color:var(--white-dim);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s}
+.nav a:hover,.nav a.active{background:rgba(201,168,76,0.1);color:var(--gold)}
+.nav .logout{color:rgba(255,255,255,0.3);margin-left:8px;font-size:0.8rem}
+.main{max-width:960px;margin:0 auto;padding:40px 20px}
+.page-header{margin-bottom:32px}
+.page-header h1{font-size:1.6rem;font-weight:900}
+.page-header p{font-size:0.85rem;color:var(--white-dim);margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--black3);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.stat-val{font-size:2rem;font-weight:900;color:var(--gold);line-height:1}
+.stat-lbl{font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:4px}
+.section-title{font-size:1rem;font-weight:800;color:var(--gold-light);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border-strong),transparent)}
+.semana{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:32px}
+@media(max-width:700px){.semana{grid-template-columns:repeat(3,1fr)}}
+.dia{background:var(--black3);border:1px solid var(--border);border-radius:10px;padding:12px;min-height:100px}
+.dia-nombre{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.35);margin-bottom:8px}
+.dia-num{font-size:1.2rem;font-weight:900;color:var(--gold);margin-bottom:8px}
+.dia-slot{background:rgba(201,168,76,0.08);border:1px dashed var(--border);border-radius:6px;padding:6px 8px;font-size:0.72rem;color:var(--white-dim);cursor:pointer;text-align:center;transition:all 0.2s;margin-bottom:4px}
+.dia-slot:hover{border-color:var(--gold);color:var(--gold)}
+.dia-slot.asignado{background:rgba(201,168,76,0.12);border:1px solid var(--border-strong);color:var(--gold-light)}
+.dia-slot.publicado{background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);color:#81c784}
+.tabla{width:100%;border-collapse:collapse;margin-bottom:32px}
+.tabla th{text-align:left;padding:10px 14px;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.4);border-bottom:1px solid var(--border)}
+.tabla td{padding:12px 14px;font-size:0.85rem;border-bottom:1px solid rgba(255,255,255,0.05);vertical-align:middle}
+.tabla tr:hover td{background:var(--black3)}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:700}
+.badge.pub{background:rgba(76,175,80,0.15);color:#81c784;border:1px solid rgba(76,175,80,0.3)}
+.badge.pend{background:rgba(255,193,7,0.1);color:#ffd54f;border:1px solid rgba(255,193,7,0.3)}
+.btn-sm{background:transparent;border:1px solid var(--border);color:var(--white-dim);border-radius:6px;padding:4px 10px;font-size:0.73rem;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.btn-sm:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm.green{border-color:rgba(76,175,80,0.3);color:#81c784}
+.btn-sm.green:hover{background:rgba(76,175,80,0.1)}
+.empty{text-align:center;padding:50px 20px;color:var(--white-dim)}
+.empty a{color:var(--gold);text-decoration:none;font-weight:700}
+.tip{background:rgba(201,168,76,0.06);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:28px;font-size:0.85rem;color:var(--white-dim);line-height:1.6}
+.tip strong{color:var(--gold-light)}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo">Viral<span>Salon</span></div>
+  <nav class="nav">
+    <a href="/">✨ Generar</a>
+    <a href="/biblioteca">📚 Biblioteca</a>
+    <a href="/planificador" class="active">📅 Planificador</a>
+    <a href="/logout" class="logout">Salir</a>
+  </nav>
+</header>
+
+<div class="main">
+  <div class="page-header">
+    <h1>📅 Planificador de Contenido</h1>
+    <p>{{ user.nombre_salon }} — organiza cuándo y qué publicar</p>
+  </div>
+
+  {% set total = guiones|length %}
+  {% set publicados = guiones|selectattr('publicado')|list|length %}
+  {% set pendientes = total - publicados %}
+  {% set con_fecha = guiones|selectattr('fecha_publicacion')|list|length %}
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val">{{ total }}</div><div class="stat-lbl">Guiones totales</div></div>
+    <div class="stat"><div class="stat-val">{{ publicados }}</div><div class="stat-lbl">Publicados</div></div>
+    <div class="stat"><div class="stat-val">{{ pendientes }}</div><div class="stat-lbl">Pendientes</div></div>
+    <div class="stat"><div class="stat-val">{{ con_fecha }}</div><div class="stat-lbl">Programados</div></div>
+  </div>
+
+  <div class="tip">
+    <strong>💡 Recomendación de Andrea Maria:</strong> Publica <strong>3-4 veces por semana</strong> para mantener el algoritmo activo. Lo ideal es lunes, miércoles, viernes y domingo. Cada video debe responder UNA pregunta diferente de tu cliente ideal.
+  </div>
+
+  <div class="section-title">📋 Todos los guiones</div>
+
+  {% if guiones %}
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Servicio</th>
+        <th>Hook</th>
+        <th>Fecha pub.</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for g in guiones %}
+      <tr id="fila-{{ g.id }}">
+        <td><strong>{{ g.servicio }}</strong></td>
+        <td style="color:rgba(255,255,255,0.5);font-size:0.8rem">{{ g.hook_tipo.replace('_',' ').title() }}</td>
+        <td>
+          <input type="date" value="{{ g.fecha_publicacion.strftime('%Y-%m-%d') if g.fecha_publicacion else '' }}"
+            style="background:var(--black4);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--white);padding:4px 8px;font-size:0.8rem;font-family:inherit"
+            onchange="guardarFecha({{ g.id }}, this.value)">
+        </td>
+        <td><span class="badge {{ 'pub' if g.publicado else 'pend' }}">{{ '✓ Publicado' if g.publicado else '⏳ Pendiente' }}</span></td>
+        <td style="display:flex;gap:6px">
+          <button class="btn-sm green" onclick="togglePublicado({{ g.id }}, {{ 'true' if g.publicado else 'false' }})">
+            {{ '↩ Deshacer' if g.publicado else '✓ Marcar pub.' }}
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">
+    <p>Aún no tienes guiones para planificar.<br><a href="/">Genera tu primer guión →</a></p>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+async function guardarFecha(id, fecha) {
+  await fetch(`/guion/${id}/publicar`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({fecha_publicacion: fecha})
+  });
+}
+async function togglePublicado(id, actual) {
+  const r = await fetch(`/guion/${id}/publicar`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({publicado: !actual})
+  });
+  if (r.ok) location.reload();
+}
+</script>
+</body>
+</html>
