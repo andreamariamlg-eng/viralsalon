@@ -57,19 +57,33 @@ class Guion(db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# ── HOOKS Y DESARROLLOS ───────────────────────────────────────────────────────
+# ── HOOKS Y TONOS ───────────────────────────────────────────────────────
 
 HOOKS = {
-    "pregunta_directa": "PREGUNTA DIRECTA: Empieza con una pregunta que el cliente se hace en su cabeza sobre el servicio. Ej: '¿Cuánto dura realmente [el servicio]?' Que sea la pregunta exacta que se están haciendo miles de personas.",
-    "mito_destruido": "MITO DESTRUIDO: Empieza EXACTAMENTE así: 'Si te han dicho que [creencia falsa común], te han mentido.' Una frase contundente. Sin más.",
-    "comparacion": "COMPARACIÓN: '¿Qué es mejor, [opción A] o [opción B]? Ahora te lo cuento.' Una comparación que el cliente ya se está planteando.",
-    "secuencia": "SECUENCIA: '[N] cosas que nadie te cuenta sobre [servicio]' o '[N] errores que veo cada semana en mi salón.' El número genera curiosidad.",
-    "dato_importante": "DATO IMPORTANTE: 'Si tienes [situación específica], no puedes hacerte [servicio] sin antes [condición].' O un dato sorprendente del sector que nadie comparte."
+    "pregunta_directa": "El hook es una PREGUNTA DIRECTA. La pregunta exacta que se hace la clienta en su cabeza. Ej: '¿Quieres hacerte las uñas pero no sabes qué pedir?' o '¿Sigues usando cuchilla para depilarte?' Que sea tan concreta que quien la oiga piense 'eso me pasa a mí'.",
+    "mito_destruido": "El hook destruye un MITO. Empieza así: 'Si tu amiga te ha dicho que [cosa falsa], te ha mentido.' o 'No me digas que todavía crees que [mito común].' Una frase que sorprenda y genere ganas de seguir viendo.",
+    "comparacion": "El hook plantea una COMPARACIÓN que la clienta ya se está haciendo. '¿Qué es mejor, [opción A] o [opción B]? Ahora mismo te lo cuento.' Que sea una duda real que tienen antes de pedir cita.",
+    "secuencia": "El hook anuncia una LISTA corta. '[N] cosas que nadie te cuenta sobre [servicio]' o '[N] errores que veo cada semana en mi salón y cómo evitarlos.' El número despierta la curiosidad.",
+    "dato_importante": "El hook da un DATO que sorprende. 'Lo que nadie te cuenta sobre [servicio] es que...' o 'Aparte del dinero que te gastas en [alternativa peor], no sabes el daño que te haces.' Algo que no esperaban oír."
 }
 
-DEVS = {
-    "experto": "EXPERTO: Responde la pregunta con datos reales, hechos técnicos o estadísticas del sector. Posiciónate como la referencia. Frases como 'La realidad es que...', 'Lo que la mayoría no sabe es que...', 'En mi salón llevo X años viendo que...'. Directo, sin rodeos, máximo 5-6 frases.",
-    "emocional": "EMOCIONAL: Cuenta una historia breve y real (tuya o de una clienta) con la que el cliente ideal se sienta identificado. 'La semana pasada me llegó una clienta que...'. Hazle sentir que ese video es para ella. Máximo 5-6 frases."
+TONOS = {
+    "historia_real": {
+        "instruccion": "El desarrollo cuenta la historia de una clienta real. Usa un nombre femenino natural (elige uno diferente cada vez de esta lista variada: Sara, Laura, Carmen, Elena, Paula, Marta, Lucía, Ana, Isabel, Rosa, Nuria, Cristina, Sofía, Raquel, Mónica). Estructura: qué le pasaba → qué descubrió o hizo → cómo está ahora. Que quien lo vea piense 'eso me pasa exactamente a mí'. Sin nombres de marcas ni términos técnicos. Como si se lo contaras a una amiga.",
+        "con_nombre": True
+    },
+    "directa": {
+        "instruccion": "El desarrollo responde la pregunta de forma directa y clara, como si le explicaras algo a una amiga en un café. Sin rodeos. Sin palabras difíciles. Usa frases cortas. Puede ser explicando cómo funciona algo, qué tiene que pedir, cuándo sirve o no sirve el servicio, o qué tiene que saber antes de venir. Todo en palabras del día a día.",
+        "con_nombre": False
+    },
+    "revelacion": {
+        "instruccion": "El desarrollo revela algo que normalmente no se sabe o que la gente tiene mal entendido. 'Lo que nadie te cuenta es que...' o 'La mayoría no lo sabe pero...' Genera curiosidad y posiciona al salón como el que realmente sabe. Sin tecnicismos, todo en palabras sencillas. Puede o no mencionar una clienta brevemente.",
+        "con_nombre": False
+    },
+    "inspiracional": {
+        "instruccion": "El desarrollo lleva a la clienta a imaginarse ya con el resultado. Que sienta el deseo de tenerlo. Habla de cómo se va a sentir, qué va a cambiar en su día a día, qué dirán los demás. Conecta con el deseo, no con el miedo. Nada técnico. Puede mencionar brevemente una clienta que ya lo ha vivido.",
+        "con_nombre": False
+    }
 }
 
 # ── HELPER STRIPE ─────────────────────────────────────────────────────────────
@@ -268,54 +282,82 @@ def generar():
     cliente = data.get("cliente_ideal", "")
     pregunta = data.get("pregunta", "")
     hook = data.get("hook", "pregunta_directa")
-    dev = data.get("desarrollo", "experto")
+    tono = data.get("tono", "directa")
+    duracion = data.get("duracion", "corto")
     palabra = data.get("palabra_cta", "INFO")
     regalo = data.get("regalo", "toda la información")
 
     if not all([esp, servicio, cliente, pregunta, palabra, regalo]):
         return jsonify({"error": "Faltan campos obligatorios"}), 400
 
-    prompt = f"""Eres el sistema de marketing de contenidos más avanzado para salones de belleza. Tu metodología genera guiones para Reels que CONVIERTEN espectadores en clientes reales, no solo likes.
+    tono_data = TONOS.get(tono, TONOS["directa"])
+    tono_instruccion = tono_data["instruccion"]
 
-DATOS DEL SALÓN:
-Nombre: {nombre}
-Especialidad: {esp}
-Ciudad: {ciudad}
-Servicio del video: {servicio}
-Cliente ideal: {cliente}
-Pregunta que frena al cliente a comprar: "{pregunta}"
+    if duracion == "largo":
+        palabras_max = 150
+        duracion_texto = "60 segundos"
+        palabras_hook = "2-3 frases"
+        palabras_dev = "6-8 frases"
+    else:
+        palabras_max = 85
+        duracion_texto = "30-40 segundos"
+        palabras_hook = "1-2 frases"
+        palabras_dev = "3-4 frases"
 
-REGLA ABSOLUTA: Cada frase del guión debe existir por una razón. Si se puede quitar sin perder impacto, se quita. El guión entero gira alrededor de responder UNA sola pregunta.
+    prompt = f"""Eres la voz de un salón de {esp} en {ciudad}. Tu trabajo es escribir un guión para un Reel de Instagram que suene completamente natural, como si la dueña del salón se lo estuviera contando a una amiga tomando un café.
 
-HOOK A USAR: {HOOKS.get(hook, HOOKS["pregunta_directa"])}
+DATOS:
+Salón: {nombre}
+Servicio: {servicio}
+Clienta ideal: {cliente}
+Pregunta que le frena a comprar: "{pregunta}"
 
-DESARROLLO A USAR: {DEVS.get(dev, DEVS["experto"])}
+GUIONES DE REFERENCIA QUE FUNCIONAN DE VERDAD:
+---
+Guión 1 (uñas, directo):
+"¿Quieres hacerte las uñas, pero no sabes qué pedir? Después de ver este vídeo, ya vas a saberlo. Pide permanente si tu uña es fuerte y no trabajas mucho con las manos. Pide refuerzo si tus uñas son más débiles o usas mucho las manos en tu día a día. Pide acrílico o gel si tus uñas son muy cortas y te las dañas. Comenta INFO y te envío la lista de precios completa."
+---
+Guión 2 (peluquería, historia real):
+"Si tu amiga te ha dicho que no hay manera de recuperar la fuerza de tu pelo, te ha mentido. El otro día vino Sara diciéndome que odiaba recogerse el pelo porque se le veía demasiado fino. Le hablé del bótox capilar, no sabía ni lo que era. Hoy lleva tres sesiones y está alucinada con su pelo. Si quieres saber cómo te puede ayudar a ti, comenta BÓTOX y te envío toda la info."
+---
+Guión 3 (depilación láser, revelación):
+"No me digas que sigues usando cuchilla para depilarte. Aparte del dinero que te gastas, no sabes el daño que le haces a tu piel, y sobre todo la pereza que da. El otro día hablé con Laura sobre esto, y cuando le dije el precio del láser de cuerpo completo, no se lo podía creer. Pidió cita al día siguiente. No le dolió nada y ya en la segunda sesión ha notado un cambio enorme. ¿Quieres que te sorprenda a ti también? Comenta LÁSER y te mando un regalo."
+---
 
-CTA SIEMPRE ASÍ: "Comenta {palabra} y te mando {regalo}."
-NUNCA: sígueme, dale like, comparte, suscríbete.
+HOOK A ESCRIBIR: {HOOKS.get(hook, HOOKS["pregunta_directa"])}
+Longitud del hook: {palabras_hook}.
 
-RESPONDE ÚNICAMENTE en este formato exacto:
+DESARROLLO A ESCRIBIR: {tono_instruccion}
+Longitud del desarrollo: {palabras_dev}.
+
+CTA: Termina SIEMPRE así (natural, no robótico): "Comenta {palabra} y te {regalo}." o una variación muy natural de esto.
+PROHIBIDO en el CTA: sígueme, dale like, comparte, suscríbete.
+
+DURACIÓN OBJETIVO: {duracion_texto} — máximo {palabras_max} palabras en total.
+
+RESPONDE SOLO en este formato:
 
 [HOOK]
-(el hook aquí, máximo 2-3 frases)
+(el hook)
 
 [DESARROLLO]
-(el desarrollo aquí, máximo 5-6 frases)
+(el desarrollo)
 
 [CTA]
-(el cta aquí, 1-2 frases)
+(el cta)
 
-REGLAS DE ESCRITURA:
-- Español natural de España, primera persona
-- Sin emojis, sin asteriscos, sin guiones al inicio de frases
-- Sin introducción, sin explicación, solo el guión
-- Que suene como alguien hablando, no escribiendo
-- Máximo 110 palabras en total"""
+REGLAS QUE NO SE PUEDEN ROMPER:
+1. Sin palabras técnicas del sector. Si hay que nombrar el servicio, usa el nombre más simple posible.
+2. Sin emojis, sin asteriscos, sin guiones al inicio de frases.
+3. Que suene a persona hablando, no a texto escrito. Frases cortas. Pausas naturales.
+4. Que lo entienda cualquier persona, de cualquier edad, sin saber nada del sector.
+5. Cada frase tiene que estar por una razón. Si se puede quitar sin perder nada, se quita.
+6. Sin introducción ni explicación. Solo el guión."""
 
     try:
         response = client.messages.create(
-            model="claude-haiku-4-5-20251001",
-            max_tokens=400,
+            model="claude-sonnet-4-6",
+            max_tokens=600,
             messages=[{"role": "user", "content": prompt}]
         )
         texto = response.content[0].text
@@ -333,7 +375,7 @@ REGLAS DE ESCRITURA:
             user_id=current_user.id,
             servicio=servicio,
             hook_tipo=hook,
-            dev_tipo=dev,
+            dev_tipo=tono,
             hook=hook_txt,
             desarrollo=dev_txt,
             cta=cta_txt,
