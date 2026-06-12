@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViralSalon — El sistema que convierte tu contenido en citas reales</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#C9A84C;--gold-light:#E8CB7A;--gold-dark:#8a6c28;
+  --black:#000;--black2:#0D0D0D;--black3:#141414;--black4:#1E1E1E;--black5:#282828;
+  --white:#FFF;--white-dim:rgba(255,255,255,0.7);
+  --border:rgba(201,168,76,0.2);--border-strong:rgba(201,168,76,0.5)
+}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:var(--white);line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 32px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:1.3rem;font-weight:900}.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-links a{color:var(--white-dim);text-decoration:none;font-size:0.88rem;transition:color 0.2s}
+.nav-links a:hover{color:var(--gold)}
+.btn-nav{background:linear-gradient(135deg,var(--gold-light),var(--gold));color:#000;border:none;border-radius:8px;padding:9px 20px;font-size:0.88rem;font-weight:800;cursor:pointer;text-decoration:none;transition:opacity 0.2s}
+.btn-nav:hover{opacity:0.85}
+@media(max-width:600px){.nav-links{display:none}}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(201,168,76,0.07) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid var(--border-strong);border-radius:20px;padding:7px 18px;font-size:0.78rem;font-weight:700;color:var(--gold-light);letter-spacing:1px;text-transform:uppercase;margin-bottom:32px}
+.hero h1{font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:900;line-height:1.08;max-width:850px;margin:0 auto 24px;letter-spacing:-1.5px}
+.hero h1 .gold{color:var(--gold)}
+.hero h1 .ul{text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:3px;text-underline-offset:7px}
+.hero-sub{font-size:1.15rem;color:var(--white-dim);max-width:600px;margin:0 auto 48px;line-height:1.75}
+.hero-btns{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.btn-primary{background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark));color:#000;border:none;border-radius:12px;padding:18px 36px;font-size:1.05rem;font-weight:900;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.25s;letter-spacing:0.3px}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(201,168,76,0.35)}
+.btn-secondary{background:transparent;border:1px solid var(--border-strong);color:var(--gold);border-radius:12px;padding:18px 36px;font-size:1.05rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.25s}
+.btn-secondary:hover{background:rgba(201,168,76,0.06)}
+.hero-note{margin-top:20px;font-size:0.82rem;color:rgba(255,255,255,0.35)}
+
+/* PROBLEMA */
+.problema{background:var(--black2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 20px;text-align:center}
+.problema h2{font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:900;max-width:700px;margin:0 auto 16px}
+.problema p{color:var(--white-dim);max-width:580px;margin:0 auto 48px;font-size:1rem;line-height:1.7}
+.pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:900px;margin:0 auto}
+.pain-item{background:var(--black3);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:left}
+.pain-icon{font-size:1.6rem;margin-bottom:10px}
+.pain-item h3{font-size:0.95rem;font-weight:800;margin-bottom:6px;color:rgba(255,255,255,0.85)}
+.pain-item p{font-size:0.82rem;color:rgba(255,255,255,0.45);line-height:1.5}
+
+/* QUE ES */
+.quees{padding:90px 20px;text-align:center;max-width:900px;margin:0 auto}
+.section-tag{font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.section-h{font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:900;margin-bottom:20px;line-height:1.15}
+.section-sub{color:var(--white-dim);font-size:1rem;line-height:1.75;max-width:620px;margin:0 auto 60px}
+.creator-card{background:var(--black3);border:1px solid var(--border-strong);border-radius:16px;padding:28px 32px;display:flex;align-items:center;gap:22px;text-align:left;max-width:680px;margin:0 auto}
+.creator-av{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;border:2px solid var(--gold)}
+.creator-name{font-size:1.15rem;font-weight:900}
+.creator-title{font-size:0.83rem;color:var(--gold);margin-top:2px;font-weight:700}
+.creator-desc{font-size:0.85rem;color:var(--white-dim);margin-top:10px;line-height:1.6}
+.creator-ig{display:inline-flex;align-items:center;gap:5px;margin-top:10px;color:var(--gold-light);text-decoration:none;font-size:0.83rem;font-weight:700}
+
+/* HERRAMIENTAS */
+.tools{background:var(--black2);border-top:1px solid var(--border);padding:90px 20px}
+.tools-inner{max-width:960px;margin:0 auto}
+.tools-header{text-align:center;margin-bottom:56px}
+.tools-grid{display:flex;flex-direction:column;gap:56px}
+.tool-row{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.tool-row.reverse{direction:rtl}
+.tool-row.reverse>*{direction:ltr}
+@media(max-width:680px){.tool-row,.tool-row.reverse{grid-template-columns:1fr;direction:ltr}}
+.tool-visual{background:var(--black3);border:1px solid var(--border-strong);border-radius:16px;padding:28px;aspect-ratio:4/3;display:flex;flex-direction:column;justify-content:space-between}
+.tool-visual-title{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:16px}
+.mock-block{border-radius:8px;padding:10px 14px;margin-bottom:8px;font-size:0.78rem;line-height:1.5}
+.mock-hook{background:#1a1500;border-left:3px solid var(--gold);color:var(--gold-light)}
+.mock-dev{background:#001a1a;border-left:3px solid #7adde8;color:#b2eef4}
+.mock-cta{background:#1a0000;border-left:3px solid #e87a7a;color:#f0b0b0}
+.tool-content{}
+.tool-num{font-size:3rem;font-weight:900;color:var(--border-strong);line-height:1;margin-bottom:12px}
+.tool-title{font-size:1.4rem;font-weight:900;margin-bottom:12px;color:var(--gold-light)}
+.tool-desc{color:var(--white-dim);font-size:0.95rem;line-height:1.75;margin-bottom:20px}
+.tool-bullets{list-style:none;display:flex;flex-direction:column;gap:8px}
+.tool-bullets li{font-size:0.88rem;color:var(--white-dim);display:flex;align-items:flex-start;gap:10px}
+.tool-bullets li::before{content:'✦';color:var(--gold);font-size:0.7rem;margin-top:4px;flex-shrink:0}
+
+/* METODOLOGIA */
+.meto{padding:90px 20px;max-width:900px;margin:0 auto;text-align:center}
+.meto-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:48px}
+.meto-step{background:var(--black3);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:left;position:relative}
+.meto-num{font-size:2.5rem;font-weight:900;color:var(--border-strong);line-height:1;margin-bottom:12px}
+.meto-step h3{font-size:1rem;font-weight:800;color:var(--gold-light);margin-bottom:8px}
+.meto-step p{font-size:0.82rem;color:rgba(255,255,255,0.45);line-height:1.55}
+
+/* PRECIO */
+.precio{background:var(--black2);border-top:1px solid var(--border);padding:90px 20px;text-align:center}
+.precio-inner{max-width:520px;margin:0 auto}
+.precio-card{background:var(--black3);border:2px solid var(--border-strong);border-radius:20px;padding:44px 40px;position:relative;overflow:hidden}
+.precio-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(201,168,76,0.06) 0%,transparent 70%);pointer-events:none}
+.precio-tag{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#000;border-radius:20px;padding:5px 16px;font-size:0.75rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:24px}
+.precio-nombre{font-size:1.2rem;font-weight:800;margin-bottom:8px}
+.precio-amount{font-size:3.8rem;font-weight:900;color:var(--gold);line-height:1;margin-bottom:6px}
+.precio-amount span{font-size:1.4rem;font-weight:700;color:var(--white-dim)}
+.precio-period{font-size:0.85rem;color:rgba(255,255,255,0.4);margin-bottom:32px}
+.precio-features{list-style:none;text-align:left;margin-bottom:36px;display:flex;flex-direction:column;gap:12px}
+.precio-features li{display:flex;align-items:flex-start;gap:12px;font-size:0.9rem;color:var(--white-dim)}
+.precio-features li .check{color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px}
+.btn-precio{width:100%;background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark));color:#000;border:none;border-radius:12px;padding:18px;font-size:1.05rem;font-weight:900;cursor:pointer;text-decoration:none;display:block;transition:all 0.25s;text-align:center}
+.btn-precio:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(201,168,76,0.35)}
+.precio-note{margin-top:16px;font-size:0.8rem;color:rgba(255,255,255,0.3)}
+.garantia{margin-top:32px;background:rgba(201,168,76,0.05);border:1px solid var(--border);border-radius:12px;padding:16px 20px;font-size:0.85rem;color:var(--white-dim);line-height:1.6}
+.garantia strong{color:var(--gold-light)}
+
+/* FAQ */
+.faq{padding:90px 20px;max-width:720px;margin:0 auto}
+.faq-header{text-align:center;margin-bottom:48px}
+.faq-list{display:flex;flex-direction:column;gap:12px}
+.faq-item{background:var(--black3);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.faq-q{width:100%;background:transparent;border:none;color:var(--white);text-align:left;padding:18px 20px;font-size:0.95rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:inherit;gap:12px}
+.faq-q:hover{color:var(--gold)}
+.faq-icon{color:var(--gold);font-size:1.2rem;flex-shrink:0;transition:transform 0.2s}
+.faq-a{display:none;padding:0 20px 18px;font-size:0.88rem;color:var(--white-dim);line-height:1.7}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+
+/* CTA FINAL */
+.cta-final{background:linear-gradient(135deg,#0a0800,#141000,#0a0800);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:90px 20px;text-align:center}
+.cta-final h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;max-width:700px;margin:0 auto 20px;line-height:1.1}
+.cta-final p{color:var(--white-dim);max-width:520px;margin:0 auto 40px;font-size:1rem;line-height:1.7}
+
+/* FOOTER */
+footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 20px;text-align:center}
+.footer-logo{font-size:1.4rem;font-weight:900;margin-bottom:8px}.footer-logo span{color:var(--gold)}
+.footer-credit{font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:6px}
+.footer-credit strong{color:var(--gold-light)}
+.footer-ig{display:inline-flex;align-items:center;gap:5px;color:var(--gold);text-decoration:none;font-size:0.85rem;font-weight:700;margin-top:4px}
+.footer-line{width:40px;height:1px;background:var(--border);margin:20px auto}
+.footer-copy{font-size:0.72rem;color:#333}
+.footer-links{display:flex;justify-content:center;gap:20px;margin-top:12px}
+.footer-links a{font-size:0.78rem;color:rgba(255,255,255,0.3);text-decoration:none}
+.footer-links a:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Viral<span>Salon</span></div>
+  <div class="nav-links">
+    <a href="#herramientas">Herramientas</a>
+    <a href="#precio">Precio</a>
+    <a href="#faq">FAQ</a>
+    <a href="/login">Entrar</a>
+    <a href="/registro" class="btn-nav">Empezar gratis →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge">✦ Nuevo sistema de contenido para salones</div>
+    <h1>Deja de improvisar.<br><span class="gold">Empieza a convertir</span><br><span class="ul">seguidores en clientes reales.</span></h1>
+    <p class="hero-sub">ViralSalon es el único sistema de contenido diseñado específicamente para salones de belleza que genera guiones virales, organiza tu calendario y analiza qué funciona — para que cada Reel atraiga clientes nuevos.</p>
+    <div class="hero-btns">
+      <a href="/registro" class="btn-primary">Empezar 7 días gratis →</a>
+      <a href="#herramientas" class="btn-secondary">Ver qué incluye</a>
+    </div>
+    <p class="hero-note">Sin tarjeta de crédito · 7 días gratis · Cancela cuando quieras</p>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section class="problema">
+  <h2>¿Te suena alguna de estas situaciones?</h2>
+  <p>Cada semana miles de salones publican contenido sin estrategia, pierden tiempo y no consiguen nuevas clientas. El problema no eres tú — es que nadie te enseñó el sistema correcto.</p>
+  <div class="pain-grid">
+    <div class="pain-item">
+      <div class="pain-icon">😩</div>
+      <h3>No sabes qué publicar</h3>
+      <p>Cada semana te bloqueas pensando en ideas y acabas no publicando nada o publicando sin convicción.</p>
+    </div>
+    <div class="pain-item">
+      <div class="pain-icon">📉</div>
+      <h3>Publicas pero no conviertes</h3>
+      <p>Tienes vistas y likes pero nadie llama para pedir cita. El contenido no está diseñado para vender.</p>
+    </div>
+    <div class="pain-item">
+      <div class="pain-icon">⏰</div>
+      <h3>Pierdes horas cada semana</h3>
+      <p>Grabas, editas, buscas música... y encima el video no funciona. Es tiempo que podrías dedicar a tus clientas.</p>
+    </div>
+    <div class="pain-item">
+      <div class="pain-icon">🎯</div>
+      <h3>No sabes si funciona</h3>
+      <p>Publicas sin saber qué tipo de contenido atrae más clientas ni qué días funcionan mejor en tu salón.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ ES -->
+<section style="padding:90px 20px;text-align:center">
+  <div style="max-width:800px;margin:0 auto">
+    <div class="section-tag">¿Qué es ViralSalon?</div>
+    <h2 class="section-h">Un sistema completo, no una herramienta más</h2>
+    <p class="section-sub">ViralSalon no es un generador de texto genérico. Es un sistema de conversión de contenido creado por Andrea Maria, especialista en marketing para salones de belleza, basado en una metodología probada: <strong style="color:var(--gold-light)">Hook + Desarrollo + CTA</strong>. Cada guión que genera está diseñado para responder la pregunta exacta que frena a tu cliente a reservar — y convertirla en una cita real.</p>
+    <div class="creator-card">
+      <div class="creator-av">👩</div>
+      <div>
+        <div class="creator-name">Andrea Maria</div>
+        <div class="creator-title">Creadora de ViralSalon · Experta en contenido para salones</div>
+        <div class="creator-desc">Después de años ayudando a salones a crecer en redes sociales, desarrollé el sistema de guiones que uso con mis propias alumnas. ViralSalon nace para que cualquier salón pueda aplicarlo solo, sin necesidad de contratar a nadie.</div>
+        <a href="https://instagram.com/andreamariaoficiaal" target="_blank" class="creator-ig">📸 @andreamariaoficiaal</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HERRAMIENTAS -->
+<section class="tools" id="herramientas">
+  <div class="tools-inner">
+    <div class="tools-header">
+      <div class="section-tag">Lo que incluye tu suscripción</div>
+      <h2 class="section-h">3 herramientas que trabajan juntas</h2>
+      <p class="section-sub" style="max-width:560px;margin:0 auto;color:var(--white-dim)">Cada herramienta cumple una función concreta en tu estrategia de contenido. Juntas forman el sistema más completo del mercado para salones de belleza.</p>
+    </div>
+    <div class="tools-grid">
+
+      <!-- Generador -->
+      <div class="tool-row">
+        <div class="tool-visual">
+          <div class="tool-visual-title">✨ Generador de Guiones</div>
+          <div>
+            <div class="mock-block mock-hook">¿Cuánto dura realmente la keratina? Porque lo que te han dicho probablemente no es del todo cierto.</div>
+            <div class="mock-block mock-dev">La realidad es que la duración depende de tres factores que la mayoría de salones nunca mencionan. En mi experiencia, las clientas que siguen el protocolo correcto consiguen hasta 5 meses de resultado...</div>
+            <div class="mock-block mock-cta">Comenta KERATINA y te mando toda la información con precios y disponibilidad.</div>
+          </div>
+        </div>
+        <div class="tool-content">
+          <div class="tool-num">01</div>
+          <div class="tool-title">Generador de Guiones Virales</div>
+          <p class="tool-desc">Rellenas 6 datos de tu salón y el sistema genera en segundos un guión completo con la estructura Hook + Desarrollo + CTA. Cada guión está diseñado para responder la pregunta exacta que frena a tu cliente a reservar.</p>
+          <ul class="tool-bullets">
+            <li>5 tipos de hook probados para detener el scroll</li>
+            <li>Desarrollo experto o emocional según lo que necesitas</li>
+            <li>CTA con formato ManyChat para automatizar respuestas</li>
+            <li>Máximo 110 palabras — perfecto para Reels de 30-45 segundos</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Biblioteca -->
+      <div class="tool-row reverse">
+        <div class="tool-visual">
+          <div class="tool-visual-title">📚 Biblioteca de Guiones</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            {% for item in [('Extensiones de cabello','Mito Destruido','✓ Publicado','pub'),('Keratina brasileña','Pregunta Directa','⏳ Pendiente','pend'),('Tinte sin amoníaco','Dato Importante','⏳ Pendiente','pend')] %}
+            <div style="background:var(--black4);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:0.82rem;font-weight:700;color:var(--gold-light)">{{ item[0] }}</div>
+                <div style="font-size:0.7rem;color:rgba(255,255,255,0.35)">{{ item[1] }}</div>
+              </div>
+              <span style="font-size:0.7rem;padding:2px 8px;border-radius:10px;{% if item[3]=='pub' %}background:rgba(76,175,80,0.15);color:#81c784{% else %}background:rgba(255,193,7,0.1);color:#ffd54f{% endif %}">{{ item[2] }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="tool-content">
+          <div class="tool-num">02</div>
+          <div class="tool-title">Biblioteca Personal de Guiones</div>
+          <p class="tool-desc">Cada guión que generas se guarda automáticamente en tu cuenta. Organiza tu contenido, marca lo que ya has publicado y ten siempre a mano todos tus guiones para reutilizarlos o adaptarlos.</p>
+          <ul class="tool-bullets">
+            <li>Historial completo de todos tus guiones</li>
+            <li>Filtra por publicados o pendientes</li>
+            <li>Copia el guión completo con un clic</li>
+            <li>Marca cuando has publicado cada video</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Planificador -->
+      <div class="tool-row">
+        <div class="tool-visual">
+          <div class="tool-visual-title">📅 Planificador de Contenido</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="background:rgba(201,168,76,0.06);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:0.78rem;color:var(--gold-light);line-height:1.6">
+              💡 Recomendación: Publica <strong>3-4 veces por semana</strong>. Lo ideal: lunes, miércoles, viernes y domingo.
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+              {% for d in ['Lun','Mié','Vie','Dom'] %}
+              <div style="background:var(--black4);border:1px solid var(--border-strong);border-radius:6px;padding:8px;text-align:center">
+                <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);margin-bottom:4px">{{ d }}</div>
+                <div style="font-size:0.7rem;color:var(--gold)">✦ Pub.</div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="tool-content">
+          <div class="tool-num">03</div>
+          <div class="tool-title">Planificador de Publicaciones</div>
+          <p class="tool-desc">Organiza cuándo publicas cada guión, asigna fechas a cada video y lleva un seguimiento de tu constancia. El sistema te indica los días óptimos para publicar y cuántos videos tienes pendientes.</p>
+          <ul class="tool-bullets">
+            <li>Asigna fechas de publicación a cada guión</li>
+            <li>Seguimiento de publicados vs pendientes</li>
+            <li>Recomendación de días óptimos de publicación</li>
+            <li>Estadísticas de tu constancia de contenido</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- METODOLOGIA -->
+<section class="meto">
+  <div class="section-tag">La metodología</div>
+  <h2 class="section-h">Por qué este sistema convierte</h2>
+  <p class="section-sub" style="color:var(--white-dim)">La mayoría del contenido de salones falla porque no tiene estructura. ViralSalon aplica la única metodología diseñada para que cada video responda UNA pregunta y lleve al cliente a actuar.</p>
+  <div class="meto-grid">
+    <div class="meto-step">
+      <div class="meto-num">01</div>
+      <h3>Hook que detiene el scroll</h3>
+      <p>Las primeras 2 frases deciden si el cliente sigue viendo o no. Sin un hook potente, el algoritmo no te ayuda.</p>
+    </div>
+    <div class="meto-step">
+      <div class="meto-num">02</div>
+      <h3>Desarrollo que convence</h3>
+      <p>Posiciónate como experta con datos reales o conecta emocionalmente con una historia. Los dos convierten, por razones distintas.</p>
+    </div>
+    <div class="meto-step">
+      <div class="meto-num">03</div>
+      <h3>CTA que genera citas</h3>
+      <p>"Comenta PALABRA y te mando INFO." Se automatiza con ManyChat. Comentarios → conversaciones → citas reales.</p>
+    </div>
+    <div class="meto-step">
+      <div class="meto-num">04</div>
+      <h3>Seguimiento y mejora</h3>
+      <p>Registra tus publicaciones y detecta qué tipo de contenido atrae más clientas en tu salón específico.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRECIO -->
+<section class="precio" id="precio">
+  <div class="precio-inner">
+    <div class="section-tag" style="text-align:center">Precio</div>
+    <h2 class="section-h" style="text-align:center;margin-bottom:40px">Un precio justo por un sistema que trabaja para ti</h2>
+    <div class="precio-card">
+      <div class="precio-tag">✦ Todo incluido</div>
+      <div class="precio-nombre">Plan ViralSalon</div>
+      <div class="precio-amount"><span>€</span>12,99</div>
+      <div class="precio-period">al mes · cancela cuando quieras</div>
+      <ul class="precio-features">
+        <li><span class="check">✦</span>Generador ilimitado de guiones virales</li>
+        <li><span class="check">✦</span>Biblioteca personal con todos tus guiones</li>
+        <li><span class="check">✦</span>Planificador de contenido con seguimiento</li>
+        <li><span class="check">✦</span>Metodología Hook + Desarrollo + CTA</li>
+        <li><span class="check">✦</span>5 tipos de hook probados para tu nicho</li>
+        <li><span class="check">✦</span>Formato CTA para automatizar con ManyChat</li>
+        <li><span class="check">✦</span>Acceso a todas las actualizaciones futuras</li>
+        <li><span class="check">✦</span>Soporte por WhatsApp</li>
+      </ul>
+      <a href="/registro" class="btn-precio">Empezar 7 días gratis →</a>
+      <p class="precio-note">Sin tarjeta de crédito durante los 7 días de prueba</p>
+    </div>
+    <div class="garantia">
+      <strong>🛡 Sin riesgo:</strong> Tienes 7 días para probar ViralSalon completamente gratis. Si no ves el valor, cancelas sin coste. Sin preguntas.
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="faq-header">
+    <div class="section-tag">Preguntas frecuentes</div>
+    <h2 class="section-h">Lo que nos preguntan siempre</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Para qué tipo de salones es ViralSalon? <span class="faq-icon">+</span></button>
+      <div class="faq-a">ViralSalon está diseñado para cualquier salón o profesional de la belleza: peluquerías, centros de estética, nail artists, especialistas en cejas y pestañas, micropigmentadoras, depilación láser, masajes, maquillaje... Si tienes clientes y quieres atraer más con contenido en redes, este sistema es para ti.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Necesito experiencia en redes sociales? <span class="faq-icon">+</span></button>
+      <div class="faq-a">No. ViralSalon genera el guión completo listo para grabar. Tú solo necesitas tu teléfono y 10 minutos. El sistema se encarga de la estrategia y la estructura — tú pones la cara y el servicio.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Cómo funciona el período de prueba? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Tienes 7 días completamente gratis para probar todas las herramientas sin ningún límite. No necesitas introducir tarjeta de crédito para empezar. Al final de los 7 días, si quieres continuar, introduces tu método de pago y te cobran 12,99€/mes.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Puedo cancelar en cualquier momento? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Sí, completamente. Sin permanencia, sin penalizaciones. Si decides cancelar, lo haces desde tu cuenta y no se te vuelve a cobrar. Mantienes el acceso hasta el final del período pagado.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Los guiones son genéricos o personalizados para mi salón? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Son 100% personalizados. El sistema utiliza los datos específicos de tu salón: tu especialidad, tu ciudad, tu servicio concreto y la pregunta exacta que frena a TU cliente. No hay dos guiones iguales.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Qué es ManyChat y necesito tenerlo? <span class="faq-icon">+</span></button>
+      <div class="faq-a">ManyChat es una herramienta de automatización que responde automáticamente cuando alguien comenta una palabra en tu Reel. No es obligatorio para usar ViralSalon, pero si lo tienes, el CTA que genera el sistema está optimizado para conectar directamente con él.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Cuántos guiones puedo generar al mes? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Ilimitados. No hay restricción de uso. Puedes generar tantos guiones como necesites — para diferentes servicios, para probar distintos hooks, para tener un banco de contenido para semanas.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <h2>Tu competencia ya está publicando.<br><span style="color:var(--gold)">¿Vas a seguir improvisando?</span></h2>
+  <p>Cada semana que pasa sin un sistema de contenido es una semana en la que tu competencia está captando las clientas que podrían ser tuyas. Empieza hoy.</p>
+  <a href="/registro" class="btn-primary">Empezar 7 días gratis →</a>
+  <p style="margin-top:16px;font-size:0.82rem;color:rgba(255,255,255,0.3)">Sin tarjeta · Sin compromiso · Cancela cuando quieras</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Viral<span>Salon</span></div>
+  <div class="footer-credit">Creado por <strong>Andrea Maria</strong> — Experta en Contenido para Salones de Belleza</div>
+  <a href="https://instagram.com/andreamariaoficiaal" target="_blank" class="footer-ig">📸 @andreamariaoficiaal</a>
+  <div class="footer-line"></div>
+  <div class="footer-copy">© 2024 ViralSalon · Sistema Hook + Desarrollo + CTA · Todos los derechos reservados</div>
+  <div class="footer-links">
+    <a href="/login">Iniciar sesión</a>
+    <a href="/registro">Crear cuenta</a>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(btn){
+  const item=btn.parentElement;
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
+</script>
+</body>
+</html>
