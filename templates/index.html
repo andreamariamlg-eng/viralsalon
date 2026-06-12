@@ -239,10 +239,21 @@ textarea { resize:vertical; min-height:78px; }
   </div>
 
   <div class="card">
-    <div class="card-title">📖 Tipo de Desarrollo</div>
+    <div class="card-title">🎭 Tono del vídeo</div>
+    <p style="font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:16px;">¿Cómo quieres conectar con tu clienta en este vídeo?</p>
+    <div class="hook-grid" style="grid-template-columns:repeat(auto-fit,minmax(175px,1fr))">
+      <div class="hook-opt"><input type="radio" name="tono" id="t1" value="historia_real" checked><label class="hook-lbl" for="t1"><span class="hook-emoji">❤️</span><span class="hook-name">Historia Real</span><span class="hook-ex">"El otro día vino Sara diciéndome que..."  Que quien lo vea piense: eso me pasa a mí.</span></label></div>
+      <div class="hook-opt"><input type="radio" name="tono" id="t2" value="directa"><label class="hook-lbl" for="t2"><span class="hook-emoji">💬</span><span class="hook-name">Directa y clara</span><span class="hook-ex">Responde la duda sin rodeos, como si se lo explicaras a una amiga en un café.</span></label></div>
+      <div class="hook-opt"><input type="radio" name="tono" id="t3" value="revelacion"><label class="hook-lbl" for="t3"><span class="hook-emoji">🔓</span><span class="hook-name">Revelación</span><span class="hook-ex">"Lo que nadie te cuenta sobre..." Genera curiosidad y te posiciona como la que sabe.</span></label></div>
+      <div class="hook-opt"><input type="radio" name="tono" id="t4" value="inspiracional"><label class="hook-lbl" for="t4"><span class="hook-emoji">✨</span><span class="hook-name">Inspiracional</span><span class="hook-ex">Que la clienta se imagine ya con el resultado. Conecta con el deseo, no con el miedo.</span></label></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⏱️ Duración del vídeo</div>
     <div class="dev-grid">
-      <div class="dev-opt"><input type="radio" name="desarrollo" id="d1" value="experto" checked><label class="dev-lbl" for="d1"><span class="dev-icon">🔬</span><span class="dev-name">EXPERTO</span><span class="dev-desc">Datos reales y hechos técnicos que te posicionan como la referencia de tu sector.</span></label></div>
-      <div class="dev-opt"><input type="radio" name="desarrollo" id="d2" value="emocional"><label class="dev-lbl" for="d2"><span class="dev-icon">❤️</span><span class="dev-name">EMOCIONAL</span><span class="dev-desc">Una historia con la que tu cliente se identifica. Conecta con su dolor o deseo.</span></label></div>
+      <div class="dev-opt"><input type="radio" name="duracion" id="dur1" value="corto" checked><label class="dev-lbl" for="dur1"><span class="dev-icon">⚡</span><span class="dev-name">Corto</span><span class="dev-desc">30-40 segundos. Directo al grano. Máximo impacto en el menor tiempo posible.</span></label></div>
+      <div class="dev-opt"><input type="radio" name="duracion" id="dur2" value="largo"><label class="dev-lbl" for="dur2"><span class="dev-icon">🎬</span><span class="dev-name">Largo</span><span class="dev-desc">Unos 60 segundos. Más desarrollo, más historia, más información para convencer.</span></label></div>
     </div>
   </div>
 
@@ -302,7 +313,8 @@ async function generar(){
   const data={
     nombre:gv('nombre'), especialidad:gv('especialidad'), ciudad:gv('ciudad'),
     servicio:gv('servicio'), cliente_ideal:gv('cliente_ideal'), pregunta:gv('pregunta'),
-    hook:gr('hook'), desarrollo:gr('desarrollo'), palabra_cta:gv('palabra_cta'), regalo:gv('regalo')
+    hook:gr('hook'), tono:gr('tono'), duracion:gr('duracion'),
+    palabra_cta:gv('palabra_cta'), regalo:gv('regalo')
   };
   document.getElementById('err').style.display='none';
   if(!data.especialidad) return err('Elige tu especialidad.');
