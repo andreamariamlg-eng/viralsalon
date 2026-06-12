@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suscripción caducada — ViralSalon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#C9A84C;--gold-light:#E8CB7A;--gold-dark:#8a6c28;--black:#000;--black3:#141414;--white:#FFF;--white-dim:rgba(255,255,255,0.7);--border:rgba(201,168,76,0.2)}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:var(--white);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:var(--black3);border:1px solid var(--border);border-radius:20px;padding:48px 40px;max-width:480px;width:100%;text-align:center}
+.icon{font-size:3rem;margin-bottom:20px}
+h1{font-size:1.6rem;font-weight:900;margin-bottom:12px}
+p{color:var(--white-dim);line-height:1.7;margin-bottom:32px}
+.btn{background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark));color:#000;border:none;border-radius:12px;padding:16px 32px;font-size:1rem;font-weight:900;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.25s;margin-bottom:12px;width:100%}
+.btn:hover{opacity:0.85}
+.btn-out{background:transparent;border:1px solid var(--border);color:var(--white-dim);border-radius:12px;padding:12px 32px;font-size:0.9rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;width:100%}
+.btn-out:hover{border-color:var(--gold);color:var(--gold)}
+.logo{font-size:1.2rem;font-weight:900;margin-bottom:32px;color:var(--white)}.logo span{color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">Viral<span>Salon</span></div>
+  <div class="icon">⏰</div>
+  <h1>Tu suscripción ha caducado</h1>
+  <p>Para seguir generando guiones y acceder a tu biblioteca necesitas una suscripción activa. Renuévala y sigue creando contenido que convierte.</p>
+  <a href="https://buy.stripe.com/5kQdRbal4fnp0Fs7Cbbsc00" class="btn" target="_blank">Renovar suscripción — 12,99€/mes →</a>
+  <a href="/logout" class="btn-out">Cerrar sesión</a>
+</div>
+</body>
+</html>
