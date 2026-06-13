@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cancelar suscripción — ViralSalon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#C9A84C;--gold-light:#E8CB7A;--gold-dark:#8a6c28;--black:#000;--black3:#141414;--black4:#1E1E1E;--white:#FFF;--white-dim:rgba(255,255,255,0.7);--border:rgba(201,168,76,0.2)}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:var(--white);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.logo{font-size:1.8rem;font-weight:900;margin-bottom:8px;text-align:center}
+.logo span{color:var(--gold)}
+.logo-sub{font-size:0.8rem;color:var(--white-dim);text-align:center;margin-bottom:40px}
+.card{background:var(--black3);border:1px solid var(--border);border-radius:16px;padding:36px;width:100%;max-width:480px}
+.card h2{font-size:1.3rem;font-weight:800;margin-bottom:10px}
+.card p{font-size:0.9rem;color:var(--white-dim);line-height:1.7;margin-bottom:16px}
+.warning{background:#120404;border:1px solid rgba(200,74,74,0.3);border-radius:10px;padding:16px;margin:20px 0;font-size:0.88rem;color:#e87a7a;line-height:1.6}
+.btn-cancel{width:100%;background:#1a0000;border:1px solid rgba(200,74,74,0.4);color:#e87a7a;border-radius:10px;padding:14px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
+.btn-cancel:hover{background:#2a0000}
+.btn-back{display:block;text-align:center;margin-top:16px;font-size:0.85rem;color:var(--white-dim);text-decoration:none}
+.btn-back:hover{color:var(--gold)}
+.alert-ok{background:#001a00;border:1px solid rgba(74,200,74,0.3);border-radius:8px;padding:12px 16px;color:#7ae87a;margin-bottom:16px;font-size:0.88rem}
+.alert-error{background:#120404;border:1px solid rgba(200,74,74,0.3);border-radius:8px;padding:12px 16px;color:#e87a7a;margin-bottom:16px;font-size:0.88rem}
+</style>
+</head>
+<body>
+<div class="logo">Viral<span>Salon</span></div>
+<div class="logo-sub">by Andrea Maria</div>
+<div class="card">
+  <h2>Cancelar suscripción</h2>
+  <p>Hola, {{ user.nombre_salon }}. Sentimos que quieras irte.</p>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in messages %}
+      <div class="alert-{{ 'ok' if cat == 'ok' else 'error' }}">{{ msg }}</div>
+    {% endfor %}
+  {% endwith %}
+
+  <div class="warning">
+    ⚠️ Si cancelas, seguirás teniendo acceso hasta el final del período que has pagado. Cuando ese período termine, tu cuenta se cerrará automáticamente.
+  </div>
+
+  <p>Si tienes algún problema o quieres pausar en vez de cancelar, escríbenos antes:<br>
+  <strong style="color:var(--gold)">hola@andreamariaoficial.es</strong></p>
+
+  <form method="POST">
+    <button type="submit" class="btn-cancel">Sí, cancelar mi suscripción</button>
+  </form>
+  <a href="/app" class="btn-back">← Volver a ViralSalon</a>
+</div>
+</body>
+</html>
