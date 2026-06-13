@@ -12,6 +12,7 @@
   --white: #FFF; --white-dim: rgba(255,255,255,0.7);
   --border: rgba(201,168,76,0.2); --border-strong: rgba(201,168,76,0.5);
   --hook-bg: #0f0c02; --dev-bg: #020c0f; --cta-bg: #0f0202;
+  --green: #4cde7c; --green-border: rgba(76,222,124,0.3);
 }
 body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--black); color:var(--white); line-height:1.6; overflow-x:hidden; }
 
@@ -21,8 +22,6 @@ body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--black); col
 .logo-text { font-size:1.2rem; font-weight:800; }
 .logo-text span { color:var(--gold); }
 .logo-by { font-size:0.7rem; color:var(--white-dim); }
-.ig-link { color:var(--white-dim); text-decoration:none; font-size:0.82rem; font-weight:600; display:flex; align-items:center; gap:6px; transition:color 0.2s; }
-.ig-link:hover { color:var(--gold); }
 
 .hero { background:var(--black); padding:80px 20px 70px; text-align:center; position:relative; overflow:hidden; }
 .hero::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:600px; height:600px; background:radial-gradient(circle,rgba(201,168,76,0.08) 0%,transparent 70%); pointer-events:none; }
@@ -49,6 +48,33 @@ body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--black); col
 .step h3 { font-size:0.95rem; font-weight:800; margin-bottom:6px; color:var(--gold-light); }
 .step p { font-size:0.82rem; color:var(--white-dim); line-height:1.5; }
 
+/* ── MANYCHAT SECTION ── */
+.manychat-section { background:#020a02; border-top:1px solid var(--green-border); border-bottom:1px solid var(--green-border); padding:70px 20px; }
+.manychat-section .section-label { color:var(--green); }
+.manychat-section .section-heading { color:var(--white); }
+.mc-intro { text-align:center; max-width:640px; margin:0 auto 48px; }
+.mc-intro p { font-size:1rem; color:var(--white-dim); line-height:1.7; }
+.mc-flow { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px; margin:28px auto; max-width:760px; }
+.mc-flow-item { background:#030f03; border:1px solid var(--green-border); border-radius:12px; padding:14px 18px; text-align:center; font-size:0.82rem; font-weight:700; color:var(--white-dim); min-width:130px; }
+.mc-flow-item .mc-icon { font-size:1.5rem; display:block; margin-bottom:6px; }
+.mc-flow-item strong { display:block; color:var(--green); font-size:0.85rem; margin-bottom:3px; }
+.mc-flow-arrow { font-size:1.4rem; color:var(--green-border); }
+
+.mc-steps-full { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; max-width:900px; margin:0 auto 32px; }
+.mc-step-full { background:#030f03; border:1px solid var(--green-border); border-radius:16px; padding:26px 22px; position:relative; overflow:hidden; }
+.mc-step-full::before { content:''; position:absolute; top:0; right:0; width:60px; height:60px; background:radial-gradient(circle,rgba(76,222,124,0.05),transparent); }
+.mc-step-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(76,222,124,0.1); border:1px solid var(--green-border); border-radius:20px; padding:3px 12px; font-size:0.68rem; font-weight:800; color:var(--green); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:14px; }
+.mc-step-full h3 { font-size:1rem; font-weight:900; color:var(--white); margin-bottom:8px; }
+.mc-step-full p { font-size:0.82rem; color:rgba(255,255,255,0.5); line-height:1.6; }
+.mc-step-full .mc-tip { margin-top:12px; background:rgba(76,222,124,0.06); border-left:2px solid var(--green); padding:8px 12px; border-radius:0 8px 8px 0; font-size:0.78rem; color:rgba(76,222,124,0.8); }
+
+.mc-drive-block { background:#030f03; border:1px solid var(--green-border); border-radius:16px; padding:28px 28px; max-width:900px; margin:0 auto 0; }
+.mc-drive-block h3 { font-size:1rem; font-weight:900; color:var(--green); margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+.mc-drive-block p { font-size:0.85rem; color:rgba(255,255,255,0.5); line-height:1.65; }
+.mc-drive-ideas { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.mc-idea-chip { background:rgba(76,222,124,0.08); border:1px solid rgba(76,222,124,0.2); border-radius:20px; padding:5px 14px; font-size:0.78rem; color:rgba(76,222,124,0.85); font-weight:600; }
+
+/* ── FORM ── */
 .main { max-width:860px; margin:0 auto; padding:50px 20px 80px; }
 .form-heading { text-align:center; margin-bottom:36px; }
 .form-heading h2 { font-size:1.8rem; font-weight:900; }
@@ -60,7 +86,7 @@ body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--black); col
 .card-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border-strong),transparent); }
 
 .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-@media(max-width:580px){ .form-grid{grid-template-columns:1fr} .creator-card{flex-direction:column;text-align:center} .topbar .ig-link{display:none} }
+@media(max-width:580px){ .form-grid{grid-template-columns:1fr} .creator-card{flex-direction:column;text-align:center} .mc-flow-arrow{display:none} }
 .form-group { display:flex; flex-direction:column; gap:6px; }
 .form-group.full { grid-column:1/-1; }
 label { font-size:0.75rem; font-weight:700; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; }
@@ -131,17 +157,18 @@ textarea { resize:vertical; min-height:78px; }
 .btn-regen { width:100%; background:transparent; border:1px solid var(--border-strong); color:var(--gold); border-radius:10px; padding:14px; font-size:0.9rem; font-weight:700; cursor:pointer; margin-top:14px; transition:all 0.2s; font-family:inherit; }
 .btn-regen:hover { background:rgba(201,168,76,0.05); }
 
-/* ── MANYCHAT SECTION ── */
-.manychat-card { display:none; margin-top:16px; background:#020f02; border:1px solid rgba(100,200,100,0.25); border-radius:16px; padding:28px; }
-.manychat-card .card-title { color:#7dce82; }
-.manychat-card .card-title::after { background:linear-gradient(90deg,rgba(100,200,100,0.3),transparent); }
-.mc-kw-pill { display:inline-block; background:rgba(100,200,100,0.1); border:1px solid rgba(100,200,100,0.4); border-radius:8px; padding:4px 14px; font-size:1rem; font-weight:900; color:#7dce82; letter-spacing:2px; margin:0 4px; }
-.mc-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:20px; }
-.mc-step { background:#020c02; border:1px solid rgba(100,200,100,0.15); border-radius:12px; padding:18px; }
-.mc-step-num { font-size:1.6rem; font-weight:900; color:rgba(100,200,100,0.25); line-height:1; margin-bottom:8px; }
-.mc-step h4 { font-size:0.85rem; font-weight:800; color:#7dce82; margin-bottom:6px; }
-.mc-step p { font-size:0.78rem; color:rgba(255,255,255,0.45); line-height:1.55; }
-.mc-note { margin-top:16px; font-size:0.8rem; color:rgba(255,255,255,0.35); font-style:italic; border-top:1px solid rgba(100,200,100,0.1); padding-top:14px; }
+/* ── POST-GENERATION MANYCHAT CARD ── */
+.mc-result-card { display:none; margin-top:16px; background:#020f02; border:1px solid var(--green-border); border-radius:16px; padding:24px 26px; }
+.mc-result-card .card-title { color:var(--green); font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:2.5px; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+.mc-result-card .card-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--green-border),transparent); }
+.mc-kw-big { display:inline-block; background:rgba(76,222,124,0.1); border:1px solid var(--green-border); border-radius:8px; padding:4px 14px; font-size:1rem; font-weight:900; color:var(--green); letter-spacing:2px; }
+.mc-result-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin-top:16px; }
+.mc-rs { background:#030f03; border:1px solid rgba(76,222,124,0.12); border-radius:10px; padding:14px; }
+.mc-rs-num { font-size:1.3rem; font-weight:900; color:rgba(76,222,124,0.2); line-height:1; margin-bottom:6px; }
+.mc-rs h4 { font-size:0.8rem; font-weight:800; color:var(--green); margin-bottom:4px; }
+.mc-rs p { font-size:0.75rem; color:rgba(255,255,255,0.4); line-height:1.5; }
+.mc-result-link { display:inline-flex; align-items:center; gap:6px; margin-top:14px; color:rgba(76,222,124,0.6); text-decoration:none; font-size:0.8rem; font-weight:700; transition:color 0.2s; }
+.mc-result-link:hover { color:var(--green); }
 
 .footer { background:var(--black2); border-top:1px solid var(--border); padding:40px 20px; text-align:center; }
 .footer-logo { font-size:1.4rem; font-weight:900; margin-bottom:8px; }
@@ -167,6 +194,7 @@ textarea { resize:vertical; min-height:78px; }
   <div style="display:flex;align-items:center;gap:8px">
     <a href="/biblioteca" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📚 Biblioteca</a>
     <a href="/planificador" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📅 Planificador</a>
+    <a href="/manychat" style="color:rgba(76,222,124,0.7);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#4cde7c'" onmouseout="this.style.color='rgba(76,222,124,0.7)'">🤖 ManyChat</a>
     <a href="/logout" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:0.8rem;padding:7px 12px">Salir</a>
   </div>
 </header>
@@ -197,6 +225,9 @@ textarea { resize:vertical; min-height:78px; }
   </div>
 </section>
 
+<!-- ══════════════════════════════════════════════
+     FORMULARIO GENERADOR
+══════════════════════════════════════════════ -->
 <div class="main">
   <div class="form-heading">
     <h2>Crea tu guión viral</h2>
@@ -317,30 +348,17 @@ textarea { resize:vertical; min-height:78px; }
     <button class="btn-regen" onclick="generar()">🔄 Generar otra versión</button>
   </div>
 
-  <!-- ── MANYCHAT SECTION (aparece tras generar el guión) ── -->
-  <div class="manychat-card" id="manychat">
-    <div class="card-title">🤖 Ahora automatiza con ManyChat</div>
-    <p style="font-size:0.9rem;color:var(--white-dim);margin-bottom:4px;">
-      Tu CTA pide que comenten <span class="mc-kw-pill" id="mc-kw">CITA</span> — ahora configura ManyChat para que el DM se envíe automáticamente cada vez que alguien comente esa palabra.
-    </p>
-    <div class="mc-steps">
-      <div class="mc-step">
-        <div class="mc-step-num">01</div>
-        <h4>Crea un flujo en ManyChat</h4>
-        <p>Entra en manychat.com → New Flow → Instagram Comment → escribe la palabra clave exacta que has puesto en el guión.</p>
-      </div>
-      <div class="mc-step">
-        <div class="mc-step-num">02</div>
-        <h4>Configura el mensaje automático</h4>
-        <p>Añade una acción "Send Message" con el enlace o info que prometiste en el vídeo. Personalízalo con el nombre de la persona.</p>
-      </div>
-      <div class="mc-step">
-        <div class="mc-step-num">03</div>
-        <h4>Publica el vídeo y activa el flujo</h4>
-        <p>Conecta el flujo al post de Instagram. Cuando alguien comente la palabra clave recibirá el DM en segundos, automáticamente.</p>
-      </div>
+  <!-- Tarjeta ManyChat post-generación -->
+  <div class="mc-result-card" id="mc-result">
+    <div class="card-title">🤖 Configura ManyChat para este guión</div>
+    <p style="font-size:0.88rem;color:rgba(255,255,255,0.55);margin-bottom:6px;">Tu CTA usa la palabra clave <span class="mc-kw-big" id="mc-kw-result">CITA</span> — sigue estos pasos para automatizar el DM:</p>
+    <div class="mc-result-steps">
+      <div class="mc-rs"><div class="mc-rs-num">01</div><h4>📁 Sube el contenido a Drive</h4><p>Precios, guía, cupón o enlace de reserva. Comparte el enlace como "cualquiera puede ver".</p></div>
+      <div class="mc-rs"><div class="mc-rs-num">02</div><h4>⚡ Crea el flujo en ManyChat</h4><p>New Flow → Instagram Comment → escribe <strong style="color:var(--green)" id="mc-kw-flow">CITA</strong> → Send DM con el enlace de Drive.</p></div>
+      <div class="mc-rs"><div class="mc-rs-num">03</div><h4>📲 Vincula al post</h4><p>Después de publicar el Reel, conecta el flujo a esa publicación desde ManyChat.</p></div>
+      <div class="mc-rs"><div class="mc-rs-num">04</div><h4>✅ Activa y listo</h4><p>Cada comentario con la palabra clave recibirá el DM al instante, automáticamente.</p></div>
     </div>
-    <p class="mc-note">💡 <strong style="color:rgba(255,255,255,0.5)">Tip:</strong> Responde también manualmente a los primeros comentarios para que Instagram muestre el vídeo a más gente. ManyChat se encarga de los DMs, tú te encargas del engagement.</p>
+    <a href="/manychat" class="mc-result-link">→ Ver guía completa de ManyChat</a>
   </div>
 
 </div>
@@ -376,7 +394,7 @@ async function generar(){
   document.getElementById('btn-gen').disabled=true;
   document.getElementById('loading').style.display='block';
   document.getElementById('result').style.display='none';
-  document.getElementById('manychat').style.display='none';
+  document.getElementById('mc-result').style.display='none';
 
   try{
     const res=await fetch('/generar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
@@ -391,10 +409,11 @@ async function generar(){
       <div class="metric"><div class="metric-val">3</div><div class="metric-lbl">Secciones</div></div>
       <div class="metric"><div class="metric-val">~${secs}s</div><div class="metric-lbl">Duración Reel</div></div>`;
     document.getElementById('result').style.display='block';
-    // ManyChat section
+    // Tarjeta ManyChat con la keyword usada
     const kw = json.palabra_cta || data.palabra_cta || 'CITA';
-    document.getElementById('mc-kw').textContent = kw;
-    document.getElementById('manychat').style.display='block';
+    document.getElementById('mc-kw-result').textContent = kw;
+    document.getElementById('mc-kw-flow').textContent = kw;
+    document.getElementById('mc-result').style.display='block';
     document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){err('Error: '+e.message)}
   finally{document.getElementById('btn-gen').disabled=false;document.getElementById('loading').style.display='none';}
