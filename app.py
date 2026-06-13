@@ -2,9 +2,8 @@ import os
 import re
 import stripe
 import secrets
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import resend
+import threading
 from datetime import datetime, timedelta
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
@@ -94,28 +93,32 @@ TONOS = {
 
 # ── HELPER EMAIL ─────────────────────────────────────────────────────────────
 
-GMAIL_USER = os.environ.get("GMAIL_USER", "")
-GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD", "")
+resend.api_key = os.environ.get("RESEND_API_KEY", "")
+FROM_EMAIL = "ViralSalon <hola@andreamariaoficial.es>"
 
 def enviar_email(destinatario, asunto, cuerpo_html):
-    """Envía un email usando Gmail SMTP."""
-    if not GMAIL_USER or not GMAIL_APP_PASSWORD:
+    """Envía un email usando Resend."""
+    if not resend.api_key:
         return False
     try:
-        msg = MIMEMultipart("alternative")
-        msg["Subject"] = asunto
-        msg["From"] = f"ViralSalon <{GMAIL_USER}>"
-        msg["To"] = destinatario
-        msg.attach(MIMEText(cuerpo_html, "html"))
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
-            server.sendmail(GMAIL_USER, destinatario, msg.as_string())
+        resend.Emails.send({
+            "from": FROM_EMAIL,
+            "to": destinatario,
+            "subject": asunto,
+            "html": cuerpo_html
+        })
         return True
     except Exception:
         return False
 
+def enviar_email_async(destinatario, asunto, cuerpo_html):
+    """Envía email en segundo plano para no bloquear la web."""
+    t = threading.Thread(target=enviar_email, args=(destinatario, asunto, cuerpo_html))
+    t.daemon = True
+    t.start()
+
 def enviar_bienvenida(user):
-    asunto = "Ya eres parte de ViralSalon 🖤"
+    asunto = "Ya eres parte de ViralSalon"
     cuerpo = f"""
     <div style="font-family:Arial,sans-serif;background:#0a0a0a;color:#fff;padding:48px 40px;max-width:580px;margin:0 auto;border-radius:16px;">
       <p style="color:#C9A84C;font-size:0.8rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:32px;">ViralSalon · by Andrea Maria</p>
@@ -163,7 +166,7 @@ def enviar_bienvenida(user):
       </p>
     </div>
     """
-    enviar_email(user.email, asunto, cuerpo)
+    enviar_email_async(user.email, asunto, cuerpo)
 
 def enviar_reset_password(user, token):
     link = f"https://viralsalon.andreamariaoficial.es/reset/{token}"
@@ -187,7 +190,7 @@ def enviar_reset_password(user, token):
       </p>
     </div>
     """
-    enviar_email(user.email, asunto, cuerpo)
+    enviar_email_async(user.email, asunto, cuerpo)
 
 # ── HELPER STRIPE ─────────────────────────────────────────────────────────────
 
