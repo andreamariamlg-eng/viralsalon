@@ -105,7 +105,8 @@ def enviar_email(destinatario, asunto, cuerpo_html):
             "from": FROM_EMAIL,
             "to": destinatario,
             "subject": asunto,
-            "html": cuerpo_html
+            "html": cuerpo_html,
+            "reply_to": "viralsalon.app@gmail.com"
         })
         return True
     except Exception:
@@ -540,6 +541,26 @@ REGLAS QUE NO SE PUEDEN ROMPER:
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# ── CANCELACIÓN SUSCRIPCIÓN ───────────────────────────────────────────────────
+
+@app.route("/cancelar", methods=["GET", "POST"])
+@login_required
+def cancelar_suscripcion():
+    if request.method == "POST":
+        try:
+            if current_user.stripe_customer_id:
+                subs = stripe.Subscription.list(customer=current_user.stripe_customer_id, limit=1)
+                if subs.data:
+                    stripe.Subscription.modify(subs.data[0].id, cancel_at_period_end=True)
+                    db.session.commit()
+                    flash("Tu suscripción se cancelará al final del período. Puedes seguir usando ViralSalon hasta entonces.", "ok")
+                    return redirect(url_for("generador"))
+            flash("No encontramos una suscripción activa.", "error")
+        except Exception as e:
+            flash("Hubo un problema al cancelar. Escríbenos a hola@andreamariaoficial.es y lo resolvemos.", "error")
+        return redirect(url_for("cancelar_suscripcion"))
+    return render_template("cancelar.html", user=current_user)
 
 # ── INICIO ────────────────────────────────────────────────────────────────────
 
