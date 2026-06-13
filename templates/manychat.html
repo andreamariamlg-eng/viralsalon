@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ManyChat — ViralSalon by Andrea Maria</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --gold: #C9A84C; --gold-light: #E8CB7A; --gold-dark: #8a6c28;
+  --black: #000; --black2: #0D0D0D; --black3: #141414; --black4: #1E1E1E; --black5: #282828;
+  --white: #FFF; --white-dim: rgba(255,255,255,0.7);
+  --border: rgba(201,168,76,0.2); --border-strong: rgba(201,168,76,0.5);
+  --green: #4cde7c; --green-border: rgba(76,222,124,0.3); --green-bg: #020f02;
+}
+body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--black); color:var(--white); line-height:1.6; overflow-x:hidden; }
+
+.topbar { background:var(--black); border-bottom:1px solid var(--border); padding:12px 32px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:999; }
+.logo-wrap { display:flex; align-items:center; gap:14px; }
+.logo-icon { width:36px; height:36px; background:linear-gradient(135deg,var(--gold),var(--gold-dark)); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+.logo-text { font-size:1.2rem; font-weight:800; }
+.logo-text span { color:var(--gold); }
+.logo-by { font-size:0.7rem; color:var(--white-dim); }
+
+/* Hero */
+.hero { background:var(--green-bg); border-bottom:1px solid var(--green-border); padding:70px 20px 60px; text-align:center; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:600px; height:400px; background:radial-gradient(circle,rgba(76,222,124,0.07) 0%,transparent 70%); pointer-events:none; }
+.hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(76,222,124,0.1); border:1px solid var(--green-border); border-radius:20px; padding:6px 16px; font-size:0.78rem; font-weight:700; color:var(--green); letter-spacing:1px; text-transform:uppercase; margin-bottom:24px; }
+.hero h1 { font-size:clamp(1.8rem,4vw,3rem); font-weight:900; line-height:1.1; max-width:700px; margin:0 auto 20px; letter-spacing:-1px; }
+.hero h1 .gr { color:var(--green); }
+.hero-sub { font-size:1rem; color:var(--white-dim); max-width:560px; margin:0 auto; line-height:1.7; }
+
+/* Flow */
+.flow-section { padding:60px 20px; background:var(--black2); border-bottom:1px solid var(--border); }
+.section-label { text-align:center; font-size:0.72rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--green); margin-bottom:12px; }
+.section-heading { text-align:center; font-size:clamp(1.3rem,2.5vw,2rem); font-weight:900; margin-bottom:36px; }
+.mc-flow { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px; max-width:860px; margin:0 auto; }
+.mc-flow-item { background:var(--black3); border:1px solid var(--green-border); border-radius:14px; padding:18px 16px; text-align:center; font-size:0.82rem; font-weight:700; color:var(--white-dim); min-width:130px; flex:1; max-width:160px; }
+.mc-flow-item .mc-icon { font-size:1.6rem; display:block; margin-bottom:8px; }
+.mc-flow-item strong { display:block; color:var(--green); font-size:0.85rem; margin-bottom:3px; }
+.mc-flow-arrow { font-size:1.5rem; color:var(--green-border); flex-shrink:0; }
+@media(max-width:600px){ .mc-flow-arrow{display:none} .mc-flow-item{max-width:100%;min-width:140px} }
+
+/* Pasos */
+.steps-section { padding:60px 20px; max-width:960px; margin:0 auto; }
+.steps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; }
+.mc-step { background:var(--black3); border:1px solid var(--green-border); border-radius:18px; padding:28px 24px; position:relative; overflow:hidden; }
+.mc-step::before { content:''; position:absolute; top:-20px; right:-20px; width:80px; height:80px; background:radial-gradient(circle,rgba(76,222,124,0.05),transparent); border-radius:50%; }
+.mc-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(76,222,124,0.1); border:1px solid var(--green-border); border-radius:20px; padding:3px 12px; font-size:0.68rem; font-weight:800; color:var(--green); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:14px; }
+.mc-step h3 { font-size:1rem; font-weight:900; color:var(--white); margin-bottom:10px; }
+.mc-step p { font-size:0.83rem; color:rgba(255,255,255,0.5); line-height:1.65; }
+.mc-tip { margin-top:14px; background:rgba(76,222,124,0.06); border-left:3px solid var(--green); padding:10px 14px; border-radius:0 8px 8px 0; font-size:0.79rem; color:rgba(76,222,124,0.85); line-height:1.55; }
+.mc-tip strong { color:var(--green); }
+
+/* Ejemplo DM */
+.dm-section { background:var(--green-bg); border-top:1px solid var(--green-border); border-bottom:1px solid var(--green-border); padding:60px 20px; }
+.dm-wrap { max-width:680px; margin:0 auto; }
+.dm-bubble { background:#0d1f0d; border:1px solid var(--green-border); border-radius:18px 18px 18px 4px; padding:22px 24px; font-size:0.92rem; line-height:1.8; color:var(--white-dim); margin-top:24px; position:relative; }
+.dm-bubble::before { content:'📩 DM automático'; position:absolute; top:-12px; left:16px; background:var(--green-bg); padding:0 8px; font-size:0.68rem; font-weight:800; color:var(--green); letter-spacing:1px; text-transform:uppercase; }
+.dm-bubble .highlight { color:var(--green); font-weight:700; }
+.dm-note { margin-top:16px; font-size:0.8rem; color:rgba(255,255,255,0.3); text-align:center; }
+
+/* Drive */
+.drive-section { padding:60px 20px; max-width:960px; margin:0 auto; }
+.drive-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:28px; }
+.drive-item { background:var(--black3); border:1px solid var(--border); border-radius:14px; padding:20px 18px; display:flex; align-items:flex-start; gap:12px; transition:border-color 0.2s; }
+.drive-item:hover { border-color:var(--green-border); }
+.drive-icon { font-size:1.6rem; flex-shrink:0; }
+.drive-item h4 { font-size:0.88rem; font-weight:800; color:var(--white); margin-bottom:4px; }
+.drive-item p { font-size:0.76rem; color:rgba(255,255,255,0.4); line-height:1.5; }
+
+/* Tips finales */
+.tips-section { background:var(--black2); border-top:1px solid var(--border); padding:60px 20px; }
+.tips-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; max-width:900px; margin:0 auto; }
+.tip-card { background:var(--black3); border:1px solid var(--border); border-radius:14px; padding:20px; }
+.tip-card .tip-icon { font-size:1.4rem; margin-bottom:8px; }
+.tip-card h4 { font-size:0.88rem; font-weight:800; color:var(--gold-light); margin-bottom:6px; }
+.tip-card p { font-size:0.78rem; color:rgba(255,255,255,0.45); line-height:1.55; }
+
+/* CTA bottom */
+.cta-bottom { text-align:center; padding:60px 20px; }
+.btn-go { display:inline-flex; align-items:center; gap:10px; background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark)); color:#000; border:none; border-radius:12px; padding:18px 36px; font-size:1rem; font-weight:900; cursor:pointer; text-decoration:none; transition:all 0.25s; }
+.btn-go:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(201,168,76,0.3); }
+
+.footer { background:var(--black2); border-top:1px solid var(--border); padding:32px 20px; text-align:center; }
+.footer-logo { font-size:1.2rem; font-weight:900; margin-bottom:6px; }
+.footer-logo span { color:var(--gold); }
+.footer-copy { font-size:0.72rem; color:#333; margin-top:6px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo-wrap">
+    <div class="logo-icon">✨</div>
+    <div>
+      <div class="logo-text">Viral<span>Salon</span></div>
+      <div class="logo-by">by Andrea Maria</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a href="/app" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">✨ Generador</a>
+    <a href="/biblioteca" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📚 Biblioteca</a>
+    <a href="/planificador" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📅 Planificador</a>
+    <a href="/manychat" style="color:rgba(76,222,124,0.9);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;background:rgba(76,222,124,0.07);font-weight:700">🤖 ManyChat</a>
+    <a href="/logout" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:0.8rem;padding:7px 12px">Salir</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🤖 Automatización con ManyChat</div>
+  <h1>Convierte comentarios en citas<br><span class="gr">automáticamente</span></h1>
+  <p class="hero-sub">Publicas el Reel, alguien comenta la palabra clave, ManyChat le envía el DM con tu enlace de Drive al instante. Sin que tú hagas nada. Así funciona el sistema completo.</p>
+</section>
+
+<!-- FLUJO VISUAL -->
+<section class="flow-section">
+  <div class="section-label">El ciclo completo</div>
+  <h2 class="section-heading">De comentario a cita en segundos</h2>
+  <div class="mc-flow">
+    <div class="mc-flow-item"><span class="mc-icon">🎬</span><strong>Publicas el Reel</strong>con el CTA del guión</div>
+    <div class="mc-flow-arrow">→</div>
+    <div class="mc-flow-item"><span class="mc-icon">💬</span><strong>Alguien comenta</strong>la palabra clave</div>
+    <div class="mc-flow-arrow">→</div>
+    <div class="mc-flow-item"><span class="mc-icon">🤖</span><strong>ManyChat detecta</strong>el comentario al instante</div>
+    <div class="mc-flow-arrow">→</div>
+    <div class="mc-flow-item"><span class="mc-icon">📩</span><strong>Envía el DM</strong>con tu enlace de Drive</div>
+    <div class="mc-flow-arrow">→</div>
+    <div class="mc-flow-item"><span class="mc-icon">📅</span><strong>La clienta agenda</strong>o te escribe</div>
+  </div>
+</section>
+
+<!-- PASOS DETALLADOS -->
+<section class="steps-section">
+  <div style="text-align:center;margin-bottom:40px">
+    <div class="section-label" style="color:var(--green)">Configuración paso a paso</div>
+    <h2 class="section-heading">Cómo configurarlo desde cero</h2>
+  </div>
+  <div class="steps-grid">
+
+    <div class="mc-step">
+      <div class="mc-badge">Paso 1</div>
+      <h3>📁 Prepara tu contenido en Google Drive</h3>
+      <p>Crea una carpeta en Google Drive con lo que vas a enviar: tu lista de precios en PDF, una guía de cuidados, un menú de servicios, un vídeo explicativo o un cupón de descuento.</p>
+      <div class="mc-tip">Haz clic derecho en el archivo → Compartir → <strong>Cualquier persona con el enlace puede ver</strong> → Copiar enlace. Ese enlace es el que ManyChat enviará en el DM automáticamente.</div>
+    </div>
+
+    <div class="mc-step">
+      <div class="mc-badge">Paso 2</div>
+      <h3>🔗 Crea tu cuenta en ManyChat y conecta Instagram</h3>
+      <p>Entra en <strong style="color:var(--white)">manychat.com</strong> → regístrate gratis → ve a Settings → Channels → Instagram y conecta tu cuenta profesional. ManyChat necesita permiso para leer los comentarios de tus publicaciones.</p>
+      <div class="mc-tip">La cuenta gratuita de ManyChat es suficiente para empezar. Solo necesitarás plan de pago cuando superes los 1.000 contactos al mes.</div>
+    </div>
+
+    <div class="mc-step">
+      <div class="mc-badge">Paso 3</div>
+      <h3>⚡ Crea el flujo de automatización</h3>
+      <p>En ManyChat: <strong style="color:var(--white)">New Flow → Instagram Comment → escribe tu palabra clave exacta</strong> (ej: CITA). Luego añade la acción "Send DM" con un mensaje que incluya tu enlace de Drive y un texto cercano.</p>
+      <div class="mc-tip">Activa también la opción <strong>"Like comment automatically"</strong> para que ManyChat le dé like al comentario. Esto aumenta el engagement y el alcance del vídeo.</div>
+    </div>
+
+    <div class="mc-step">
+      <div class="mc-badge">Paso 4</div>
+      <h3>📲 Vincula el flujo a tu publicación</h3>
+      <p>Una vez publicado el Reel en Instagram, entra en ManyChat → selecciona el flujo que creaste → vincula el flujo a ese post concreto en la sección "Trigger". Así solo se activará para ese vídeo.</p>
+      <div class="mc-tip">Puedes reutilizar el mismo flujo en varios posts: solo cambia la publicación vinculada cada vez. No necesitas crear un flujo nuevo por cada Reel.</div>
+    </div>
+
+    <div class="mc-step">
+      <div class="mc-badge">Paso 5</div>
+      <h3>✅ Activa el flujo y publica</h3>
+      <p>Activa el flujo en ManyChat y listo. A partir de ahora, cada vez que alguien comente la palabra clave recibirá el DM en segundos, automáticamente, sin que tú hagas nada.</p>
+      <div class="mc-tip">Los primeros minutos tras publicar son clave. Responde también los primeros 3-5 comentarios manualmente (aunque sea con un emoji) para que el algoritmo de Instagram amplíe el alcance.</div>
+    </div>
+
+    <div class="mc-step">
+      <div class="mc-badge">Pro tip</div>
+      <h3>📊 Analiza qué vídeos convierten más</h3>
+      <p>ManyChat tiene un panel de estadísticas donde ves cuántos comentarios recibiste, cuántos DMs se enviaron y cuántos contactos nuevos entraron por cada flujo. Úsalo para saber qué temas funcionan mejor.</p>
+      <div class="mc-tip">Los vídeos con más comentarios de palabra clave son los que más resuenan. Crea más contenido sobre esos temas y replica la estructura del guión que mejor funcionó.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EJEMPLO DM -->
+<section class="dm-section">
+  <div class="dm-wrap">
+    <div class="section-label" style="text-align:left">Ejemplo de mensaje</div>
+    <h2 style="font-size:1.5rem;font-weight:900;margin-bottom:6px">Así se ve el DM que recibe tu clienta</h2>
+    <p style="font-size:0.85rem;color:rgba(255,255,255,0.4)">Personalízalo con tu tono y el contenido que envías. Cuanto más cercano, mejor.</p>
+    <div class="dm-bubble">
+      ¡Hola <span class="highlight">[nombre]</span>! 🤍<br><br>
+      Aquí tienes la info que pediste sobre el servicio, tal y como te prometí en el vídeo:<br><br>
+      👉 <span class="highlight">[tu enlace de Google Drive]</span><br><br>
+      Si tienes alguna duda o quieres reservar cita, escríbeme aquí mismo y te ayudo con todo. ¡Nos vemos pronto! ✨<br><br>
+      — <span class="highlight">[Tu nombre], [nombre del salón]</span>
+    </div>
+    <p class="dm-note">ManyChat personaliza automáticamente el [nombre] con el nombre real de la persona en Instagram.</p>
+  </div>
+</section>
+
+<!-- QUÉ PONER EN DRIVE -->
+<section class="drive-section">
+  <div class="section-label" style="color:var(--green)">Google Drive</div>
+  <h2 class="section-heading">¿Qué puedes enviar desde Drive?</h2>
+  <p style="text-align:center;font-size:0.9rem;color:rgba(255,255,255,0.45);max-width:560px;margin:0 auto">No tiene que ser complicado. Cuanto más útil y visual sea, mejor. Elige según el CTA de tu guión:</p>
+  <div class="drive-grid">
+    <div class="drive-item"><div class="drive-icon">📋</div><div><h4>Lista de precios</h4><p>PDF con tus servicios y precios. Simple y directo.</p></div></div>
+    <div class="drive-item"><div class="drive-icon">🗓️</div><div><h4>Enlace de reserva</h4><p>Link a tu sistema de citas (Booksy, Calendly, WhatsApp, etc.).</p></div></div>
+    <div class="drive-item"><div class="drive-icon">📖</div><div><h4>Guía de cuidados</h4><p>Qué hacer antes y después del servicio. Añade valor y fideliza.</p></div></div>
+    <div class="drive-item"><div class="drive-icon">🎁</div><div><h4>Cupón de descuento</h4><p>Imagen con el descuento que pueden mostrar al venir al salón.</p></div></div>
+    <div class="drive-item"><div class="drive-icon">📸</div><div><h4>Lookbook / antes y después</h4><p>Galería de resultados reales que refuerza la decisión de compra.</p></div></div>
+    <div class="drive-item"><div class="drive-icon">📹</div><div><h4>Vídeo explicativo</h4><p>Un vídeo corto explicando el servicio con más detalle.</p></div></div>
+    <div class="drive-item"><div class="drive-icon">📝</div><div><h4>Formulario de cita</h4><p>Google Form con nombre, teléfono y servicio para que reserven directamente.</p></div></div>
+    <div class="drive-item"><div class="drive-icon">✨</div><div><h4>Menú completo</h4><p>Catálogo visual de todos tus servicios con fotos y precios.</p></div></div>
+  </div>
+</section>
+
+<!-- TIPS FINALES -->
+<section class="tips-section">
+  <div class="section-label">Consejos extra</div>
+  <h2 class="section-heading" style="margin-bottom:36px">Para sacarle el máximo a ManyChat</h2>
+  <div class="tips-grid">
+    <div class="tip-card"><div class="tip-icon">📌</div><h4>Pon la palabra clave en la descripción del Reel</h4><p>Escribe "Comenta CITA y te mando la info" también en el caption del vídeo para que quien lo lea desde el feed también lo vea.</p></div>
+    <div class="tip-card"><div class="tip-icon">🔁</div><h4>Reutiliza flujos</h4><p>Crea un flujo base con tu DM y úsalo para varios Reels cambiando solo la publicación vinculada. Ahorra mucho tiempo.</p></div>
+    <div class="tip-card"><div class="tip-icon">💬</div><h4>Responde los primeros comentarios a mano</h4><p>El algoritmo de Instagram premia el engagement rápido. Los primeros 30-60 minutos son los más importantes para el alcance.</p></div>
+    <div class="tip-card"><div class="tip-icon">📊</div><h4>Prueba distintas palabras clave</h4><p>Usa CITA, INFO, GUIA, REGALO según el vídeo. Compara cuáles generan más comentarios y DMs para afinar tu estrategia.</p></div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-bottom">
+  <p style="font-size:1rem;color:var(--white-dim);margin-bottom:24px">¿Lista para crear el guión que vas a automatizar?</p>
+  <a href="/app" class="btn-go">✨ Ir al Generador de Guiones</a>
+</section>
+
+<footer class="footer">
+  <div class="footer-logo">Viral<span>Salon</span></div>
+  <div class="footer-copy">Sistema Hook + Desarrollo + CTA para ManyChat · Diseñado para convertir contenido en citas reales</div>
+</footer>
+
+</body>
+</html>
