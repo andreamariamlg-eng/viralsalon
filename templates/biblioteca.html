@@ -44,19 +44,36 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:v
 .btn-pub:hover{background:rgba(76,175,80,0.2)}
 .btn-del{background:rgba(200,74,74,0.1);border:1px solid rgba(200,74,74,0.2);color:#e87a7a;border-radius:7px;padding:6px 10px;font-size:0.75rem;cursor:pointer;font-family:inherit;transition:all 0.2s}
 .btn-del:hover{background:rgba(200,74,74,0.2)}
+.btn-metrics{background:rgba(201,168,76,0.08);border:1px solid var(--border);color:var(--gold);border-radius:7px;padding:6px 10px;font-size:0.75rem;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.btn-metrics:hover{background:rgba(201,168,76,0.15);border-color:var(--border-strong)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
 .stat{background:var(--black3);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
 .stat-val{font-size:2rem;font-weight:900;color:var(--gold);line-height:1}
 .stat-lbl{font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:4px}
+/* MÉTRICAS PANEL */
+.metrics-panel{display:none;border-top:1px solid var(--border);padding:12px 16px;background:rgba(201,168,76,0.03)}
+.metrics-panel.open{display:block}
+.metrics-title{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
+.metric-field label{display:block;font-size:0.65rem;color:rgba(255,255,255,0.4);margin-bottom:3px;text-transform:uppercase;letter-spacing:1px}
+.metric-field input{width:100%;background:var(--black4);border:1px solid rgba(255,255,255,0.1);color:var(--white);border-radius:6px;padding:6px 10px;font-size:0.82rem;font-family:inherit;outline:none;transition:border-color 0.2s}
+.metric-field input:focus{border-color:var(--border-strong)}
+.metrics-display{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.metric-pill{background:var(--black4);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.72rem;color:var(--white-dim)}
+.metric-pill span{color:var(--gold-light);font-weight:700}
+.btn-save-metrics{background:rgba(201,168,76,0.15);border:1px solid var(--border-strong);color:var(--gold);border-radius:7px;padding:6px 16px;font-size:0.75rem;cursor:pointer;font-family:inherit;transition:all 0.2s;font-weight:700}
+.btn-save-metrics:hover{background:rgba(201,168,76,0.25)}
 </style>
 </head>
 <body>
 <header class="topbar">
   <div class="logo">Viral<span>Salon</span></div>
   <nav class="nav">
-    <a href="/">✨ Generar</a>
+    <a href="/app">✨ Generar</a>
     <a href="/biblioteca" class="active">📚 Biblioteca</a>
     <a href="/planificador">📅 Planificador</a>
+    <a href="/cancelar">Cancelar</a>
+    <a href="mailto:hola@andreamariaoficial.es" class="logout">Soporte</a>
     <a href="/logout" class="logout">Salir</a>
   </nav>
 </header>
@@ -67,7 +84,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:v
       <h1>📚 Biblioteca de Guiones</h1>
       <p>{{ user.nombre_salon }} — todos tus guiones guardados</p>
     </div>
-    <a href="/" class="btn-new">✨ Nuevo guión</a>
+    <a href="/app" class="btn-new">✨ Nuevo guión</a>
   </div>
 
   {% set total = guiones|length %}
@@ -83,12 +100,16 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:v
     <button class="filter-btn active" onclick="filtrar('todos',this)">Todos</button>
     <button class="filter-btn" onclick="filtrar('pendientes',this)">Pendientes</button>
     <button class="filter-btn" onclick="filtrar('publicados',this)">Publicados</button>
+    <button class="filter-btn" onclick="filtrar('con-metricas',this)">Con métricas</button>
   </div>
 
   {% if guiones %}
   <div class="grid" id="grid">
     {% for g in guiones %}
-    <div class="guion-card" data-estado="{{ 'publicado' if g.publicado else 'pendiente' }}" id="card-{{ g.id }}">
+    <div class="guion-card"
+         data-estado="{{ 'publicado' if g.publicado else 'pendiente' }}"
+         data-metricas="{{ 'si' if (g.views is not none or g.comentarios is not none) else 'no' }}"
+         id="card-{{ g.id }}">
       <div class="card-header">
         <span class="card-servicio">{{ g.servicio }}</span>
         <span class="card-fecha">{{ g.creado.strftime('%d/%m/%Y') }}</span>
@@ -99,12 +120,47 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:v
           <span class="tag">{{ g.hook_tipo.replace('_',' ').title() }}</span>
           <span class="tag">{{ g.dev_tipo.title() }}</span>
           <span class="tag {{ 'publicado' if g.publicado else 'pendiente' }}">{{ '✓ Publicado' if g.publicado else '⏳ Pendiente' }}</span>
+          {% if g.views is not none %}
+          <span class="tag" style="background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.2);color:var(--gold)">📊 {{ g.views }} views</span>
+          {% endif %}
         </div>
         <div class="card-actions">
           <button class="btn-copy" onclick="copiarGuion({{ g.id }}, '{{ g.hook|replace("'","\\'") }}', '{{ g.desarrollo|replace("'","\\'") }}', '{{ g.cta|replace("'","\\'") }}')">📋 Copiar</button>
           <button class="btn-pub" onclick="togglePublicado({{ g.id }}, {{ 'true' if g.publicado else 'false' }})">{{ '↩ Deshacer' if g.publicado else '✓ Publicado' }}</button>
+          <button class="btn-metrics" onclick="toggleMetricas({{ g.id }})">📊</button>
           <button class="btn-del" onclick="eliminarGuion({{ g.id }})">🗑</button>
         </div>
+      </div>
+      <!-- Panel de métricas -->
+      <div class="metrics-panel" id="metrics-{{ g.id }}">
+        <div class="metrics-title">📊 Métricas del Reel</div>
+        {% if g.views is not none or g.comentarios is not none or g.guardados is not none or g.compartidos is not none %}
+        <div class="metrics-display" id="display-{{ g.id }}">
+          {% if g.views is not none %}<div class="metric-pill">👁 Views: <span>{{ g.views }}</span></div>{% endif %}
+          {% if g.comentarios is not none %}<div class="metric-pill">💬 Comentarios: <span>{{ g.comentarios }}</span></div>{% endif %}
+          {% if g.guardados is not none %}<div class="metric-pill">🔖 Guardados: <span>{{ g.guardados }}</span></div>{% endif %}
+          {% if g.compartidos is not none %}<div class="metric-pill">↗ Compartidos: <span>{{ g.compartidos }}</span></div>{% endif %}
+        </div>
+        {% endif %}
+        <div class="metrics-grid">
+          <div class="metric-field">
+            <label>👁 Visualizaciones</label>
+            <input type="number" id="views-{{ g.id }}" placeholder="ej: 12000" value="{{ g.views if g.views is not none else '' }}" min="0">
+          </div>
+          <div class="metric-field">
+            <label>💬 Comentarios</label>
+            <input type="number" id="coment-{{ g.id }}" placeholder="ej: 48" value="{{ g.comentarios if g.comentarios is not none else '' }}" min="0">
+          </div>
+          <div class="metric-field">
+            <label>🔖 Guardados</label>
+            <input type="number" id="guard-{{ g.id }}" placeholder="ej: 320" value="{{ g.guardados if g.guardados is not none else '' }}" min="0">
+          </div>
+          <div class="metric-field">
+            <label>↗ Compartidos</label>
+            <input type="number" id="comp-{{ g.id }}" placeholder="ej: 85" value="{{ g.compartidos if g.compartidos is not none else '' }}" min="0">
+          </div>
+        </div>
+        <button class="btn-save-metrics" onclick="guardarMetricas({{ g.id }})">Guardar métricas</button>
       </div>
     </div>
     {% endfor %}
@@ -112,7 +168,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:v
   {% else %}
   <div class="empty">
     <h3>Aún no tienes guiones guardados</h3>
-    <p>Cada guión que generes se guardará aquí automáticamente.<br><a href="/">Genera tu primer guión →</a></p>
+    <p>Cada guión que generes se guardará aquí automáticamente.<br><a href="/app">Genera tu primer guión →</a></p>
   </div>
   {% endif %}
 </div>
@@ -123,23 +179,63 @@ function filtrar(tipo, btn) {
   btn.classList.add('active');
   document.querySelectorAll('.guion-card').forEach(card => {
     if (tipo === 'todos') card.style.display = '';
+    else if (tipo === 'con-metricas') card.style.display = card.dataset.metricas === 'si' ? '' : 'none';
     else card.style.display = card.dataset.estado === tipo ? '' : 'none';
   });
 }
+
 function copiarGuion(id, hook, dev, cta) {
   const txt = `HOOK\n${hook}\n\nDESARROLLO\n${dev}\n\nCTA\n${cta}`;
   navigator.clipboard.writeText(txt);
   const btn = document.querySelector(`#card-${id} .btn-copy`);
   btn.textContent = '✓ Copiado'; setTimeout(() => btn.textContent = '📋 Copiar', 1500);
 }
+
 async function togglePublicado(id, actual) {
   const r = await fetch(`/guion/${id}/publicar`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({publicado:!actual})});
   if (r.ok) location.reload();
 }
+
 async function eliminarGuion(id) {
   if (!confirm('¿Eliminar este guión?')) return;
   const r = await fetch(`/guion/${id}`, {method:'DELETE'});
   if (r.ok) document.getElementById(`card-${id}`).remove();
+}
+
+function toggleMetricas(id) {
+  const panel = document.getElementById(`metrics-${id}`);
+  panel.classList.toggle('open');
+  const btn = document.querySelector(`#card-${id} .btn-metrics`);
+  btn.style.background = panel.classList.contains('open') ? 'rgba(201,168,76,0.25)' : '';
+}
+
+async function guardarMetricas(id) {
+  const views = document.getElementById(`views-${id}`).value;
+  const coment = document.getElementById(`coment-${id}`).value;
+  const guard = document.getElementById(`guard-${id}`).value;
+  const comp = document.getElementById(`comp-${id}`).value;
+
+  const r = await fetch(`/guion/${id}/metricas`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      views: views !== '' ? views : null,
+      comentarios: coment !== '' ? coment : null,
+      guardados: guard !== '' ? guard : null,
+      compartidos: comp !== '' ? comp : null
+    })
+  });
+  if (r.ok) {
+    const btn = document.querySelector(`#card-${id} .btn-save-metrics`);
+    btn.textContent = '✓ Guardado';
+    btn.style.color = '#81c784';
+    setTimeout(() => { btn.textContent = 'Guardar métricas'; btn.style.color = ''; }, 2000);
+    // Actualizar tag de views si lo hay
+    if (views) {
+      const card = document.getElementById(`card-${id}`);
+      card.dataset.metricas = 'si';
+    }
+  }
 }
 </script>
 </body>
