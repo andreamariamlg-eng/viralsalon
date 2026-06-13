@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personaliza tu experiencia — ViralSalon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#C9A84C;--gold-light:#E8CB7A;--gold-dark:#8a6c28;--black:#000;--black2:#0D0D0D;--black3:#141414;--black4:#1E1E1E;--white:#FFF;--white-dim:rgba(255,255,255,0.7);--border:rgba(201,168,76,0.2);--border-strong:rgba(201,168,76,0.5)}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:var(--white);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.container{max-width:640px;width:100%}
+.logo{font-size:1.3rem;font-weight:900;text-align:center;margin-bottom:40px}.logo span{color:var(--gold)}
+.card{background:var(--black3);border:1px solid var(--border-strong);border-radius:20px;padding:44px 40px}
+@media(max-width:500px){.card{padding:28px 20px}}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,0.1);border:1px solid var(--border-strong);border-radius:20px;padding:5px 14px;font-size:0.72rem;font-weight:700;color:var(--gold-light);letter-spacing:1px;text-transform:uppercase;margin-bottom:20px}
+h1{font-size:1.7rem;font-weight:900;margin-bottom:8px;line-height:1.15}
+h1 span{color:var(--gold)}
+.subtitle{color:var(--white-dim);font-size:0.92rem;line-height:1.6;margin-bottom:36px}
+.section-label{font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+/* Tipo negocio */
+.tipo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:32px}
+.tipo-btn{background:var(--black4);border:2px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s;font-size:0.82rem;color:var(--white-dim);font-weight:600;line-height:1.3}
+.tipo-btn:hover{border-color:var(--border-strong);color:var(--gold-light)}
+.tipo-btn.selected{border-color:var(--gold);background:rgba(201,168,76,0.08);color:var(--gold-light)}
+.tipo-btn .tipo-icon{font-size:1.6rem;display:block;margin-bottom:6px}
+input[type="hidden"]{}
+/* Servicios */
+.servicios-section{margin-bottom:32px;display:none}
+.chips-grid{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--black4);border:2px solid rgba(255,255,255,0.08);border-radius:20px;padding:7px 14px;font-size:0.8rem;color:var(--white-dim);cursor:pointer;transition:all 0.2s;user-select:none;font-weight:600}
+.chip:hover{border-color:var(--border-strong);color:var(--gold-light)}
+.chip.selected{border-color:var(--gold);background:rgba(201,168,76,0.1);color:var(--gold-light)}
+.submit-btn{width:100%;background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark));color:#000;border:none;border-radius:12px;padding:18px;font-size:1rem;font-weight:900;cursor:pointer;transition:all 0.25s;margin-top:8px}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(201,168,76,0.3)}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.skip{text-align:center;margin-top:16px}
+.skip a{color:rgba(255,255,255,0.3);font-size:0.8rem;text-decoration:none;transition:color 0.2s}
+.skip a:hover{color:var(--white-dim)}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">Viral<span>Salon</span></div>
+
+  <div class="card">
+    <div class="badge">✦ Un momento antes de empezar</div>
+    <h1>¡Hola, <span>{{ user.nombre_salon }}</span>!<br>Cuéntame sobre tu salón</h1>
+    <p class="subtitle">Con esta información te voy a sugerir los mejores servicios para tus guiones y personalizar la experiencia para ti. Solo te lleva 30 segundos.</p>
+
+    <form method="POST" action="/onboarding" id="onboardingForm">
+
+      <!-- TIPO DE NEGOCIO -->
+      <div class="section-label">¿Qué tipo de negocio tienes?</div>
+      <input type="hidden" name="tipo_negocio" id="tipoInput" value="">
+      <div class="tipo-grid">
+        <div class="tipo-btn" onclick="seleccionarTipo('peluqueria', this)">
+          <span class="tipo-icon">💇‍♀️</span>Peluquería
+        </div>
+        <div class="tipo-btn" onclick="seleccionarTipo('estetica', this)">
+          <span class="tipo-icon">✨</span>Estética
+        </div>
+        <div class="tipo-btn" onclick="seleccionarTipo('nails', this)">
+          <span class="tipo-icon">💅</span>Nail Artist
+        </div>
+        <div class="tipo-btn" onclick="seleccionarTipo('cejas_pestanas', this)">
+          <span class="tipo-icon">👁</span>Cejas y Pestañas
+        </div>
+        <div class="tipo-btn" onclick="seleccionarTipo('micropigmentacion', this)">
+          <span class="tipo-icon">🖊</span>Micropigmentación
+        </div>
+        <div class="tipo-btn" onclick="seleccionarTipo('laser', this)">
+          <span class="tipo-icon">⚡</span>Depilación Láser
+        </div>
+        <div class="tipo-btn" onclick="seleccionarTipo('masajes', this)">
+          <span class="tipo-icon">🌿</span>Masajes / Spa
+        </div>
+        <div class="tipo-btn" onclick="seleccionarTipo('maquillaje', this)">
+          <span class="tipo-icon">💄</span>Maquillaje
+        </div>
+        <div class="tipo-btn" onclick="seleccionarTipo('mixto', this)">
+          <span class="tipo-icon">💎</span>Centro mixto
+        </div>
+      </div>
+
+      <!-- SERVICIOS (aparece después de elegir tipo) -->
+      <div class="servicios-section" id="serviciosSection">
+        <div class="section-label">¿Qué servicios ofreces? <span style="color:rgba(255,255,255,0.3);font-weight:400;text-transform:none;letter-spacing:0">(elige los que haces)</span></div>
+        <div class="chips-grid" id="chipsGrid">
+          <!-- Se rellena con JS según el tipo elegido -->
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn" disabled>
+        Empezar a generar guiones →
+      </button>
+    </form>
+
+    <div class="skip">
+      <a href="/app">Prefiero saltarme esto por ahora</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const SERVICIOS_POR_TIPO = {
+  peluqueria: ['Corte de cabello','Coloración','Mechas / Balayage','Keratina','Bótox capilar','Extensiones','Permanente','Alisado','Tratamiento capilar','Recogidos'],
+  estetica: ['Limpieza facial','Lifting facial','Radiofrecuencia','Depilación con hilo','Depilación con cera','Tratamiento antiedad','Drenaje linfático','Hidratación corporal','Electroestimulación','Vendas frías'],
+  nails: ['Manicura permanente','Uñas de gel','Uñas acrílicas','Uñas builder','Nail art','Manicura spa','Pedicura permanente','Relleno de uñas','Soft gel','Press on nails'],
+  cejas_pestanas: ['Laminado de cejas','Diseño de cejas','Henna de cejas','Extensiones de pestañas','Lifting de pestañas','Tinte de pestañas','Perfilado','Microblading cejas'],
+  micropigmentacion: ['Micropigmentación de cejas','Micropigmentación de labios','Micropigmentación de ojos','Microblading','Nanoblading','Corrección de micropigmentación'],
+  laser: ['Depilación láser cuerpo completo','Depilación láser piernas','Depilación láser axilas','Depilación láser bikini','Depilación láser facial','Fotodepilación','Rejuvenecimiento láser'],
+  masajes: ['Masaje relajante','Masaje descontracturante','Masaje con piedras calientes','Masaje balinés','Masaje reductor','Reflexología','Aromaterapia','Presoterapia'],
+  maquillaje: ['Maquillaje de novia','Maquillaje de evento','Maquillaje de comunión','Clases de maquillaje','Maquillaje artístico','Depilación a la cera'],
+  mixto: ['Peluquería','Estética facial','Estética corporal','Manicura / Pedicura','Cejas y pestañas','Masajes','Depilación','Tratamientos capilares']
+};
+
+let serviciosSeleccionados = [];
+
+function seleccionarTipo(tipo, el) {
+  document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('tipoInput').value = tipo;
+
+  // Mostrar sección servicios
+  const sec = document.getElementById('serviciosSection');
+  sec.style.display = 'block';
+  serviciosSeleccionados = [];
+
+  // Rellenar chips
+  const grid = document.getElementById('chipsGrid');
+  grid.innerHTML = '';
+  // Limpiar inputs anteriores
+  document.querySelectorAll('input[name="servicios"]').forEach(i => i.remove());
+
+  (SERVICIOS_POR_TIPO[tipo] || []).forEach(s => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = s;
+    chip.onclick = () => toggleChip(chip, s);
+    grid.appendChild(chip);
+  });
+
+  actualizarBoton();
+}
+
+function toggleChip(chip, servicio) {
+  const idx = serviciosSeleccionados.indexOf(servicio);
+  if (idx === -1) {
+    serviciosSeleccionados.push(servicio);
+    chip.classList.add('selected');
+  } else {
+    serviciosSeleccionados.splice(idx, 1);
+    chip.classList.remove('selected');
+  }
+  // Sync con hidden inputs
+  document.querySelectorAll('input[name="servicios"]').forEach(i => i.remove());
+  serviciosSeleccionados.forEach(s => {
+    const inp = document.createElement('input');
+    inp.type = 'hidden';
+    inp.name = 'servicios';
+    inp.value = s;
+    document.getElementById('onboardingForm').appendChild(inp);
+  });
+  actualizarBoton();
+}
+
+function actualizarBoton() {
+  const tipo = document.getElementById('tipoInput').value;
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = !tipo;
+}
+</script>
+</body>
+</html>
