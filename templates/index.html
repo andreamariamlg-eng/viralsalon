@@ -3,374 +3,443 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ViralSalon by Andrea Maria — El Sistema de Contenido que Convierte</title>
+<title>Generador — ViralSalon</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-:root {
-  --gold: #C9A84C; --gold-light: #E8CB7A; --gold-dark: #8a6c28;
-  --black: #000; --black2: #0D0D0D; --black3: #141414; --black4: #1E1E1E; --black5: #282828;
-  --white: #FFF; --white-dim: rgba(255,255,255,0.7);
-  --border: rgba(201,168,76,0.2); --border-strong: rgba(201,168,76,0.5);
-  --hook-bg: #0f0c02; --dev-bg: #020c0f; --cta-bg: #0f0202;
-}
-body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--black); color:var(--white); line-height:1.6; overflow-x:hidden; }
-
-.topbar { background:var(--black); border-bottom:1px solid var(--border); padding:12px 32px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:999; }
-.logo-wrap { display:flex; align-items:center; gap:14px; }
-.logo-icon { width:36px; height:36px; background:linear-gradient(135deg,var(--gold),var(--gold-dark)); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; }
-.logo-text { font-size:1.2rem; font-weight:800; }
-.logo-text span { color:var(--gold); }
-.logo-by { font-size:0.7rem; color:var(--white-dim); }
-.ig-link { color:var(--white-dim); text-decoration:none; font-size:0.82rem; font-weight:600; display:flex; align-items:center; gap:6px; transition:color 0.2s; }
-.ig-link:hover { color:var(--gold); }
-
-.hero { background:var(--black); padding:80px 20px 70px; text-align:center; position:relative; overflow:hidden; }
-.hero::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:600px; height:600px; background:radial-gradient(circle,rgba(201,168,76,0.08) 0%,transparent 70%); pointer-events:none; }
-.hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(201,168,76,0.1); border:1px solid var(--border-strong); border-radius:20px; padding:6px 16px; font-size:0.78rem; font-weight:700; color:var(--gold-light); letter-spacing:1px; text-transform:uppercase; margin-bottom:28px; }
-.hero h1 { font-size:clamp(2rem,5vw,3.8rem); font-weight:900; line-height:1.1; max-width:800px; margin:0 auto 24px; letter-spacing:-1px; }
-.hero h1 .gold { color:var(--gold); }
-.hero h1 .ul { text-decoration:underline; text-decoration-color:var(--gold); text-decoration-thickness:3px; text-underline-offset:6px; }
-.hero-sub { font-size:1.1rem; color:var(--white-dim); max-width:580px; margin:0 auto 40px; line-height:1.7; }
-
-.creator-card { background:var(--black3); border:1px solid var(--border-strong); border-radius:16px; padding:24px 32px; display:flex; align-items:center; gap:20px; text-align:left; max-width:680px; margin:0 auto 60px; }
-.creator-avatar { width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-dark)); display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; border:2px solid var(--gold); }
-.creator-name { font-size:1.1rem; font-weight:800; }
-.creator-title { font-size:0.82rem; color:var(--gold); margin-top:2px; font-weight:600; }
-.creator-desc { font-size:0.84rem; color:var(--white-dim); margin-top:8px; line-height:1.5; }
-.creator-ig { display:inline-flex; align-items:center; gap:5px; margin-top:10px; color:var(--gold-light); text-decoration:none; font-size:0.82rem; font-weight:700; }
-.creator-ig:hover { color:var(--white); }
-
-.how-section { background:var(--black2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:60px 20px; }
-.section-label { text-align:center; font-size:0.72rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
-.section-heading { text-align:center; font-size:clamp(1.5rem,3vw,2.2rem); font-weight:900; margin-bottom:40px; }
-.steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; max-width:900px; margin:0 auto; }
-.step { background:var(--black3); border:1px solid var(--border); border-radius:14px; padding:22px; }
-.step-num { font-size:2rem; font-weight:900; color:var(--border-strong); line-height:1; margin-bottom:10px; }
-.step h3 { font-size:0.95rem; font-weight:800; margin-bottom:6px; color:var(--gold-light); }
-.step p { font-size:0.82rem; color:var(--white-dim); line-height:1.5; }
-
-.main { max-width:860px; margin:0 auto; padding:50px 20px 80px; }
-.form-heading { text-align:center; margin-bottom:36px; }
-.form-heading h2 { font-size:1.8rem; font-weight:900; }
-.form-heading p { color:var(--white-dim); font-size:0.9rem; margin-top:8px; }
-
-.card { background:var(--black3); border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:16px; }
-.card:focus-within { border-color:var(--border-strong); }
-.card-title { font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:2.5px; color:var(--gold); margin-bottom:22px; display:flex; align-items:center; gap:10px; }
-.card-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border-strong),transparent); }
-
-.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-@media(max-width:580px){ .form-grid{grid-template-columns:1fr} .creator-card{flex-direction:column;text-align:center} .topbar .ig-link{display:none} }
-.form-group { display:flex; flex-direction:column; gap:6px; }
-.form-group.full { grid-column:1/-1; }
-label { font-size:0.75rem; font-weight:700; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; }
-input[type="text"],select,textarea { background:var(--black4); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:var(--white); padding:11px 14px; font-size:0.95rem; font-family:inherit; transition:border-color 0.2s,background 0.2s; width:100%; }
-input:focus,select:focus,textarea:focus { outline:none; border-color:var(--gold); background:#1a1500; }
-select option { background:#1a1a1a; }
-textarea { resize:vertical; min-height:78px; }
-.hint { font-size:0.73rem; color:#555; font-style:italic; }
-
-.chips { display:flex; flex-wrap:wrap; gap:7px; margin-top:7px; }
-.chip { background:var(--black5); border:1px solid rgba(255,255,255,0.12); border-radius:20px; padding:4px 12px; font-size:0.73rem; cursor:pointer; color:rgba(255,255,255,0.5); transition:all 0.15s; }
-.chip:hover { border-color:var(--gold); color:var(--gold-light); }
-
-.hook-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); gap:10px; }
-.hook-opt { position:relative; }
-.hook-opt input { position:absolute; opacity:0; pointer-events:none; }
-.hook-lbl { display:flex; flex-direction:column; gap:5px; padding:14px; border:1px solid rgba(255,255,255,0.1); border-radius:10px; cursor:pointer; transition:all 0.2s; background:var(--black4); height:100%; }
-.hook-opt input:checked+.hook-lbl { border-color:var(--gold); background:#1a1500; box-shadow:0 0 20px rgba(201,168,76,0.1); }
-.hook-emoji { font-size:1.3rem; }
-.hook-name { font-size:0.83rem; font-weight:800; }
-.hook-ex { font-size:0.7rem; color:rgba(255,255,255,0.4); line-height:1.4; }
-
-.dev-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.dev-opt { position:relative; }
-.dev-opt input { position:absolute; opacity:0; pointer-events:none; }
-.dev-lbl { display:block; padding:20px 18px; border:1px solid rgba(255,255,255,0.1); border-radius:12px; cursor:pointer; transition:all 0.2s; background:var(--black4); text-align:center; }
-.dev-opt input:checked+.dev-lbl { border-color:var(--gold); background:#1a1500; }
-.dev-icon { font-size:1.8rem; display:block; margin-bottom:8px; }
-.dev-name { font-weight:800; font-size:1rem; color:var(--gold-light); }
-.dev-desc { font-size:0.78rem; color:rgba(255,255,255,0.45); margin-top:6px; line-height:1.5; }
-
-.btn-gen { width:100%; background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark)); color:#000; border:none; border-radius:12px; padding:20px; font-size:1.1rem; font-weight:900; cursor:pointer; letter-spacing:0.3px; transition:all 0.25s; margin-top:20px; display:flex; align-items:center; justify-content:center; gap:10px; text-transform:uppercase; }
-.btn-gen:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(201,168,76,0.35); }
-.btn-gen:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
-
-.loading { display:none; text-align:center; padding:50px 20px; }
-.spinner { width:44px; height:44px; border:3px solid rgba(201,168,76,0.2); border-top-color:var(--gold); border-radius:50%; animation:spin 0.7s linear infinite; margin:0 auto 16px; }
-@keyframes spin { to{transform:rotate(360deg)} }
-.loading p { color:var(--white-dim); }
-.loading .sub { font-size:0.8rem; color:#444; margin-top:6px; }
-
-.error-msg { display:none; background:#120404; border:1px solid rgba(200,74,74,0.3); border-radius:10px; padding:14px 18px; color:#e87a7a; margin-top:14px; font-size:0.88rem; }
-
-.result { display:none; margin-top:28px; }
-.result-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
-.result-title { font-size:1.05rem; font-weight:800; display:flex; align-items:center; gap:8px; }
-.success-dot { width:8px; height:8px; background:#4caf50; border-radius:50%; box-shadow:0 0 8px #4caf50; display:inline-block; }
-.btn-copy-all { background:var(--black5); border:1px solid var(--border); color:var(--white-dim); padding:8px 18px; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:600; transition:all 0.2s; font-family:inherit; }
-.btn-copy-all:hover { border-color:var(--gold); color:var(--gold); }
-
-.script-block { border-radius:12px; overflow:hidden; margin-bottom:12px; }
-.block-header { display:flex; align-items:center; justify-content:space-between; padding:11px 16px; font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:2px; }
-.block-hook .block-header { background:#1a1500; color:var(--gold); border-bottom:1px solid #2a2200; }
-.block-dev .block-header { background:#001a1a; color:#7adde8; border-bottom:1px solid #002a2a; }
-.block-cta .block-header { background:#1a0000; color:#e87a7a; border-bottom:1px solid #2a0000; }
-.block-body { padding:18px 20px; font-size:1rem; line-height:1.85; white-space:pre-wrap; }
-.block-hook .block-body { background:var(--hook-bg); }
-.block-dev .block-body { background:var(--dev-bg); }
-.block-cta .block-body { background:var(--cta-bg); }
-.btn-copy { background:transparent; border:1px solid currentColor; color:inherit; padding:4px 10px; border-radius:6px; cursor:pointer; font-size:0.7rem; opacity:0.6; transition:opacity 0.2s; font-family:inherit; }
-.btn-copy:hover { opacity:1; }
-
-.metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px; }
-.metric { background:var(--black3); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; }
-.metric-val { font-size:1.6rem; font-weight:900; color:var(--gold); line-height:1; }
-.metric-lbl { font-size:0.7rem; color:rgba(255,255,255,0.4); margin-top:4px; }
-
-.btn-regen { width:100%; background:transparent; border:1px solid var(--border-strong); color:var(--gold); border-radius:10px; padding:14px; font-size:0.9rem; font-weight:700; cursor:pointer; margin-top:14px; transition:all 0.2s; font-family:inherit; }
-.btn-regen:hover { background:rgba(201,168,76,0.05); }
-
-.footer { background:var(--black2); border-top:1px solid var(--border); padding:40px 20px; text-align:center; }
-.footer-logo { font-size:1.4rem; font-weight:900; margin-bottom:8px; }
-.footer-logo span { color:var(--gold); }
-.footer-credit { font-size:0.82rem; color:rgba(255,255,255,0.4); margin-bottom:6px; }
-.footer-credit strong { color:var(--gold-light); }
-.footer-ig { display:inline-flex; align-items:center; gap:5px; color:var(--gold); text-decoration:none; font-size:0.85rem; font-weight:700; margin-top:4px; }
-.footer-ig:hover { color:var(--white); }
-.footer-line { width:40px; height:1px; background:var(--border); margin:20px auto; }
-.footer-copy { font-size:0.72rem; color:#333; }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#C9A84C;--gold-light:#E8CB7A;--gold-dark:#8a6c28;--black:#000;--black2:#0D0D0D;--black3:#141414;--black4:#1E1E1E;--black5:#282828;--white:#FFF;--white-dim:rgba(255,255,255,0.7);--border:rgba(201,168,76,0.2);--border-strong:rgba(201,168,76,0.5)}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:var(--white);line-height:1.6}
+/* NAV */
+.topbar{background:var(--black);border-bottom:1px solid var(--border);padding:12px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99}
+.logo{font-size:1.2rem;font-weight:900}.logo span{color:var(--gold)}
+.nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.nav a{color:var(--white-dim);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s}
+.nav a:hover,.nav a.active{background:rgba(201,168,76,0.1);color:var(--gold)}
+.nav .nav-small{color:rgba(255,255,255,0.3);font-size:0.8rem}
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:calc(100vh - 53px)}
+@media(max-width:860px){.layout{grid-template-columns:1fr}}
+/* PANEL IZQUIERDO - FORMULARIO */
+.panel-form{padding:32px 28px;border-right:1px solid var(--border);overflow-y:auto;max-height:calc(100vh - 53px)}
+@media(max-width:860px){.panel-form{max-height:none;border-right:none;border-bottom:1px solid var(--border)}}
+.form-title{font-size:1.2rem;font-weight:900;margin-bottom:4px}
+.form-sub{font-size:0.82rem;color:var(--white-dim);margin-bottom:28px}
+.field-group{margin-bottom:18px}
+.field-label{font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;display:block}
+.field-input{width:100%;background:var(--black3);border:1px solid rgba(255,255,255,0.1);color:var(--white);border-radius:8px;padding:10px 12px;font-size:0.9rem;font-family:inherit;outline:none;transition:border-color 0.2s}
+.field-input:focus{border-color:var(--border-strong)}
+.field-input::placeholder{color:rgba(255,255,255,0.25)}
+/* Chips de servicio */
+.chips-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip-sugerido{background:var(--black4);border:1px solid var(--border);border-radius:16px;padding:4px 12px;font-size:0.75rem;color:var(--gold);cursor:pointer;transition:all 0.2s;font-weight:600}
+.chip-sugerido:hover{background:rgba(201,168,76,0.1);border-color:var(--border-strong)}
+/* Selector de opciones */
+.options-row{display:flex;flex-wrap:wrap;gap:8px}
+.opt-btn{background:var(--black4);border:1px solid rgba(255,255,255,0.08);color:var(--white-dim);border-radius:8px;padding:7px 14px;font-size:0.8rem;cursor:pointer;transition:all 0.2s;font-family:inherit;font-weight:600}
+.opt-btn.selected,.opt-btn:hover{border-color:var(--border-strong);color:var(--gold-light);background:rgba(201,168,76,0.06)}
+.opt-btn.selected{border-color:var(--gold);background:rgba(201,168,76,0.1)}
+/* Row de 2 columnas */
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn-generar{width:100%;background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark));color:#000;border:none;border-radius:10px;padding:16px;font-size:1rem;font-weight:900;cursor:pointer;margin-top:8px;transition:all 0.25s;letter-spacing:0.3px}
+.btn-generar:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(201,168,76,0.3)}
+.btn-generar:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+/* PANEL DERECHO - RESULTADO */
+.panel-result{padding:32px 28px;overflow-y:auto;max-height:calc(100vh - 53px)}
+@media(max-width:860px){.panel-result{max-height:none}}
+.result-placeholder{text-align:center;padding:60px 20px;color:rgba(255,255,255,0.2)}
+.result-placeholder .big{font-size:3rem;margin-bottom:12px}
+.result-placeholder p{font-size:0.9rem;line-height:1.6}
+/* Script resultado */
+.script-result{display:none}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.result-servicio{font-size:1rem;font-weight:800;color:var(--gold-light)}
+.result-palabras{font-size:0.75rem;color:rgba(255,255,255,0.3);background:var(--black4);border:1px solid var(--border);border-radius:20px;padding:3px 12px}
+.block{background:var(--black3);border-radius:12px;padding:16px;margin-bottom:12px}
+.block-label{font-size:0.65rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.block-label.hook{color:var(--gold)}
+.block-label.dev{color:#7adde8}
+.block-label.cta{color:#e87a7a}
+.block-text{font-size:0.9rem;line-height:1.7;color:var(--white-dim)}
+.result-actions{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.btn-copy-all{background:transparent;border:1px solid var(--border-strong);color:var(--gold);border-radius:8px;padding:8px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;flex:1}
+.btn-copy-all:hover{background:rgba(201,168,76,0.08)}
+.btn-nuevo{background:var(--black4);border:1px solid rgba(255,255,255,0.1);color:var(--white-dim);border-radius:8px;padding:8px 18px;font-size:0.85rem;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.btn-nuevo:hover{border-color:var(--border);color:var(--white)}
+/* Loading */
+.loading{display:none;text-align:center;padding:60px 20px}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{color:var(--white-dim);font-size:0.9rem}
+/* MANYCHAT SECTION */
+.manychat-section{background:var(--black3);border:1px solid var(--border-strong);border-radius:14px;padding:22px;margin-top:4px}
+.mc-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.mc-icon{width:36px;height:36px;background:linear-gradient(135deg,#5865f2,#eb459e);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mc-title{font-size:0.95rem;font-weight:800;color:var(--gold-light)}
+.mc-subtitle{font-size:0.75rem;color:rgba(255,255,255,0.4);margin-top:1px}
+.mc-steps{display:flex;flex-direction:column;gap:10px}
+.mc-step{display:flex;gap:10px;align-items:flex-start}
+.mc-num{width:22px;height:22px;border-radius:50%;background:rgba(201,168,76,0.15);border:1px solid var(--border-strong);color:var(--gold);font-size:0.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.mc-step-text{font-size:0.82rem;color:var(--white-dim);line-height:1.55}
+.mc-step-text strong{color:var(--white)}
+.mc-cta-box{background:rgba(201,168,76,0.05);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:12px}
+.mc-cta-label{font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.mc-cta-text{font-size:0.88rem;color:var(--white-dim);line-height:1.6}
+.mc-cta-text strong{color:var(--gold-light);font-size:1rem}
+.btn-copy-cta{background:transparent;border:1px solid var(--border);color:var(--gold);border-radius:6px;padding:5px 12px;font-size:0.72rem;cursor:pointer;font-family:inherit;margin-top:8px;transition:all 0.2s;display:inline-block}
+.btn-copy-cta:hover{background:rgba(201,168,76,0.08)}
+.mc-accordion{cursor:pointer;user-select:none}
+.mc-accordion-toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 0 0;font-size:0.78rem;color:rgba(255,255,255,0.4);border-top:1px solid var(--border);margin-top:12px}
+.mc-accordion-toggle:hover{color:var(--gold)}
+.mc-accordion-body{display:none;padding-top:10px}
+.mc-accordion-body.open{display:block}
+/* Flash messages */
+.flash{padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:0.85rem}
+.flash.ok{background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);color:#81c784}
+.flash.error{background:rgba(200,74,74,0.1);border:1px solid rgba(200,74,74,0.3);color:#e87a7a}
 </style>
 </head>
 <body>
-
 <header class="topbar">
-  <div class="logo-wrap">
-    <div class="logo-icon">✨</div>
-    <div>
-      <div class="logo-text">Viral<span>Salon</span></div>
-      <div class="logo-by">by Andrea Maria</div>
-    </div>
-  </div>
-  <div style="display:flex;align-items:center;gap:8px">
-    <a href="/biblioteca" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📚 Biblioteca</a>
-    <a href="/planificador" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📅 Planificador</a>
-    <a href="mailto:hola@andreamariaoficial.es" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">💬 Soporte</a>
-    <a href="/cancelar" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:0.75rem;padding:7px 12px" onmouseover="this.style.color='rgba(255,255,255,0.6)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">Cancelar</a>
-    <a href="/logout" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:0.8rem;padding:7px 12px">Salir</a>
-  </div>
+  <div class="logo">Viral<span>Salon</span></div>
+  <nav class="nav">
+    <a href="/app" class="active">✨ Generar</a>
+    <a href="/biblioteca">📚 Biblioteca</a>
+    <a href="/planificador">📅 Planificador</a>
+    <a href="/cancelar" class="nav-small">Cancelar</a>
+    <a href="mailto:hola@andreamariaoficial.es" class="nav-small">Soporte</a>
+    <a href="/logout" class="nav-small">Salir</a>
+  </nav>
 </header>
 
-<section class="hero">
-  <div class="hero-badge">✦ Metodología de Conversión Real</div>
-  <h1>Deja de preguntarte<br><span class="gold">qué publicar</span> y empieza a<br><span class="ul">convertir seguidores en clientes</span></h1>
-  <p class="hero-sub">El primer generador de guiones virales creado específicamente para salones de belleza, basado en el sistema de conversión de contenido de Andrea Maria.</p>
-  <div class="creator-card">
-    <div class="creator-avatar">👩</div>
-    <div>
-      <div class="creator-name">Andrea Maria</div>
-      <div class="creator-title">Experta en Contenido para Salones de Belleza</div>
-      <div class="creator-desc">Después de años ayudando a salones a crecer en redes sociales, he creado el único sistema de guiones que sigue una estructura de conversión probada. No más improvisar. No más dudar si tu contenido funciona. Cada guión responde la pregunta exacta que frena a tu cliente a comprar.</div>
-      <a href="https://instagram.com/andreamariaoficiaal" target="_blank" class="creator-ig">📸 @andreamariaoficiaal</a>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div style="padding:12px 28px">
+    {% for cat, msg in messages %}
+      <div class="flash {{ cat }}">{{ msg }}</div>
+    {% endfor %}
     </div>
-  </div>
-</section>
+  {% endif %}
+{% endwith %}
 
-<section class="how-section">
-  <div class="section-label">¿Cómo funciona?</div>
-  <h2 class="section-heading">Un sistema, no una herramienta más</h2>
-  <div class="steps">
-    <div class="step"><div class="step-num">01</div><h3>Identificas la pregunta clave</h3><p>Cada video responde UNA sola pregunta que frena a tu cliente a comprar. El profesional que la responde primero se lleva al cliente.</p></div>
-    <div class="step"><div class="step-num">02</div><h3>Hook que detiene el scroll</h3><p>5 tipos de hook probados. Ningún relleno. Ninguna frase innecesaria. Si no engancha en 2 segundos, el video muere.</p></div>
-    <div class="step"><div class="step-num">03</div><h3>Desarrollo que convence</h3><p>Posiciónate como experta con datos reales o conecta emocionalmente con una historia. Los dos convierten, por razones distintas.</p></div>
-    <div class="step"><div class="step-num">04</div><h3>CTA que genera citas</h3><p>"Comenta PALABRA y te mando INFO." Se automatiza con ManyChat. Comentarios → conversaciones → citas reales.</p></div>
-  </div>
-</section>
+<div class="layout">
+  <!-- PANEL FORMULARIO -->
+  <div class="panel-form">
+    <div class="form-title">✨ Genera tu guión</div>
+    <div class="form-sub">Rellena los datos de tu salón y te creo un guión viral en segundos.</div>
 
-<div class="main">
-  <div class="form-heading">
-    <h2>Crea tu guión viral</h2>
-    <p>Rellena los datos de tu salón y el sistema genera el guión perfecto para ti. Sin API Key. Sin complicaciones.</p>
-  </div>
+    <div class="field-group">
+      <label class="field-label">Nombre del salón</label>
+      <input class="field-input" id="f-nombre" type="text" placeholder="Ej: Studio Belleza María" value="{{ user.nombre_salon }}">
+    </div>
 
-  <div class="card">
-    <div class="card-title">💅 Tu salón</div>
-    <div class="form-grid">
-      <div class="form-group"><label>Nombre del salón</label><input type="text" id="nombre" placeholder="Ej: Golden Hall Beauty"></div>
-      <div class="form-group"><label>Especialidad</label>
-        <select id="especialidad">
-          <option value="">Elige tu especialidad</option>
-          <option>Peluquería</option><option>Estética y Tratamientos Faciales</option><option>Uñas y Nail Art</option><option>Cejas y Pestañas</option><option>Centro Integral de Belleza</option><option>Micropigmentación</option><option>Extensiones de Cabello</option><option>Láser y Depilación</option><option>Masajes y Spa</option><option>Maquillaje Profesional</option>
-        </select>
+    <div class="row-2">
+      <div class="field-group">
+        <label class="field-label">Especialidad</label>
+        <input class="field-input" id="f-especialidad" type="text" placeholder="Ej: peluquería, estética..." value="{{ user.especialidad or '' }}">
       </div>
-      <div class="form-group"><label>Ciudad</label><input type="text" id="ciudad" placeholder="Ej: Sevilla, Triana"></div>
-      <div class="form-group"><label>Servicio del video</label><input type="text" id="servicio" placeholder="Ej: Keratina brasileña"></div>
-      <div class="form-group full">
-        <label>¿Quién es tu cliente ideal?</label>
-        <input type="text" id="cliente_ideal" placeholder="Ej: Mujer de 30-50 años con cabello dañado que quiere un resultado duradero">
-        <div class="chips">
-          <span class="chip" onclick="sf('cliente_ideal','Mujer 25-45 años que quiere cabello liso sin plancha')">Liso sin plancha</span>
-          <span class="chip" onclick="sf('cliente_ideal','Mujer que lleva años teñiéndose y tiene el cabello muy dañado')">Cabello dañado</span>
-          <span class="chip" onclick="sf('cliente_ideal','Clienta que nunca se ha hecho uñas en gel y tiene miedo de que se dañen')">Uñas primeriza</span>
+      <div class="field-group">
+        <label class="field-label">Ciudad</label>
+        <input class="field-input" id="f-ciudad" type="text" placeholder="Ej: Madrid" value="{{ user.ciudad or '' }}">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Servicio del Reel</label>
+      <input class="field-input" id="f-servicio" type="text" placeholder="Ej: keratina, uñas de gel, extensiones...">
+      {% if servicios_sugeridos %}
+      <div class="chips-row" id="chipsRow">
+        {% for s in servicios_sugeridos %}
+        <div class="chip-sugerido" onclick="usarServicio('{{ s }}')">{{ s }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">¿Quién es tu clienta ideal?</label>
+      <input class="field-input" id="f-cliente" type="text" placeholder="Ej: mujeres de 30-45 años que quieren cuidarse">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Pregunta que le frena a pedir cita</label>
+      <input class="field-input" id="f-pregunta" type="text" placeholder="Ej: ¿cuánto dura? ¿duele? ¿es para mí?">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Tipo de hook</label>
+      <div class="options-row" id="hookOpts">
+        <button class="opt-btn selected" data-val="pregunta_directa" onclick="selOpt(this,'hookOpts')">Pregunta directa</button>
+        <button class="opt-btn" data-val="mito_destruido" onclick="selOpt(this,'hookOpts')">Mito destruido</button>
+        <button class="opt-btn" data-val="comparacion" onclick="selOpt(this,'hookOpts')">Comparación</button>
+        <button class="opt-btn" data-val="secuencia" onclick="selOpt(this,'hookOpts')">Lista / Secuencia</button>
+        <button class="opt-btn" data-val="dato_importante" onclick="selOpt(this,'hookOpts')">Dato importante</button>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Tipo de desarrollo</label>
+      <div class="options-row" id="tonoOpts">
+        <button class="opt-btn selected" data-val="directa" onclick="selOpt(this,'tonoOpts')">Directo</button>
+        <button class="opt-btn" data-val="historia_real" onclick="selOpt(this,'tonoOpts')">Historia real</button>
+        <button class="opt-btn" data-val="revelacion" onclick="selOpt(this,'tonoOpts')">Revelación</button>
+        <button class="opt-btn" data-val="inspiracional" onclick="selOpt(this,'tonoOpts')">Inspiracional</button>
+      </div>
+    </div>
+
+    <div class="row-2">
+      <div class="field-group">
+        <label class="field-label">Duración</label>
+        <div class="options-row" id="durOpts">
+          <button class="opt-btn selected" data-val="corto" onclick="selOpt(this,'durOpts')">Corto (30s)</button>
+          <button class="opt-btn" data-val="largo" onclick="selOpt(this,'durOpts')">Largo (60s)</button>
         </div>
       </div>
-      <div class="form-group full">
-        <label>❗ Pregunta que frena a tu cliente a comprar <span style="color:var(--gold);font-size:0.8em;">(LO MÁS IMPORTANTE)</span></label>
-        <input type="text" id="pregunta" placeholder="Ej: ¿La keratina estropea el cabello? ¿Duele el láser?">
-        <div class="hint">Todo el guión gira alrededor de esta pregunta. Quien la responde primero, se lleva a la clienta.</div>
-        <div class="chips">
-          <span class="chip" onclick="sf('pregunta','¿La keratina estropea el cabello?')">¿Keratina estropea?</span>
-          <span class="chip" onclick="sf('pregunta','¿Cuánto dura el tinte y cuándo tengo que repetirlo?')">¿Duración del tinte?</span>
-          <span class="chip" onclick="sf('pregunta','¿Las uñas de gel dañan la uña natural?')">¿Gel daña uñas?</span>
-          <span class="chip" onclick="sf('pregunta','¿El láser duele mucho?')">¿Duele el láser?</span>
-        </div>
+    </div>
+
+    <div class="row-2">
+      <div class="field-group">
+        <label class="field-label">Palabra CTA</label>
+        <input class="field-input" id="f-palabra" type="text" placeholder="Ej: INFO, KERATINA" value="INFO">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Qué envías</label>
+        <input class="field-input" id="f-regalo" type="text" placeholder="Ej: precios y disponibilidad" value="toda la información">
       </div>
     </div>
+
+    <button class="btn-generar" onclick="generar()">Generar guión →</button>
   </div>
 
-  <div class="card">
-    <div class="card-title">🎣 Tipo de Hook</div>
-    <p style="font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:16px;">Las primeras 1-3 frases. Si no detienen el scroll en 2 segundos, el video muere.</p>
-    <div class="hook-grid">
-      <div class="hook-opt"><input type="radio" name="hook" id="h1" value="pregunta_directa" checked><label class="hook-lbl" for="h1"><span class="hook-emoji">❓</span><span class="hook-name">Pregunta Directa</span><span class="hook-ex">"¿Cuánto dura realmente la keratina?"</span></label></div>
-      <div class="hook-opt"><input type="radio" name="hook" id="h2" value="mito_destruido"><label class="hook-lbl" for="h2"><span class="hook-emoji">💥</span><span class="hook-name">Mito Destruido</span><span class="hook-ex">"Si te han dicho que el gel destruye tus uñas, te han mentido."</span></label></div>
-      <div class="hook-opt"><input type="radio" name="hook" id="h3" value="comparacion"><label class="hook-lbl" for="h3"><span class="hook-emoji">⚖️</span><span class="hook-name">Comparación</span><span class="hook-ex">"¿Qué es mejor, keratina o alisado japonés?"</span></label></div>
-      <div class="hook-opt"><input type="radio" name="hook" id="h4" value="secuencia"><label class="hook-lbl" for="h4"><span class="hook-emoji">📋</span><span class="hook-name">Secuencia</span><span class="hook-ex">"3 cosas que nadie te cuenta antes de hacerte extensiones."</span></label></div>
-      <div class="hook-opt"><input type="radio" name="hook" id="h5" value="dato_importante"><label class="hook-lbl" for="h5"><span class="hook-emoji">⚠️</span><span class="hook-name">Dato Importante</span><span class="hook-ex">"Si tienes el cabello teñido, no puedes hacerte esto sin antes..."</span></label></div>
+  <!-- PANEL RESULTADO -->
+  <div class="panel-result">
+    <div class="result-placeholder" id="placeholder">
+      <div class="big">✨</div>
+      <p>Rellena los datos de la izquierda<br>y aquí aparecerá tu guión viral.</p>
     </div>
-  </div>
 
-  <div class="card">
-    <div class="card-title">🎭 Tono del vídeo</div>
-    <p style="font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:16px;">¿Cómo quieres conectar con tu clienta en este vídeo?</p>
-    <div class="hook-grid" style="grid-template-columns:repeat(auto-fit,minmax(175px,1fr))">
-      <div class="hook-opt"><input type="radio" name="tono" id="t1" value="historia_real" checked><label class="hook-lbl" for="t1"><span class="hook-emoji">❤️</span><span class="hook-name">Historia Real</span><span class="hook-ex">"El otro día vino Sara diciéndome que..."  Que quien lo vea piense: eso me pasa a mí.</span></label></div>
-      <div class="hook-opt"><input type="radio" name="tono" id="t2" value="directa"><label class="hook-lbl" for="t2"><span class="hook-emoji">💬</span><span class="hook-name">Directa y clara</span><span class="hook-ex">Responde la duda sin rodeos, como si se lo explicaras a una amiga en un café.</span></label></div>
-      <div class="hook-opt"><input type="radio" name="tono" id="t3" value="revelacion"><label class="hook-lbl" for="t3"><span class="hook-emoji">🔓</span><span class="hook-name">Revelación</span><span class="hook-ex">"Lo que nadie te cuenta sobre..." Genera curiosidad y te posiciona como la que sabe.</span></label></div>
-      <div class="hook-opt"><input type="radio" name="tono" id="t4" value="inspiracional"><label class="hook-lbl" for="t4"><span class="hook-emoji">✨</span><span class="hook-name">Inspiracional</span><span class="hook-ex">Que la clienta se imagine ya con el resultado. Conecta con el deseo, no con el miedo.</span></label></div>
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Creando tu guión...</p>
     </div>
-  </div>
 
-  <div class="card">
-    <div class="card-title">⏱️ Duración del vídeo</div>
-    <div class="dev-grid">
-      <div class="dev-opt"><input type="radio" name="duracion" id="dur1" value="corto" checked><label class="dev-lbl" for="dur1"><span class="dev-icon">⚡</span><span class="dev-name">Corto</span><span class="dev-desc">30-40 segundos. Directo al grano. Máximo impacto en el menor tiempo posible.</span></label></div>
-      <div class="dev-opt"><input type="radio" name="duracion" id="dur2" value="largo"><label class="dev-lbl" for="dur2"><span class="dev-icon">🎬</span><span class="dev-name">Largo</span><span class="dev-desc">Unos 60 segundos. Más desarrollo, más historia, más información para convencer.</span></label></div>
-    </div>
-  </div>
+    <div class="script-result" id="result">
+      <div class="result-header">
+        <span class="result-servicio" id="r-servicio"></span>
+        <span class="result-palabras" id="r-palabras"></span>
+      </div>
 
-  <div class="card">
-    <div class="card-title">🎯 CTA para ManyChat</div>
-    <div class="form-grid">
-      <div class="form-group"><label>Palabra clave</label><input type="text" id="palabra_cta" placeholder="Ej: CITA, INFO, REGALO"><div class="chips"><span class="chip" onclick="sf('palabra_cta','CITA')">CITA</span><span class="chip" onclick="sf('palabra_cta','INFO')">INFO</span><span class="chip" onclick="sf('palabra_cta','GRATIS')">GRATIS</span><span class="chip" onclick="sf('palabra_cta','GUIA')">GUIA</span></div></div>
-      <div class="form-group"><label>¿Qué envías a cambio?</label><input type="text" id="regalo" placeholder="Ej: la lista de precios, una guía"><div class="chips"><span class="chip" onclick="sf('regalo','los precios y disponibilidad')">Precios</span><span class="chip" onclick="sf('regalo','una guía de cuidados posterior')">Guía cuidados</span><span class="chip" onclick="sf('regalo','un 20% de descuento')">Descuento</span></div></div>
-    </div>
-  </div>
+      <div class="block">
+        <div class="block-label hook">🎯 HOOK</div>
+        <div class="block-text" id="r-hook"></div>
+      </div>
+      <div class="block">
+        <div class="block-label dev">💬 DESARROLLO</div>
+        <div class="block-text" id="r-dev"></div>
+      </div>
+      <div class="block">
+        <div class="block-label cta">📣 CTA</div>
+        <div class="block-text" id="r-cta"></div>
+      </div>
 
-  <button class="btn-gen" id="btn-gen" onclick="generar()">✨ Generar mi Guión Viral</button>
-  <div class="error-msg" id="err"></div>
+      <div class="result-actions">
+        <button class="btn-copy-all" onclick="copiarTodo()">📋 Copiar guión completo</button>
+        <button class="btn-nuevo" onclick="nuevoGuion()">+ Nuevo</button>
+      </div>
 
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-    <p>Creando tu guión viral...</p>
-    <p class="sub">Analizando la pregunta que frena a tu cliente ideal</p>
-  </div>
+      <!-- SECCIÓN MANYCHAT -->
+      <div class="manychat-section" id="manychatSection">
+        <div class="mc-header">
+          <div class="mc-icon">🤖</div>
+          <div>
+            <div class="mc-title">Automatiza con ManyChat</div>
+            <div class="mc-subtitle">Convierte comentarios en citas automáticamente</div>
+          </div>
+        </div>
 
-  <div class="result card" id="result">
-    <div class="result-top">
-      <div class="result-title"><span class="success-dot"></span> Tu Guión Viral está listo</div>
-      <button class="btn-copy-all" onclick="copiarTodo()">📋 Copiar todo</button>
+        <div class="mc-cta-box">
+          <div class="mc-cta-label">✦ Mensaje que configurarás en ManyChat</div>
+          <div class="mc-cta-text" id="mcMensaje">Carga un guión para ver el mensaje</div>
+          <button class="btn-copy-cta" onclick="copiarMensajeMC()">📋 Copiar mensaje</button>
+        </div>
+
+        <div class="mc-steps">
+          <div class="mc-step">
+            <div class="mc-num">1</div>
+            <div class="mc-step-text"><strong>Graba y sube tu Reel</strong> con el guión que acabas de generar. Di en el vídeo: <em>"Comenta <span class='mc-keyword'>[PALABRA]</span> y te mando la info."</em></div>
+          </div>
+          <div class="mc-step">
+            <div class="mc-num">2</div>
+            <div class="mc-step-text"><strong>Abre ManyChat</strong> (manychat.com) y conecta tu cuenta de Instagram. Es gratis hasta 1.000 contactos.</div>
+          </div>
+          <div class="mc-step">
+            <div class="mc-num">3</div>
+            <div class="mc-step-text"><strong>Crea una automatización:</strong> cuando alguien comente <strong class="mc-keyword">[PALABRA]</strong> en tu publicación, ManyChat le envía un DM automático con el enlace de tu Google Drive.</div>
+          </div>
+          <div class="mc-step">
+            <div class="mc-num">4</div>
+            <div class="mc-step-text"><strong>Prepara tu documento de Google Drive</strong> con tus precios y servicios. Clic derecho → Compartir → "Cualquiera con el enlace puede ver" → Copia el enlace y pégalo en ManyChat.</div>
+          </div>
+        </div>
+
+        <!-- Sección expandible con más detalle de configuración ManyChat -->
+        <div class="mc-accordion-toggle" onclick="toggleMcDetalle()">
+          <span>¿Cómo configuro exactamente la automatización en ManyChat?</span>
+          <span id="mcArrow">▾</span>
+        </div>
+        <div class="mc-accordion-body" id="mcDetalle">
+          <div class="mc-steps">
+            <div class="mc-step">
+              <div class="mc-num">a</div>
+              <div class="mc-step-text">En ManyChat ve a <strong>Automatizaciones → Nueva regla → Comentarios de Instagram</strong>.</div>
+            </div>
+            <div class="mc-step">
+              <div class="mc-num">b</div>
+              <div class="mc-step-text">En "Palabras clave" escribe <strong class="mc-keyword" id="mcKeywordDetalle">[PALABRA]</strong>. Pon también variantes (minúsculas, con tilde si la tiene).</div>
+            </div>
+            <div class="mc-step">
+              <div class="mc-num">c</div>
+              <div class="mc-step-text">En la acción, elige <strong>"Enviar DM"</strong> y escribe el mensaje que copias arriba. Donde pone [ENLACE], pega el link de tu Google Drive.</div>
+            </div>
+            <div class="mc-step">
+              <div class="mc-num">d</div>
+              <div class="mc-step-text">Activa la automatización. Desde ese momento, <strong>cada persona que comente esa palabra recibe el DM al instante</strong> — aunque sea de madrugada.</div>
+            </div>
+            <div class="mc-step">
+              <div class="mc-num">e</div>
+              <div class="mc-step-text">El resultado: el vídeo acumula comentarios (le gusta al algoritmo), y tú tienes leads calientes en tu bandeja de entrada sin hacer nada.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <div class="script-block block-hook" id="blk-hook">
-      <div class="block-header">🎣 Hook<button class="btn-copy" onclick="copiarBloque('blk-hook')">Copiar</button></div>
-      <div class="block-body" id="txt-hook"></div>
-    </div>
-    <div class="script-block block-dev" id="blk-dev">
-      <div class="block-header">📖 Desarrollo<button class="btn-copy" onclick="copiarBloque('blk-dev')">Copiar</button></div>
-      <div class="block-body" id="txt-dev"></div>
-    </div>
-    <div class="script-block block-cta" id="blk-cta">
-      <div class="block-header">🎯 CTA<button class="btn-copy" onclick="copiarBloque('blk-cta')">Copiar</button></div>
-      <div class="block-body" id="txt-cta"></div>
-    </div>
-    <div class="metrics" id="metrics"></div>
-    <button class="btn-regen" onclick="generar()">🔄 Generar otra versión</button>
   </div>
 </div>
 
-<footer class="footer">
-  <div class="footer-logo">Viral<span>Salon</span></div>
-  <div class="footer-credit">Creado por <strong>Andrea Maria</strong> — Experta en Contenido para Salones de Belleza</div>
-  <a href="https://instagram.com/andreamariaoficiaal" target="_blank" class="footer-ig">📸 @andreamariaoficiaal</a>
-  <div class="footer-line"></div>
-  <div class="footer-copy">¿Tienes alguna duda? Escríbenos a hola@andreamariaoficial.es ·Sistema Hook + Desarrollo + CTA para ManyChat · Diseñado para convertir contenido en citas reales</div>
-</footer>
-
 <script>
-function sf(id,val){document.getElementById(id).value=val}
-function gv(id){return document.getElementById(id).value.trim()}
-function gr(name){return document.querySelector(`input[name="${name}"]:checked`)?.value||''}
+// ─── VARIABLES GLOBALES ──────────────────────────────────────────────────────
+let ultimaRespuesta = null;
 
-async function generar(){
-  const data={
-    nombre:gv('nombre'), especialidad:gv('especialidad'), ciudad:gv('ciudad'),
-    servicio:gv('servicio'), cliente_ideal:gv('cliente_ideal'), pregunta:gv('pregunta'),
-    hook:gr('hook'), tono:gr('tono'), duracion:gr('duracion'),
-    palabra_cta:gv('palabra_cta'), regalo:gv('regalo')
-  };
-  document.getElementById('err').style.display='none';
-  if(!data.especialidad) return err('Elige tu especialidad.');
-  if(!data.servicio) return err('Escribe el servicio del video.');
-  if(!data.cliente_ideal) return err('Describe a tu cliente ideal.');
-  if(!data.pregunta) return err('La pregunta que frena a tu cliente es lo más importante.');
-  if(!data.palabra_cta) return err('Escribe la palabra clave para ManyChat.');
-  if(!data.regalo) return err('¿Qué envías a la clienta que comenta?');
-
-  document.getElementById('btn-gen').disabled=true;
-  document.getElementById('loading').style.display='block';
-  document.getElementById('result').style.display='none';
-
-  try{
-    const res=await fetch('/generar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
-    const json=await res.json();
-    if(json.error) throw new Error(json.error);
-    document.getElementById('txt-hook').textContent=json.hook;
-    document.getElementById('txt-dev').textContent=json.desarrollo;
-    document.getElementById('txt-cta').textContent=json.cta;
-    const secs=Math.round(json.palabras/2.5);
-    document.getElementById('metrics').innerHTML=`
-      <div class="metric"><div class="metric-val">${json.palabras}</div><div class="metric-lbl">Palabras</div></div>
-      <div class="metric"><div class="metric-val">3</div><div class="metric-lbl">Secciones</div></div>
-      <div class="metric"><div class="metric-val">~${secs}s</div><div class="metric-lbl">Duración Reel</div></div>`;
-    document.getElementById('result').style.display='block';
-    document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
-  }catch(e){err('Error: '+e.message)}
-  finally{document.getElementById('btn-gen').disabled=false;document.getElementById('loading').style.display='none';}
+// ─── HELPERS UI ──────────────────────────────────────────────────────────────
+function selOpt(btn, groupId) {
+  document.querySelectorAll(`#${groupId} .opt-btn`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+function getOpt(groupId) {
+  const sel = document.querySelector(`#${groupId} .opt-btn.selected`);
+  return sel ? sel.dataset.val : '';
+}
+function usarServicio(s) {
+  document.getElementById('f-servicio').value = s;
 }
 
-function err(msg){
-  document.getElementById('btn-gen').disabled=false;
-  document.getElementById('loading').style.display='none';
-  const el=document.getElementById('err');
-  el.textContent='⚠️ '+msg; el.style.display='block';
-  el.scrollIntoView({behavior:'smooth'});
+// ─── GENERAR ─────────────────────────────────────────────────────────────────
+async function generar() {
+  const btn = document.querySelector('.btn-generar');
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const especialidad = document.getElementById('f-especialidad').value.trim();
+  const ciudad = document.getElementById('f-ciudad').value.trim();
+  const servicio = document.getElementById('f-servicio').value.trim();
+  const cliente = document.getElementById('f-cliente').value.trim();
+  const pregunta = document.getElementById('f-pregunta').value.trim();
+  const palabra = document.getElementById('f-palabra').value.trim() || 'INFO';
+  const regalo = document.getElementById('f-regalo').value.trim() || 'toda la información';
+
+  if (!especialidad || !servicio || !cliente || !pregunta) {
+    alert('Por favor rellena todos los campos obligatorios.');
+    return;
+  }
+
+  btn.disabled = true;
+  document.getElementById('placeholder').style.display = 'none';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+
+  try {
+    const r = await fetch('/generar', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        nombre, especialidad, ciudad, servicio, cliente_ideal: cliente,
+        pregunta, hook: getOpt('hookOpts'), tono: getOpt('tonoOpts'),
+        duracion: getOpt('durOpts'), palabra_cta: palabra, regalo
+      })
+    });
+    const data = await r.json();
+
+    if (data.error) {
+      alert('Error: ' + data.error);
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('placeholder').style.display = 'block';
+      btn.disabled = false;
+      return;
+    }
+
+    ultimaRespuesta = data;
+    mostrarResultado(data);
+  } catch(e) {
+    alert('Error de conexión. Inténtalo de nuevo.');
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('placeholder').style.display = 'block';
+  }
+  btn.disabled = false;
 }
-function copiarBloque(id){
-  const b=document.querySelector(`#${id} .block-body`);
-  if(!b)return;
-  navigator.clipboard.writeText(b.textContent.trim());
-  const btn=document.querySelector(`#${id} .btn-copy`);
-  const o=btn.textContent; btn.textContent='✓';
-  setTimeout(()=>btn.textContent=o,1500);
+
+function mostrarResultado(data) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+
+  document.getElementById('r-servicio').textContent = data.servicio || '';
+  document.getElementById('r-palabras').textContent = (data.palabras || 0) + ' palabras';
+  document.getElementById('r-hook').textContent = data.hook || '';
+  document.getElementById('r-dev').textContent = data.desarrollo || '';
+  document.getElementById('r-cta').textContent = data.cta || '';
+
+  // Actualizar sección ManyChat
+  const palabra = data.palabra_cta || 'INFO';
+  const servicio = data.servicio || 'el servicio';
+
+  // Actualizar keywords en la UI
+  document.querySelectorAll('.mc-keyword').forEach(el => {
+    el.textContent = palabra;
+  });
+  document.getElementById('mcKeywordDetalle').textContent = palabra;
+
+  // Mensaje sugerido para ManyChat
+  const mensaje = `Hola! 👋 Gracias por comentar ${palabra}.\n\nAquí tienes toda la información sobre ${servicio} que te prometí: [ENLACE]\n\nSi tienes cualquier pregunta, escríbeme directamente y te ayudo 😊`;
+  document.getElementById('mcMensaje').textContent = mensaje;
 }
-function copiarTodo(){
-  const h=document.getElementById('txt-hook').textContent.trim();
-  const d=document.getElementById('txt-dev').textContent.trim();
-  const c=document.getElementById('txt-cta').textContent.trim();
-  navigator.clipboard.writeText(`HOOK\n${h}\n\nDESARROLLO\n${d}\n\nCTA\n${c}`);
-  const btn=document.querySelector('.btn-copy-all');
-  btn.textContent='✓ Copiado';
-  setTimeout(()=>btn.textContent='📋 Copiar todo',2000);
+
+function copiarTodo() {
+  if (!ultimaRespuesta) return;
+  const txt = `HOOK\n${ultimaRespuesta.hook}\n\nDESARROLLO\n${ultimaRespuesta.desarrollo}\n\nCTA\n${ultimaRespuesta.cta}`;
+  navigator.clipboard.writeText(txt);
+  const btn = document.querySelector('.btn-copy-all');
+  btn.textContent = '✓ Copiado';
+  setTimeout(() => btn.textContent = '📋 Copiar guión completo', 1500);
+}
+
+function copiarMensajeMC() {
+  const msg = document.getElementById('mcMensaje').textContent;
+  navigator.clipboard.writeText(msg);
+  const btn = document.querySelector('.btn-copy-cta');
+  btn.textContent = '✓ Copiado';
+  setTimeout(() => btn.textContent = '📋 Copiar mensaje', 1500);
+}
+
+function nuevoGuion() {
+  ultimaRespuesta = null;
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('placeholder').style.display = 'block';
+  document.getElementById('f-servicio').value = '';
+  document.getElementById('f-cliente').value = '';
+  document.getElementById('f-pregunta').value = '';
+}
+
+function toggleMcDetalle() {
+  const body = document.getElementById('mcDetalle');
+  const arrow = document.getElementById('mcArrow');
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▴' : '▾';
 }
 </script>
 </body>
