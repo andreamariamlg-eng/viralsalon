@@ -436,6 +436,13 @@ def planificador():
     guiones = Guion.query.filter_by(user_id=current_user.id).order_by(Guion.creado.desc()).all()
     return render_template("planificador.html", guiones=guiones, user=current_user)
 
+@app.route("/manychat")
+@login_required
+def manychat():
+    if not current_user.puede_acceder():
+        return redirect(url_for("suscripcion_caducada"))
+    return render_template("manychat.html", user=current_user)
+
 @app.route("/guion/<int:guion_id>/publicar", methods=["POST"])
 @login_required
 def marcar_publicado(guion_id):
