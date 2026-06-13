@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recuperar contraseña — ViralSalon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#C9A84C;--gold-light:#E8CB7A;--gold-dark:#8a6c28;--black:#000;--black3:#141414;--black4:#1E1E1E;--white:#FFF;--white-dim:rgba(255,255,255,0.7);--border:rgba(201,168,76,0.2)}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--black);color:var(--white);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.logo{font-size:1.8rem;font-weight:900;margin-bottom:8px;text-align:center}
+.logo span{color:var(--gold)}
+.logo-sub{font-size:0.8rem;color:var(--white-dim);text-align:center;margin-bottom:40px}
+.card{background:var(--black3);border:1px solid var(--border);border-radius:16px;padding:36px;width:100%;max-width:440px}
+.card h2{font-size:1.3rem;font-weight:800;margin-bottom:8px}
+.card p{font-size:0.88rem;color:var(--white-dim);margin-bottom:24px;line-height:1.6}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+label{font-size:0.73rem;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px}
+input{background:var(--black4);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:var(--white);padding:12px 14px;font-size:0.95rem;font-family:inherit;width:100%;transition:border-color 0.2s}
+input:focus{outline:none;border-color:var(--gold);background:#1a1500}
+.btn{width:100%;background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark));color:#000;border:none;border-radius:10px;padding:14px;font-size:1rem;font-weight:900;cursor:pointer;font-family:inherit}
+.btn:hover{opacity:0.9}
+.link{text-align:center;margin-top:20px;font-size:0.85rem;color:var(--white-dim)}
+.link a{color:var(--gold);text-decoration:none;font-weight:700}
+.alert-ok{background:#041208;border:1px solid rgba(74,200,120,0.3);border-radius:8px;padding:12px 16px;color:#7ae8a8;margin-bottom:16px;font-size:0.88rem}
+.alert-error{background:#120404;border:1px solid rgba(200,74,74,0.3);border-radius:8px;padding:12px 16px;color:#e87a7a;margin-bottom:16px;font-size:0.88rem}
+</style>
+</head>
+<body>
+<div class="logo">Viral<span>Salon</span></div>
+<div class="logo-sub">by Andrea Maria</div>
+<div class="card">
+  <h2>¿Olvidaste tu contraseña?</h2>
+  <p>Escribe tu email y te enviamos un enlace para crear una contraseña nueva.</p>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in messages %}
+      <div class="alert-{{ cat }}">{{ msg }}</div>
+    {% endfor %}
+  {% endwith %}
+  <form method="POST">
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" name="email" placeholder="tu@email.com" required>
+    </div>
+    <button type="submit" class="btn">Enviar enlace →</button>
+  </form>
+  <div class="link"><a href="/login">← Volver al inicio de sesión</a></div>
+</div>
+</body>
+</html>
