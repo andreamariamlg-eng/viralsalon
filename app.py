@@ -38,10 +38,24 @@ class User(UserMixin, db.Model):
     subscription_status = db.Column(db.String(50), default="none")
     reset_token = db.Column(db.String(100), nullable=True)
     reset_token_expiry = db.Column(db.DateTime, nullable=True)
+    # Onboarding
+    tipo_negocio = db.Column(db.String(100), nullable=True)
+    servicios_propios = db.Column(db.Text, nullable=True)  # JSON lista de servicios
+    onboarding_completo = db.Column(db.Boolean, default=False)
     guiones = db.relationship('Guion', backref='autor', lazy=True)
 
     def puede_acceder(self):
         return self.subscription_status in ['active', 'trialing']
+
+    def get_servicios_lista(self):
+        """Devuelve la lista de servicios propios como lista Python."""
+        if not self.servicios_propios:
+            return []
+        import json
+        try:
+            return json.loads(self.servicios_propios)
+        except Exception:
+            return []
 
 class Guion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -57,6 +71,11 @@ class Guion(db.Model):
     fecha_publicacion = db.Column(db.Date, nullable=True)
     notas = db.Column(db.Text, nullable=True)
     creado = db.Column(db.DateTime, default=datetime.utcnow)
+    # Métricas
+    views = db.Column(db.Integer, nullable=True)
+    comentarios = db.Column(db.Integer, nullable=True)
+    guardados = db.Column(db.Integer, nullable=True)
+    compartidos = db.Column(db.Integer, nullable=True)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -245,13 +264,14 @@ def registro():
             especialidad=especialidad,
             ciudad=ciudad,
             stripe_customer_id=customer_id,
-            subscription_status=status
+            subscription_status=status,
+            onboarding_completo=False
         )
         db.session.add(user)
         db.session.commit()
         enviar_bienvenida(user)
         login_user(user)
-        return redirect(url_for("generador"))
+        return redirect(url_for("onboarding"))  # Primera vez → onboarding
 
     return render_template("registro.html")
 
@@ -279,6 +299,9 @@ def login():
         if not user.puede_acceder():
             flash("Tu suscripción ha caducado. Renuévala para continuar.", "error")
             return redirect(url_for("suscripcion_caducada"))
+        # Si no ha completado el onboarding, mandarlo ahí
+        if not user.onboarding_completo:
+            return redirect(url_for("onboarding"))
         return redirect(url_for("generador"))
     return render_template("login.html")
 
@@ -361,6 +384,26 @@ def stripe_webhook():
 
     return jsonify({"ok": True})
 
+# ── ONBOARDING ────────────────────────────────────────────────────────────────
+
+@app.route("/onboarding", methods=["GET", "POST"])
+@login_required
+def onboarding():
+    if not current_user.puede_acceder():
+        return redirect(url_for("suscripcion_caducada"))
+    if request.method == "POST":
+        import json
+        tipo = request.form.get("tipo_negocio", "").strip()
+        servicios = request.form.getlist("servicios")
+        if tipo:
+            current_user.tipo_negocio = tipo
+        if servicios:
+            current_user.servicios_propios = json.dumps(servicios)
+        current_user.onboarding_completo = True
+        db.session.commit()
+        return redirect(url_for("generador"))
+    return render_template("onboarding.html", user=current_user)
+
 # ── RUTAS PRINCIPALES ─────────────────────────────────────────────────────────
 
 @app.route("/")
@@ -374,7 +417,8 @@ def landing():
 def generador():
     if not current_user.puede_acceder():
         return redirect(url_for("suscripcion_caducada"))
-    return render_template("index.html", user=current_user)
+    servicios_lista = current_user.get_servicios_lista()
+    return render_template("index.html", user=current_user, servicios_sugeridos=servicios_lista)
 
 @app.route("/biblioteca")
 @login_required
@@ -402,6 +446,22 @@ def marcar_publicado(guion_id):
     if fecha:
         guion.fecha_publicacion = datetime.strptime(fecha, "%Y-%m-%d").date()
     guion.notas = data.get("notas", guion.notas)
+    db.session.commit()
+    return jsonify({"ok": True})
+
+@app.route("/guion/<int:guion_id>/metricas", methods=["POST"])
+@login_required
+def guardar_metricas(guion_id):
+    guion = Guion.query.filter_by(id=guion_id, user_id=current_user.id).first_or_404()
+    data = request.json
+    if data.get("views") is not None:
+        guion.views = int(data["views"]) if data["views"] != "" else None
+    if data.get("comentarios") is not None:
+        guion.comentarios = int(data["comentarios"]) if data["comentarios"] != "" else None
+    if data.get("guardados") is not None:
+        guion.guardados = int(data["guardados"]) if data["guardados"] != "" else None
+    if data.get("compartidos") is not None:
+        guion.compartidos = int(data["compartidos"]) if data["compartidos"] != "" else None
     db.session.commit()
     return jsonify({"ok": True})
 
@@ -536,7 +596,9 @@ REGLAS QUE NO SE PUEDEN ROMPER:
             "desarrollo": dev_txt,
             "cta": cta_txt,
             "palabras": palabras,
-            "guion_id": guion.id
+            "guion_id": guion.id,
+            "palabra_cta": palabra,
+            "servicio": servicio
         })
 
     except Exception as e:
