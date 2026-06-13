@@ -33,8 +33,11 @@ select option{background:#1a1a1a}
 <div class="logo">Viral<span>Salon</span></div>
 <div class="logo-sub">by Andrea Maria</div>
 <div class="card">
-  <h2>Crear cuenta gratis</h2>
-  <p>Empieza a generar guiones virales para tu salón hoy mismo.</p>
+  <h2>Crear tu cuenta</h2>
+  <p>Usa el mismo email con el que iniciaste tu prueba gratuita en Stripe.</p>
+  <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:0.82rem;color:var(--gold-light)">
+    ⚠️ Para crear tu cuenta necesitas haber activado tu suscripción. ¿Aún no lo has hecho? <a href="https://buy.stripe.com/5kQdRbal4fnp0Fs7Cbbsc00" style="color:var(--gold);font-weight:700" target="_blank">Empieza aquí →</a>
+  </div>
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% for cat, msg in messages %}
       <div class="alert">{{ msg }}</div>
@@ -76,7 +79,7 @@ select option{background:#1a1a1a}
         <input type="text" name="ciudad" placeholder="Sevilla">
       </div>
     </div>
-    <button type="submit" class="btn">Crear mi cuenta gratis</button>
+    <button type="submit" class="btn">Crear mi cuenta →</button>
   </form>
   <div class="link">¿Ya tienes cuenta? <a href="/login">Entrar</a></div>
 </div>
