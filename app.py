@@ -1,7 +1,11 @@
 import os
 import re
 import stripe
-from datetime import datetime
+import secrets
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime, timedelta
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
@@ -33,6 +37,8 @@ class User(UserMixin, db.Model):
     creado = db.Column(db.DateTime, default=datetime.utcnow)
     stripe_customer_id = db.Column(db.String(120), nullable=True)
     subscription_status = db.Column(db.String(50), default="none")
+    reset_token = db.Column(db.String(100), nullable=True)
+    reset_token_expiry = db.Column(db.DateTime, nullable=True)
     guiones = db.relationship('Guion', backref='autor', lazy=True)
 
     def puede_acceder(self):
@@ -85,6 +91,103 @@ TONOS = {
         "con_nombre": False
     }
 }
+
+# ── HELPER EMAIL ─────────────────────────────────────────────────────────────
+
+GMAIL_USER = os.environ.get("GMAIL_USER", "")
+GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD", "")
+
+def enviar_email(destinatario, asunto, cuerpo_html):
+    """Envía un email usando Gmail SMTP."""
+    if not GMAIL_USER or not GMAIL_APP_PASSWORD:
+        return False
+    try:
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = asunto
+        msg["From"] = f"ViralSalon <{GMAIL_USER}>"
+        msg["To"] = destinatario
+        msg.attach(MIMEText(cuerpo_html, "html"))
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+            server.sendmail(GMAIL_USER, destinatario, msg.as_string())
+        return True
+    except Exception:
+        return False
+
+def enviar_bienvenida(user):
+    asunto = "Ya eres parte de ViralSalon 🖤"
+    cuerpo = f"""
+    <div style="font-family:Arial,sans-serif;background:#0a0a0a;color:#fff;padding:48px 40px;max-width:580px;margin:0 auto;border-radius:16px;">
+      <p style="color:#C9A84C;font-size:0.8rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:32px;">ViralSalon · by Andrea Maria</p>
+
+      <h2 style="font-size:1.6rem;font-weight:900;margin-bottom:20px;line-height:1.3;">
+        ¡Bienvenida, {user.nombre_salon}! 🥂
+      </h2>
+
+      <p style="color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:16px;font-size:0.97rem;">
+        Hola, soy Andrea. Quería escribirte yo personalmente para decirte una cosa:
+        <strong>me alegra muchísimo que estés aquí.</strong>
+      </p>
+
+      <p style="color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:16px;font-size:0.97rem;">
+        Sé lo que es tener un salón lleno de talento y no saber cómo contarlo en redes.
+        Sé lo que es grabarte un vídeo, subirlo y que no pase nada. Esa sensación de
+        "¿para qué sirve esto?" la he vivido yo también.
+      </p>
+
+      <p style="color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:24px;font-size:0.97rem;">
+        Por eso creé ViralSalon. Para que en dos minutos tengas un guión que suena de
+        verdad, que conecta con tus clientas, y que les da ganas de pedir cita.
+        <strong>Sin complicarte la vida.</strong>
+      </p>
+
+      <p style="color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:32px;font-size:0.97rem;">
+        Ya tienes todo listo. Entra, elige tu servicio y genera tu primer guión ahora:
+      </p>
+
+      <a href="https://viralsalon.andreamariaoficial.es/app"
+         style="display:inline-block;background:linear-gradient(135deg,#E8CB7A,#C9A84C,#8a6c28);color:#000;padding:16px 32px;border-radius:12px;font-weight:900;text-decoration:none;font-size:1rem;">
+        Crear mi primer guión →
+      </a>
+
+      <div style="margin-top:40px;padding-top:24px;border-top:1px solid rgba(201,168,76,0.2);">
+        <p style="color:rgba(255,255,255,0.7);line-height:1.7;font-size:0.9rem;margin-bottom:8px;">
+          Un abrazo enorme,
+        </p>
+        <p style="color:#C9A84C;font-weight:900;font-size:1rem;margin:0;">Andrea Maria</p>
+        <p style="color:rgba(255,255,255,0.4);font-size:0.8rem;margin-top:4px;">Fundadora de ViralSalon</p>
+      </div>
+
+      <p style="color:rgba(255,255,255,0.25);font-size:0.75rem;margin-top:32px;">
+        ¿Tienes alguna duda? Responde a este email y te ayudo personalmente.
+      </p>
+    </div>
+    """
+    enviar_email(user.email, asunto, cuerpo)
+
+def enviar_reset_password(user, token):
+    link = f"https://viralsalon.andreamariaoficial.es/reset/{token}"
+    asunto = "Recuperar contraseña — ViralSalon"
+    cuerpo = f"""
+    <div style="font-family:Arial,sans-serif;background:#000;color:#fff;padding:40px;max-width:600px;margin:0 auto;">
+      <h1 style="color:#C9A84C;font-size:2rem;margin-bottom:8px;">ViralSalon</h1>
+      <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-bottom:32px;">by Andrea Maria</p>
+      <h2 style="font-size:1.4rem;margin-bottom:16px;">Recuperar contraseña</h2>
+      <p style="color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:20px;">
+        Hemos recibido una solicitud para restablecer la contraseña de tu cuenta.<br><br>
+        Haz clic en el botón de abajo. El enlace caduca en <strong>1 hora</strong>.
+      </p>
+      <a href="{link}"
+         style="display:inline-block;background:linear-gradient(135deg,#E8CB7A,#C9A84C,#8a6c28);color:#000;padding:14px 28px;border-radius:10px;font-weight:900;text-decoration:none;font-size:1rem;">
+        Cambiar contraseña →
+      </a>
+      <p style="color:rgba(255,255,255,0.4);font-size:0.8rem;margin-top:32px;">
+        Si no solicitaste esto, ignora este email.<br>
+        ViralSalon · by Andrea Maria
+      </p>
+    </div>
+    """
+    enviar_email(user.email, asunto, cuerpo)
 
 # ── HELPER STRIPE ─────────────────────────────────────────────────────────────
 
@@ -142,6 +245,7 @@ def registro():
         )
         db.session.add(user)
         db.session.commit()
+        enviar_bienvenida(user)
         login_user(user)
         return redirect(url_for("generador"))
 
@@ -183,6 +287,45 @@ def logout():
 @app.route("/suscripcion-caducada")
 def suscripcion_caducada():
     return render_template("suscripcion_caducada.html")
+
+@app.route("/olvide-contrasena", methods=["GET", "POST"])
+def olvide_contrasena():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = secrets.token_urlsafe(32)
+            user.reset_token = token
+            user.reset_token_expiry = datetime.utcnow() + timedelta(hours=1)
+            db.session.commit()
+            enviar_reset_password(user, token)
+        # Siempre mostramos el mismo mensaje por seguridad
+        flash("Si ese email está registrado, recibirás un enlace en unos minutos.", "ok")
+        return redirect(url_for("olvide_contrasena"))
+    return render_template("olvide_contrasena.html")
+
+@app.route("/reset/<token>", methods=["GET", "POST"])
+def reset_contrasena(token):
+    user = User.query.filter_by(reset_token=token).first()
+    if not user or not user.reset_token_expiry or user.reset_token_expiry < datetime.utcnow():
+        flash("El enlace no es válido o ha caducado.", "error")
+        return redirect(url_for("login"))
+    if request.method == "POST":
+        nueva = request.form.get("password", "")
+        confirmar = request.form.get("confirmar", "")
+        if len(nueva) < 8:
+            flash("La contraseña debe tener al menos 8 caracteres.", "error")
+            return redirect(url_for("reset_contrasena", token=token))
+        if nueva != confirmar:
+            flash("Las contraseñas no coinciden.", "error")
+            return redirect(url_for("reset_contrasena", token=token))
+        user.password = generate_password_hash(nueva)
+        user.reset_token = None
+        user.reset_token_expiry = None
+        db.session.commit()
+        flash("Contraseña cambiada. Ya puedes iniciar sesión.", "ok")
+        return redirect(url_for("login"))
+    return render_template("reset_contrasena.html", token=token)
 
 # ── WEBHOOK STRIPE ────────────────────────────────────────────────────────────
 
@@ -356,7 +499,7 @@ REGLAS QUE NO SE PUEDEN ROMPER:
 
     try:
         response = client.messages.create(
-            model="claude-sonnet-4-6",
+            model="claude-haiku-4-5-20251001",
             max_tokens=600,
             messages=[{"role": "user", "content": prompt}]
         )
