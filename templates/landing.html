@@ -23,7 +23,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(0,0,0,0.85);
 .nav-links a:hover{color:var(--gold)}
 .btn-nav{background:linear-gradient(135deg,var(--gold-light),var(--gold));color:#000;border:none;border-radius:8px;padding:9px 20px;font-size:0.88rem;font-weight:800;cursor:pointer;text-decoration:none;transition:opacity 0.2s}
 .btn-nav:hover{opacity:0.85}
-@media(max-width:600px){.nav-links{display:none}}
+.btn-nav-login{border:1px solid var(--border-strong);color:var(--gold);border-radius:8px;padding:9px 20px;font-size:0.88rem;font-weight:700;text-decoration:none;transition:all 0.2s}
+.btn-nav-login:hover{background:rgba(201,168,76,0.1)}
+@media(max-width:600px){
+  .nav-links a:not(.btn-nav):not(.btn-nav-login){display:none}
+  .nav-links{gap:10px}
+}
 
 /* HERO */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;position:relative;overflow:hidden}
@@ -151,7 +156,7 @@ footer{background:var(--black2);border-top:1px solid var(--border);padding:40px 
     <a href="#herramientas">Herramientas</a>
     <a href="#precio">Precio</a>
     <a href="#faq">FAQ</a>
-    <a href="/login">Entrar</a>
+    <a href="/login" class="btn-nav-login">Entrar</a>
     <a href="https://buy.stripe.com/5kQdRbal4fnp0Fs7Cbbsc00" class="btn-nav" target="_blank">Empezar gratis →</a>
   </div>
 </nav>
@@ -439,3 +444,4 @@ function toggleFaq(btn){
 }
 </script>
 </body>
+</html>
