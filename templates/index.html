@@ -23,6 +23,28 @@ body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--black); col
 .logo-text span { color:var(--gold); }
 .logo-by { font-size:0.7rem; color:var(--white-dim); }
 
+/* ── HAMBURGER NAV ── */
+.nav-desktop { display:flex; align-items:center; gap:4px; }
+.nav-sep { width:1px; height:18px; background:rgba(255,255,255,0.1); display:inline-block; margin:0 4px; }
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; background:none; border:none; }
+.hamburger span { display:block; width:22px; height:2px; background:var(--white-dim); border-radius:2px; transition:all 0.3s; }
+.hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+.nav-mobile { display:none; position:fixed; top:60px; left:0; right:0; background:var(--black3); border-bottom:1px solid var(--border); padding:12px 20px; flex-direction:column; gap:4px; z-index:998; }
+.nav-mobile.open { display:flex; }
+.nav-mobile a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.9rem; padding:10px 14px; border-radius:8px; transition:all 0.2s; display:block; }
+.nav-mobile a:hover { background:rgba(201,168,76,0.1); color:var(--gold); }
+.nav-mobile .nav-sep-h { height:1px; background:rgba(255,255,255,0.08); margin:6px 0; }
+.nav-mobile .nav-cancel { color:rgba(255,100,100,0.5); }
+.nav-mobile .nav-cancel:hover { color:#e87a7a; background:rgba(200,74,74,0.1); }
+.nav-mobile .nav-dim { color:rgba(255,255,255,0.3); }
+@media(max-width:700px) {
+  .topbar { padding:12px 20px; position:relative; }
+  .nav-desktop { display:none; }
+  .hamburger { display:flex; }
+}
+
 .hero { background:var(--black); padding:80px 20px 70px; text-align:center; position:relative; overflow:hidden; }
 .hero::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:600px; height:600px; background:radial-gradient(circle,rgba(201,168,76,0.08) 0%,transparent 70%); pointer-events:none; }
 .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(201,168,76,0.1); border:1px solid var(--border-strong); border-radius:20px; padding:6px 16px; font-size:0.78rem; font-weight:700; color:var(--gold-light); letter-spacing:1px; text-transform:uppercase; margin-bottom:28px; }
@@ -191,13 +213,32 @@ textarea { resize:vertical; min-height:78px; }
       <div class="logo-by">by Andrea Maria</div>
     </div>
   </div>
-  <div style="display:flex;align-items:center;gap:8px">
-    <a href="/biblioteca" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📚 Biblioteca</a>
-    <a href="/planificador" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📅 Planificador</a>
-    <a href="/manychat" style="color:rgba(76,222,124,0.7);text-decoration:none;font-size:0.85rem;padding:7px 14px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#4cde7c'" onmouseout="this.style.color='rgba(76,222,124,0.7)'">🤖 ManyChat</a>
-    <a href="/logout" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:0.8rem;padding:7px 12px">Salir</a>
+  <!-- Desktop nav -->
+  <div class="nav-desktop">
+    <a href="/biblioteca" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 12px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📚 Biblioteca</a>
+    <a href="/planificador" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;padding:7px 12px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📅 Planificador</a>
+    <a href="/manychat" style="color:rgba(76,222,124,0.7);text-decoration:none;font-size:0.85rem;padding:7px 12px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#4cde7c'" onmouseout="this.style.color='rgba(76,222,124,0.7)'">🤖 ManyChat</a>
+    <span class="nav-sep"></span>
+    <a href="/cancelar" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:0.78rem;padding:6px 10px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#e87a7a'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">Cancelar</a>
+    <a href="mailto:hola@andreamariaoficial.es" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:0.78rem;padding:6px 10px;border-radius:8px;transition:all 0.2s" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">Soporte</a>
+    <a href="/logout" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:0.78rem;padding:6px 10px">Salir</a>
   </div>
+  <!-- Hamburger móvil -->
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+<!-- Menú móvil desplegable (fuera del header para posición absoluta) -->
+<nav class="nav-mobile" id="navMobile">
+  <a href="/biblioteca">📚 Biblioteca</a>
+  <a href="/planificador">📅 Planificador</a>
+  <a href="/manychat" style="color:rgba(76,222,124,0.8)">🤖 ManyChat</a>
+  <div class="nav-sep-h"></div>
+  <a href="/cancelar" class="nav-cancel">Cancelar suscripción</a>
+  <a href="mailto:hola@andreamariaoficial.es" class="nav-dim">✉️ Soporte</a>
+  <a href="/logout" class="nav-dim">Salir</a>
+</nav>
+<script>function toggleMenu(){document.getElementById('hamburger').classList.toggle('open');document.getElementById('navMobile').classList.toggle('open')}</script>
 
 <section class="hero">
   <div class="hero-badge">✦ Metodología de Conversión Real</div>
