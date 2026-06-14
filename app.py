@@ -188,6 +188,44 @@ def enviar_bienvenida(user):
     """
     enviar_email_async(user.email, asunto, cuerpo)
 
+def enviar_pago_confirmado(email_destino):
+    asunto = "✅ Pago confirmado — Crea tu cuenta en ViralSalon"
+    cuerpo = f"""
+    <div style="font-family:Arial,sans-serif;background:#0a0a0a;color:#fff;padding:48px 40px;max-width:580px;margin:0 auto;border-radius:16px;">
+      <p style="color:#C9A84C;font-size:0.8rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:32px;">ViralSalon · by Andrea Maria</p>
+
+      <h2 style="font-size:1.6rem;font-weight:900;margin-bottom:20px;line-height:1.3;">
+        ¡Tu pago está confirmado! 🎉
+      </h2>
+
+      <p style="color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:16px;font-size:0.97rem;">
+        Ya tienes acceso a ViralSalon. Solo te falta <strong>crear tu cuenta</strong> para poder entrar — es muy rápido, solo necesitas elegir tu contraseña y el nombre de tu salón.
+      </p>
+
+      <p style="color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:28px;font-size:0.97rem;">
+        Haz clic aquí para crear tu cuenta con el email con el que pagaste (<strong>{email_destino}</strong>):
+      </p>
+
+      <a href="https://viralsalon.andreamariaoficial.es/registro"
+         style="display:inline-block;background:linear-gradient(135deg,#E8CB7A,#C9A84C,#8a6c28);color:#000;padding:16px 32px;border-radius:12px;font-weight:900;text-decoration:none;font-size:1rem;">
+        Crear mi cuenta →
+      </a>
+
+      <div style="margin-top:40px;padding-top:24px;border-top:1px solid rgba(201,168,76,0.2);">
+        <p style="color:rgba(255,255,255,0.7);line-height:1.7;font-size:0.9rem;margin-bottom:8px;">
+          ¡Nos vemos dentro!
+        </p>
+        <p style="color:#C9A84C;font-weight:900;font-size:1rem;margin:0;">Andrea Maria</p>
+        <p style="color:rgba(255,255,255,0.4);font-size:0.8rem;margin-top:4px;">Fundadora de ViralSalon</p>
+      </div>
+
+      <p style="color:rgba(255,255,255,0.25);font-size:0.75rem;margin-top:32px;">
+        ¿Tienes alguna duda? Responde a este email y te ayudo personalmente.
+      </p>
+    </div>
+    """
+    enviar_email_async(email_destino, asunto, cuerpo)
+
 def enviar_reset_password(user, token):
     link = f"https://viralsalon.andreamariaoficial.es/reset/{token}"
     asunto = "Recuperar contraseña — ViralSalon"
@@ -365,7 +403,25 @@ def stripe_webhook():
     except Exception:
         return jsonify({"error": "Invalid signature"}), 400
 
-    if event["type"] in ["customer.subscription.updated", "customer.subscription.created"]:
+    if event["type"] == "customer.subscription.created":
+        sub = event["data"]["object"]
+        customer_id = sub["customer"]
+        status = sub["status"]
+        user = User.query.filter_by(stripe_customer_id=customer_id).first()
+        if user:
+            user.subscription_status = status
+            db.session.commit()
+        else:
+            # Cliente nuevo — todavía no tiene cuenta, le mandamos el correo de confirmación
+            try:
+                customer = stripe.Customer.retrieve(customer_id)
+                email_cliente = customer.get("email")
+                if email_cliente:
+                    enviar_pago_confirmado(email_cliente)
+            except Exception:
+                pass
+
+    elif event["type"] == "customer.subscription.updated":
         sub = event["data"]["object"]
         customer_id = sub["customer"]
         status = sub["status"]
