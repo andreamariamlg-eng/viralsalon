@@ -582,16 +582,67 @@ Servicio: {servicio}
 Clienta ideal: {cliente}
 Pregunta que le frena a comprar: "{pregunta}"
 
-GUIONES DE REFERENCIA QUE FUNCIONAN DE VERDAD:
+GUIONES DE REFERENCIA QUE FUNCIONAN DE VERDAD — ESTOS SON LOS GUIONES REALES DEL SALÓN, COPIA EXACTAMENTE ESTE ESTILO, TONO Y ESTRUCTURA:
 ---
-Guión 1 (uñas, directo):
-"¿Quieres hacerte las uñas, pero no sabes qué pedir? Después de ver este vídeo, ya vas a saberlo. Pide permanente si tu uña es fuerte y no trabajas mucho con las manos. Pide refuerzo si tus uñas son más débiles o usas mucho las manos en tu día a día. Pide acrílico o gel si tus uñas son muy cortas y te las dañas. Comenta INFO y te envío la lista de precios completa."
+Guión 1 (uñas acrílicas, historia real):
+HOOK: ¿Te mueres por tener las uñas largas pero piensas que no te van a durar? Te digo una cosa. Te equivocas.
+DESARROLLO: Hace unos meses vino Miriam al salón con ese mismo miedo. Trabajaba en un supermercado, todo el día con las manos, y decía que era imposible que le duraran. Le propusimos hacer uñas acrílicas y se lanzó. Ahora lleva tres meses viniendo solo a retoque y está alucinada. No se le ha caído ni una. Lo mejor es que trabaja igual que antes, pero ahora se siente segura y cómoda. No importa lo que hagas, te aseguramos que tus uñas te van a durar.
+CTA: Comenta INFO y te mando la lista de precios completa.
 ---
-Guión 2 (peluquería, historia real):
-"Si tu amiga te ha dicho que no hay manera de recuperar la fuerza de tu pelo, te ha mentido. El otro día vino Sara diciéndome que odiaba recogerse el pelo porque se le veía demasiado fino. Le hablé del bótox capilar, no sabía ni lo que era. Hoy lleva tres sesiones y está alucinada con su pelo. Si quieres saber cómo te puede ayudar a ti, comenta BÓTOX y te envío toda la info."
+Guión 2 (nivelación, mito destruido):
+HOOK: No me digas que todavía crees que mantener las uñas perfectas es un gasto que no puedes permitirte. Te has equivocado de salón, eso es todo.
+DESARROLLO: Mira, la mayoría de mujeres que vienen a Golden Hall pensaban exactamente como tú. Pero cuando te haces la nivelación, tus uñas aguantan mucho más tiempo sin romperse, sin desconcharse. Es decir, pagas menos en reparaciones, menos viajes al salón. Y además, cuando te ves las manos así de cuidadas, te sientes diferente. Más segura. Más tú. El otro día una clienta me decía que hasta en las fotos del trabajo se veía mejor, más profesional. Eso no tiene precio.
+CTA: Comenta INFO y te mando la lista de precios completa.
 ---
-Guión 3 (depilación láser, revelación):
-"No me digas que sigues usando cuchilla para depilarte. Aparte del dinero que te gastas, no sabes el daño que le haces a tu piel, y sobre todo la pereza que da. El otro día hablé con Laura sobre esto, y cuando le dije el precio del láser de cuerpo completo, no se lo podía creer. Pidió cita al día siguiente. No le dolió nada y ya en la segunda sesión ha notado un cambio enorme. ¿Quieres que te sorprenda a ti también? Comenta LÁSER y te mando un regalo."
+Guión 3 (nivelación, educación):
+HOOK: Lo que nadie te cuenta sobre la nivelación es que no te daña las uñas. De verdad. La mayoría piensa que se le van a quedar hechas polvo, pero es justo lo contrario.
+DESARROLLO: Mira, cuando trabajas con las manos todo el día o simplemente tienes las uñas más débiles, lo que necesitas es reforzarlas, no abandonarlas. La nivelación es como ponerle un escudo a tu uña natural. La uña sigue creciendo debajo, sana y protegida. El otro día vino una chica que llevaba dos años sin poder dejarlas crecer, se le partían siempre. Ahora tiene unas uñas que alucina. La pregunta no es si se te van a dañar, es cuándo vas a venir a empezar a cuidarlas como se merecen.
+CTA: Comenta INFO y te mando la lista de precios.
+---
+Guión 4 (pedicura, vergüenza superada):
+HOOK: ¿Te da vergüenza enseñar los pies? ¿Piensas que una pedicura es un lujo caro que tú no te puedes permitir? Te voy a contar por qué estás equivocada.
+DESARROLLO: El otro día vino una chica al salón que decía que le daba vergüenza enseñar los pies. Usaba calzado cerrado hasta en verano. Después de la pedicura salió del salón diferente. No es solo que te hagas las uñas bonitas. Es que de repente te sientes cómoda, segura, y eso cambia tu día a día. Te sientes arreglada. Y el precio que pagas es una inversión en esa seguridad que te genera. Muy asequible para todo lo que te aporta y la experiencia tan placentera que te llevas.
+CTA: Comenta INFO y te mando la lista de precios. Verás que no es para nada lo que te pensabas.
+---
+Guión 5 (extensiones de pestañas, miedo al daño):
+HOOK: No me digas que sigues sin hacerte las extensiones de pestañas porque crees que te van a dañar las tuyas. Eso es lo que todas piensan, y es completamente falso.
+DESARROLLO: El otro día vino Marta al salón con esa preocupación. Me decía que le daba pánico perder sus pestañas naturales. Le expliqué que si se hace bien, con las técnicas correctas, tus pestañas quedan perfectas. Ella se atrevió. Hoy lleva tres meses viniendo, sus pestañas naturales están igual de fuertes, y lo mejor es que se levanta por las mañanas sin necesidad de maquillarse. Se siente guapa y arreglada al mismo tiempo. Es el cambio que todas buscamos.
+CTA: Si quieres saber cómo hacemos esto en el salón, comenta INFO y te mando toda la información.
+---
+Guión 6 (extensiones de pestañas, comparación):
+HOOK: ¿Qué daña más las pestañas, usar rizador y rímel todos los días o ponerte extensiones con un profesional? Te va a sorprender la respuesta.
+DESARROLLO: El otro día vino Elena al salón muerta de miedo. Me decía que le encantaría tener las pestañas más llenas, pero que no quería arruinar las suyas. Le expliqué que lo que realmente daña es andar todos los días con el rizador y los productos, que eso sí que las debilita. Cuando le conté cómo trabajamos aquí se quedó tranquila. Pidió cita a la semana siguiente. Hoy lleva tres meses y no se quita las extensiones. Me dice que por fin se siente guapa sin maquillaje y que se despierta ya arreglada.
+CTA: Si tú también quieres sentirte como Elena, comenta INFO y te mando la lista de precios.
+---
+Guión 7 (balayage, miedo al mantenimiento):
+HOOK: ¿Quieres un rubio precioso pero tienes miedo de que se te arruine el pelo? ¿O piensas que mantenerlo es una fortuna cada mes?
+DESARROLLO: El otro día vino Cristina con exactamente ese miedo. Me dijo que le encantaba ese rubio vainilla que veía en Instagram, pero que no se lo hacía porque le daba pánico el mantenimiento y el dinero. Le expliqué cómo funciona realmente el balayage que hacemos aquí. No es como crees. Con venir una vez cada cuatro o seis meses es suficiente. Su pelo está increíble, fuerte y con mucho brillo. Y lo que más le sorprende es que gasta mucho menos de lo que pensaba. Ahora no se lo quita ni loca.
+CTA: Comenta CITA y te digo exactamente cuánto va a costarte mantenerlo bonito. Sin sorpresas.
+---
+Guión 8 (balayage, mito del daño):
+HOOK: No me digas que todavía crees que las mechas te van a dejar el pelo hecho un desastre. Te han mentido. Con la técnica correcta, tu pelo sale igual de fuerte que cuando viniste.
+DESARROLLO: Mira, lo que pasa es que hay gente que se hace las mechas mal y claro, el pelo sufre. Pero aquí hacemos un diagnóstico gratuito para ver que tu pelo es apto para conseguir el resultado que buscas, así nos aseguramos de que con la técnica correcta no lo vamos a destrozar. Además, entre sesión y sesión te damos tratamientos que lo recuperan. Las chicas que vienen regularmente tienen el pelo más bonito que nunca. Y la verdad es que ese rubio que te ves en Instagram sí que es posible sin sacrificar tu pelo.
+CTA: Comenta INFO y te hago un diagnóstico gratuito en el que te diré si puedo conseguir el color que quieres.
+---
+Guión 9 (bótox capilar, pelo fino):
+HOOK: ¿Te pasa que tu pelo se ve fino, sin volumen, como si no tuviera vida? ¿Has probado de todo y nada funciona?
+DESARROLLO: Hace un mes vino Paula al salón y me dijo exactamente eso. Me contaba que siempre se recogía el pelo porque así no se le notaba tanto lo fino que lo tenía. Le hablé del bótox capilar y no tenía ni idea de que existía. Le dije que probara una sesión. Hoy está en la tercera y no te imaginas el cambio que ha dado su pelo: tiene más volumen, más brillo, se ve lleno de vida. Y lo mejor es que ahora se lo suelta sin vergüenza y se siente mucho más segura.
+CTA: Si quieres que te pase lo mismo, comenta INFO y te mando la lista de precios.
+---
+Guión 10 (bótox capilar, revelación):
+HOOK: Tres cosas que nadie te cuenta sobre el bótox capilar. Spoiler: no es caro para nada.
+DESARROLLO: Mira, vienen chicas aquí con el pelo tan fino que no se lo pueden ni soltar. Les da vergüenza llevarlo suelto. Entonces les cuento qué es el bótox capilar y flipan. Después de unas sesiones con mantenimiento, el cambio es brutal. De repente sientes que tienes más volumen, densidad, el pelo se ve lleno de vida. Y lo mejor es cómo se sienten. Se miran al espejo y se sienten con más seguridad. El otro día me escribía una clienta diciéndome que su marido le preguntaba qué se había hecho. Eso es lo que pasa aquí.
+CTA: Comenta INFO y te envío un regalo para que tú también puedas disfrutar de esta maravilla.
+---
+Guión 11 (hidratación, pelo dañado):
+HOOK: Lo que nadie te cuenta sobre tener el pelo quemado. No es solo un problema que se ve, sino que cada vez que lo tocas sientes que está hecho polvo. Y lo peor es que pruebas un tratamiento, luego otro, y nunca sabes cuál es el que realmente funciona.
+DESARROLLO: El otro día vino Marta al salón con el pelo en ese estado. Me dijo que ya no sabía qué más probar, que se había gastado un dineral en cosas que no le hacían nada. Le hablé de nuestro tratamiento de hidratación, le expliqué que este repara, nutre y da muchísimo brillo. Ella no esperaba gran cosa, porque es lo que le dicen todos. Pero después de hacérselo se le cambió la cara. Ahora dice que es lo mejor que se ha hecho en el pelo en años. Se lo toca y no se lo cree.
+CTA: Si tu pelo está igual que el de Marta, comenta INFO y te cuento cómo funciona nuestro tratamiento.
+---
+Guión 12 (hidratación, múltiple beneficio):
+HOOK: Lo que nadie te cuenta es que la mayoría de tratamientos solo hacen una cosa. Este no. Repara lo quemado, nutre lo reseco y te deja un brillo que es brutal.
+DESARROLLO: El otro día vino una clienta que llevaba años con el pelo destrozado, probando de todo. Después de varias sesiones me dijo que no reconocía su pelo. Ahora lo enseña sin vergüenza, se lo suelta y se siente cómoda con él. Y aparte de cambiar su pelo, le cambió la actitud, porque ella tenía bastante inseguridad por esto.
+CTA: Comenta INFO y te cuento todo sobre nuestro tratamiento de hidratación.
 ---
 
 HOOK A ESCRIBIR: {HOOKS.get(hook, HOOKS["pregunta_directa"])}
@@ -622,7 +673,13 @@ REGLAS QUE NO SE PUEDEN ROMPER:
 3. Que suene a persona hablando, no a texto escrito. Frases cortas. Pausas naturales.
 4. Que lo entienda cualquier persona, de cualquier edad, sin saber nada del sector.
 5. Cada frase tiene que estar por una razón. Si se puede quitar sin perder nada, se quita.
-6. Sin introducción ni explicación. Solo el guión."""
+6. Sin introducción ni explicación. Solo el guión.
+7. PROHIBIDO usar palabras malsonantes u ofensivas (como "mierda", "joder", "coño", "hostia", etc.). Usa alternativas neutras y naturales: "desastre", "problema", "un lío", "mal resultado", etc.
+8. PROHIBIDO exagerar o inventar resultados que no son reales. No prometas lo que el servicio no puede dar. Si el resultado es bueno pero no milagroso, dilo con honestidad. Ejemplo MALO: "tu pelo saldrá más fuerte que nunca". Ejemplo BUENO: "trabajándolo bien, el pelo puede quedar igual de fuerte y con mucho más color". El guión tiene que ser honesto y creíble, no una publicidad exagerada.
+9. TIEMPOS REALISTAS: Si mencionas que una clienta ha tenido varias sesiones, los tiempos tienen que ser coherentes con la realidad del sector belleza. Una clienta NO puede tener 3 sesiones en una semana. Las sesiones de tratamientos capilares, botox capilar, láser, etc. se espacian mínimo 3-4 semanas. Usa tiempos creíbles: "vino hace dos meses", "lleva tres meses viniendo", "desde hace un mes está notando el cambio". Si dices que vino "la semana pasada", solo puede ser su primera o segunda visita como máximo.
+10. CONCORDANCIA DE GÉNERO Y PRONOMBRES: Cuida siempre el género y los pronombres. Si la clienta es mujer, usa femenino: "está contenta", "está encantada", no "está contento". Revisa los pronombres reflexivos: si ella se lo cuenta a sus amigas, escribe "se lo cuenta a sus amigas", no "me lo cuenta a sus amigas". Antes de terminar, repasa que cada frase tenga concordancia correcta de género y número.
+11. FRASES COMPLETAS Y CONCRETAS: Evita frases vagas o incompletas que no dicen nada. Ejemplo MALO: "no te lo vas a creer, el cambio que tiene." — ¿qué cambio? No se entiende. Ejemplo BUENO: "no te imaginas el cambio que ha dado su pelo, tiene volumen, brillo y se le ve sano." Siempre termina la idea, di QUÉ ha cambiado exactamente, que el oyente lo pueda visualizar.
+12. LÓGICA DEL ANTES Y DESPUÉS: Las consecuencias del resultado tienen que tener sentido. Si una clienta tenía el pelo seco y apagado y ahora está hidratado, la consecuencia lógica es que AHORA SE LO SUELTA sin vergüenza (no que se lo recoge). No inviertas la lógica. También evita descripciones absurdas o sin sentido: el pelo no "brilla cuando sale el sol", el pelo simplemente brilla. No añadas condiciones o contextos ridículos a algo que es normal por sí solo."""
 
     try:
         response = client.messages.create(
