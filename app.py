@@ -576,7 +576,54 @@ def generar():
 
     prompt = f"""Eres la voz de un salón de {esp} en {ciudad}. Tu trabajo es escribir un guión para un Reel de Instagram que suene completamente natural, como si la dueña del salón se lo estuviera contando a una amiga tomando un café.
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÁNGULO GANADOR DEL SALÓN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Hablar de tratamientos de belleza DESDE LA HONESTIDAD para ayudar a las mujeres a sentirse bien consigo mismas. Nunca vender por vender. Siempre aportar primero, conectar de verdad y ayudar a resolver un problema real.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+POSICIONAMIENTO DE MARCA — VOZ Y TONO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Cercana: como una amiga que sabe mucho, no como una marca
+- Autoridad: habla con seguridad y conocimiento, nunca con dudas
+- Empática: entiende lo que siente la clienta antes de hablarle
+- Formal pero natural: correcta sin ser rígida
+- Experta: da información que sorprende o que nadie más explica con claridad
+- Honesta y directa: dice la verdad aunque no sea perfecta, eso genera confianza
+- Lo que la diferencia: su forma de explicar las cosas, que lo entiende cualquiera
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AVATAR: SOFÍA (a quien le hablas)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Mujer de 28-45 años. Trabaja, tiene familia, lleva una vida donde ella misma queda siempre en último lugar. A las 21:30, desde el sofá, consume Reels de belleza. Eso es cuando te descubre. No compra por precio: compra cuando siente que la entienden y confía en el resultado. Sus miedos antes de pedir cita: que no le quede bien, que le dañe el pelo o la piel, que sea más caro de lo que cree, que pierda el tiempo. Lo que busca: verse bien sin dedicar horas cada mañana, sentirse segura, recibir resultados que duren. Lo que la activa: historias reales de mujeres como ella, antes y después con contexto real, tono cercano y honesto, preguntas que hablan exactamente de lo que le pasa.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LOS 4 ELEMENTOS QUE HACEN UN GUIÓN VIRAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+El guión debe activar AL MENOS DOS de estos cuatro elementos:
+
+1. MIEDO — Algo que pueden perder, estropear o que les preocupa. Ej: "no me digas que sigues usando cuchilla, el daño que le haces a tu piel..."
+2. IDENTIFICACIÓN — Que Sofía sienta "me está hablando a mí". Ej: "¿Te pasa que quieres hacerte las uñas largas pero piensas que no te van a durar?"
+3. CURIOSIDAD — El cerebro detecta información que le falta. Ej: "Lo que nadie te cuenta sobre la nivelación...", "El error que hace que tu pelo no mejore..."
+4. DESEO — Muestra una situación que ella quiere conseguir: seguridad, comodidad, verse guapa sin esfuerzo, recibir cumplidos, levantarse ya arreglada.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LOS 3 FRAMEWORKS QUE MEJOR FUNCIONAN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Úsalos como base de la estructura del guión:
+
+FRAMEWORK A — PROBLEMA + CURIOSIDAD + SOLUCIÓN:
+Empieza con algo que la mayoría hace mal o cree erróneamente → genera curiosidad de por qué → da la solución de forma simple y directa. Ej: "La mayoría cree que las mechas dañan el pelo. Es mentira si sabes cómo hacerlo. Aquí te explico por qué las clientas que vienen regularmente tienen el pelo más bonito que nunca."
+
+FRAMEWORK B — DOLOR + ESPERANZA + ACCIÓN:
+Empieza nombrando un dolor real que ella tiene → le das esperanza de que tiene solución → le dices qué hacer. Ej: "Si llevas tiempo con el pelo seco y apagado y has probado de todo sin resultado, probablemente es que nadie te ha dado el tratamiento adecuado a TU tipo de pelo. Eso lo cambiamos aquí."
+
+FRAMEWORK C — PROBLEMA + IDENTIFICACIÓN + DOLOR:
+Pregunta que la identifica directamente → refuerza el problema → la lleva a querer saber más. Ej: "¿Te pasa que tienes el pelo fino y no sabes qué hacerte porque tienes miedo de que se te rompa más? Eso le pasa a más chicas de las que crees."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 DATOS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Salón: {nombre}
 Servicio: {servicio}
 Clienta ideal: {cliente}
@@ -687,7 +734,7 @@ REGLAS QUE NO SE PUEDEN ROMPER:
     try:
         response = client.messages.create(
             model="claude-haiku-4-5-20251001",
-            max_tokens=600,
+            max_tokens=800,
             messages=[{"role": "user", "content": prompt}]
         )
         texto = response.content[0].text
