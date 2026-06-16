@@ -574,57 +574,38 @@ def generar():
         palabras_hook = "1-2 frases"
         palabras_dev = "3-4 frases"
 
-    prompt = f"""Eres la voz de un salón de {esp} en {ciudad}. Tu trabajo es escribir un guión para un Reel de Instagram que suene completamente natural, como si la dueña del salón se lo estuviera contando a una amiga tomando un café.
+    prompt = f"""Eres la voz de un salon de {esp} en {ciudad}. Tu trabajo es escribir un guion para un Reel de Instagram que suene completamente natural, como si la duena del salon se lo estuviera contando a una amiga tomando un cafe.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ÁNGULO GANADOR DEL SALÓN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+=== ANGULO GANADOR DEL SALON ===
 Hablar de tratamientos de belleza DESDE LA HONESTIDAD para ayudar a las mujeres a sentirse bien consigo mismas. Nunca vender por vender. Siempre aportar primero, conectar de verdad y ayudar a resolver un problema real.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-POSICIONAMIENTO DE MARCA — VOZ Y TONO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+=== POSICIONAMIENTO DE MARCA - VOZ Y TONO ===
 - Cercana: como una amiga que sabe mucho, no como una marca
 - Autoridad: habla con seguridad y conocimiento, nunca con dudas
-- Empática: entiende lo que siente la clienta antes de hablarle
-- Formal pero natural: correcta sin ser rígida
-- Experta: da información que sorprende o que nadie más explica con claridad
+- Empatica: entiende lo que siente la clienta antes de hablarle
+- Formal pero natural: correcta sin ser rigida
+- Experta: da informacion que sorprende o que nadie mas explica con claridad
 - Honesta y directa: dice la verdad aunque no sea perfecta, eso genera confianza
 - Lo que la diferencia: su forma de explicar las cosas, que lo entiende cualquiera
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-AVATAR: SOFÍA (a quien le hablas)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Mujer de 28-45 años. Trabaja, tiene familia, lleva una vida donde ella misma queda siempre en último lugar. A las 21:30, desde el sofá, consume Reels de belleza. Eso es cuando te descubre. No compra por precio: compra cuando siente que la entienden y confía en el resultado. Sus miedos antes de pedir cita: que no le quede bien, que le dañe el pelo o la piel, que sea más caro de lo que cree, que pierda el tiempo. Lo que busca: verse bien sin dedicar horas cada mañana, sentirse segura, recibir resultados que duren. Lo que la activa: historias reales de mujeres como ella, antes y después con contexto real, tono cercano y honesto, preguntas que hablan exactamente de lo que le pasa.
+=== AVATAR: SOFIA (a quien le hablas) ===
+Mujer de 28-45 anos. Trabaja, tiene familia, lleva una vida donde ella misma queda siempre en ultimo lugar. A las 21:30, desde el sofa, consume Reels de belleza. Eso es cuando te descubre. No compra por precio: compra cuando siente que la entienden y confia en el resultado. Sus miedos antes de pedir cita: que no le quede bien, que le dane el pelo o la piel, que sea mas caro de lo que cree, que pierda el tiempo. Lo que busca: verse bien sin dedicar horas cada manana, sentirse segura, recibir resultados que duren. Lo que la activa: historias reales de mujeres como ella, antes y despues con contexto real, tono cercano y honesto, preguntas que hablan exactamente de lo que le pasa.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-LOS 4 ELEMENTOS QUE HACEN UN GUIÓN VIRAL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-El guión debe activar AL MENOS DOS de estos cuatro elementos:
+=== LOS 4 ELEMENTOS QUE HACEN UN GUION VIRAL ===
+El guion debe activar AL MENOS DOS de estos cuatro elementos:
+1. MIEDO: Algo que pueden perder, estropear o que les preocupa. Ej: "no me digas que sigues usando cuchilla, el dano que le haces a tu piel..."
+2. IDENTIFICACION: Que Sofia sienta "me esta hablando a mi". Ej: "Te pasa que quieres hacerte las unas largas pero piensas que no te van a durar?"
+3. CURIOSIDAD: El cerebro detecta informacion que le falta. Ej: "Lo que nadie te cuenta sobre la nivelacion...", "El error que hace que tu pelo no mejore..."
+4. DESEO: Muestra una situacion que ella quiere conseguir: seguridad, comodidad, verse guapa sin esfuerzo, recibir cumplidos, levantarse ya arreglada.
 
-1. MIEDO — Algo que pueden perder, estropear o que les preocupa. Ej: "no me digas que sigues usando cuchilla, el daño que le haces a tu piel..."
-2. IDENTIFICACIÓN — Que Sofía sienta "me está hablando a mí". Ej: "¿Te pasa que quieres hacerte las uñas largas pero piensas que no te van a durar?"
-3. CURIOSIDAD — El cerebro detecta información que le falta. Ej: "Lo que nadie te cuenta sobre la nivelación...", "El error que hace que tu pelo no mejore..."
-4. DESEO — Muestra una situación que ella quiere conseguir: seguridad, comodidad, verse guapa sin esfuerzo, recibir cumplidos, levantarse ya arreglada.
+=== LOS 3 FRAMEWORKS DE ESTRUCTURA ===
+Usa uno de estos como base:
+FRAMEWORK A (PROBLEMA + CURIOSIDAD + SOLUCION): Empieza con algo que la mayoria cree mal, genera curiosidad de por que, da la solucion simple.
+FRAMEWORK B (DOLOR + ESPERANZA + ACCION): Nombra un dolor real que ella tiene, le das esperanza de solucion, le dices que hacer.
+FRAMEWORK C (PROBLEMA + IDENTIFICACION + DOLOR): Pregunta que la identifica directamente, refuerza el problema, la lleva a querer saber mas.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-LOS 3 FRAMEWORKS QUE MEJOR FUNCIONAN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Úsalos como base de la estructura del guión:
-
-FRAMEWORK A — PROBLEMA + CURIOSIDAD + SOLUCIÓN:
-Empieza con algo que la mayoría hace mal o cree erróneamente → genera curiosidad de por qué → da la solución de forma simple y directa. Ej: "La mayoría cree que las mechas dañan el pelo. Es mentira si sabes cómo hacerlo. Aquí te explico por qué las clientas que vienen regularmente tienen el pelo más bonito que nunca."
-
-FRAMEWORK B — DOLOR + ESPERANZA + ACCIÓN:
-Empieza nombrando un dolor real que ella tiene → le das esperanza de que tiene solución → le dices qué hacer. Ej: "Si llevas tiempo con el pelo seco y apagado y has probado de todo sin resultado, probablemente es que nadie te ha dado el tratamiento adecuado a TU tipo de pelo. Eso lo cambiamos aquí."
-
-FRAMEWORK C — PROBLEMA + IDENTIFICACIÓN + DOLOR:
-Pregunta que la identifica directamente → refuerza el problema → la lleva a querer saber más. Ej: "¿Te pasa que tienes el pelo fino y no sabes qué hacerte porque tienes miedo de que se te rompa más? Eso le pasa a más chicas de las que crees."
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-DATOS:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Salón: {nombre}
+=== DATOS ===
+Salon: {nombre}
 Servicio: {servicio}
 Clienta ideal: {cliente}
 Pregunta que le frena a comprar: "{pregunta}"
@@ -703,16 +684,18 @@ PROHIBIDO en el CTA: sígueme, dale like, comparte, suscríbete.
 
 DURACIÓN OBJETIVO: {duracion_texto} — máximo {palabras_max} palabras en total.
 
-RESPONDE SOLO en este formato:
+FORMATO DE RESPUESTA OBLIGATORIO — USA EXACTAMENTE ESTAS ETIQUETAS, SIN EXCEPCION:
 
 [HOOK]
-(el hook)
+escribe aqui el hook completo
 
 [DESARROLLO]
-(el desarrollo)
+escribe aqui el desarrollo completo
 
 [CTA]
-(el cta)
+escribe aqui el cta completo
+
+IMPORTANTE: Las etiquetas [HOOK], [DESARROLLO] y [CTA] son OBLIGATORIAS. Si no las incluyes, la respuesta no sirve. No escribas nada antes de [HOOK] ni despues del CTA.
 
 REGLAS QUE NO SE PUEDEN ROMPER:
 1. Sin palabras técnicas del sector. Si hay que nombrar el servicio, usa el nombre más simple posible.
@@ -734,18 +717,23 @@ REGLAS QUE NO SE PUEDEN ROMPER:
     try:
         response = client.messages.create(
             model="claude-haiku-4-5-20251001",
-            max_tokens=800,
+            max_tokens=1000,
             messages=[{"role": "user", "content": prompt}]
         )
         texto = response.content[0].text
 
-        hm = re.search(r'\[HOOK\]([\s\S]*?)(?=\[DESARROLLO\])', texto, re.IGNORECASE)
-        dm = re.search(r'\[DESARROLLO\]([\s\S]*?)(?=\[CTA\])', texto, re.IGNORECASE)
-        cm = re.search(r'\[CTA\]([\s\S]*?)$', texto, re.IGNORECASE)
+        # Parsing robusto: busca [HOOK], [DESARROLLO], [CTA] en cualquier variacion
+        hm = re.search(r'\[HOOK\]\s*([\s\S]*?)(?=\[DESARROLLO\]|\[CTA\]|$)', texto, re.IGNORECASE)
+        dm = re.search(r'\[DESARROLLO\]\s*([\s\S]*?)(?=\[CTA\]|$)', texto, re.IGNORECASE)
+        cm = re.search(r'\[CTA\]\s*([\s\S]*?)$', texto, re.IGNORECASE)
 
-        hook_txt = hm.group(1).strip() if hm else ""
-        dev_txt = dm.group(1).strip() if dm else ""
-        cta_txt = cm.group(1).strip() if cm else f"Comenta {palabra} y te mando {regalo}."
+        hook_txt = hm.group(1).strip() if hm and hm.group(1).strip() else ""
+        dev_txt  = dm.group(1).strip() if dm and dm.group(1).strip() else ""
+        cta_txt  = cm.group(1).strip() if cm and cm.group(1).strip() else f"Comenta {palabra} y te {regalo}."
+
+        # Si hook o desarrollo siguen vacios, log del texto crudo para debug
+        if not hook_txt or not dev_txt:
+            app.logger.error(f"PARSING ERROR - texto crudo del modelo: {texto[:500]}")
         palabras = len(texto.replace('[HOOK]','').replace('[DESARROLLO]','').replace('[CTA]','').split())
 
         guion = Guion(
