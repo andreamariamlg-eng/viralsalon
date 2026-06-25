@@ -198,6 +198,48 @@ def enviar_bienvenida(user):
     """
     enviar_email_async(user.email, asunto, cuerpo)
 
+def enviar_renovacion(user):
+    asunto = "Bienvenida de nuevo a ViralSalon ✨"
+    cuerpo = f"""
+    <div style="font-family:Arial,sans-serif;background:#0a0a0a;color:#fff;padding:48px 40px;max-width:580px;margin:0 auto;border-radius:16px;">
+      <p style="color:#C9A84C;font-size:0.8rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:32px;">ViralSalon · by Andrea Maria</p>
+
+      <h2 style="font-size:1.6rem;font-weight:900;margin-bottom:20px;line-height:1.3;">
+        Gracias por renovar, {user.nombre_salon} 🥂
+      </h2>
+
+      <p style="color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:16px;font-size:0.97rem;">
+        Me alegra mucho tenerte aquí otro mes más. Sé que tienes mil opciones y que el tiempo es lo que más vale, así que gracias de verdad por seguir confiando en ViralSalon.
+      </p>
+
+      <p style="color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:16px;font-size:0.97rem;">
+        Quiero que sepas que estamos siempre trabajando para mejorar. Cada actualización que hago viene de lo que vosotras me contáis, de lo que veo que funciona y de lo que no. Vamos siempre un paso por delante para que tú solo tengas que grabar.
+      </p>
+
+      <p style="color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:28px;font-size:0.97rem;">
+        Si tienes alguna sugerencia o algo que quieras que mejore, responde a este email y te leo personalmente.
+      </p>
+
+      <a href="https://viralsalon.andreamariaoficial.es/app"
+         style="display:inline-block;background:linear-gradient(135deg,#E8CB7A,#C9A84C,#8a6c28);color:#000;padding:16px 32px;border-radius:12px;font-weight:900;text-decoration:none;font-size:1rem;">
+        Seguir creando guiones →
+      </a>
+
+      <div style="margin-top:40px;padding-top:24px;border-top:1px solid rgba(201,168,76,0.2);">
+        <p style="color:rgba(255,255,255,0.7);line-height:1.7;font-size:0.9rem;margin-bottom:8px;">
+          Un abrazo enorme,
+        </p>
+        <p style="color:#C9A84C;font-weight:900;font-size:1rem;margin:0;">Andrea Maria</p>
+        <p style="color:rgba(255,255,255,0.4);font-size:0.8rem;margin-top:4px;">Fundadora de ViralSalon</p>
+      </div>
+
+      <p style="color:rgba(255,255,255,0.25);font-size:0.75rem;margin-top:32px;">
+        ¿Tienes alguna duda? Responde a este email y te ayudo personalmente.
+      </p>
+    </div>
+    """
+    enviar_email_async(user.email, asunto, cuerpo)
+
 def enviar_pago_confirmado(email_destino):
     asunto = "✅ Pago confirmado — Crea tu cuenta en ViralSalon"
     cuerpo = f"""
@@ -468,8 +510,12 @@ def stripe_webhook():
         status = sub["status"]
         user = User.query.filter_by(stripe_customer_id=customer_id).first()
         if user:
+            estado_anterior = user.subscription_status
             user.subscription_status = status
             db.session.commit()
+            # Si acaba de renovar (venía de cancelada/caducada y ahora está activa)
+            if status == "active" and estado_anterior not in ("active", "trialing"):
+                enviar_renovacion(user)
 
     elif event["type"] == "customer.subscription.deleted":
         sub = event["data"]["object"]
@@ -631,17 +677,18 @@ Objecion o duda principal de la clienta: "{pregunta}"
 Clienta ideal: {cliente}
 
 === REGLAS DEL DIALOGO ===
-1. El primer intercambio destruye un mito o revela algo inesperado sobre {servicio} que la mayoria no sabe
-2. Las preguntas del AVATAR son cortas, naturales, con las dudas reales de una clienta. Pueden empezar con el nombre: "Eli: eso que dices de que..." o simplemente la pregunta directa
-3. Las respuestas del PROFESIONAL son directas, claras, sin tecnicismos. Con ejemplos cuando ayudan a entender. Que suenen a conversacion, no a manual
-4. 3 o 4 intercambios (pregunta + respuesta = 1 intercambio)
-5. El ultimo intercambio del PROFESIONAL lleva de forma natural y sin forzar al CTA
-6. Sin palabras tecnicas del sector. Nombra el servicio con el nombre mas simple posible
-7. Sin emojis, sin asteriscos, sin guiones al inicio de frases
-8. Maximo {palabras_max_d} palabras en total
-9. PROHIBIDO palabras malsonantes u ofensivas. Usa "desastre", "problema", "dano" en vez de palabrotas
-10. PROHIBIDO prometer resultados exagerados o imposibles. Siempre honesto y creible
-11. Las respuestas de la PROFESIONAL no pueden empezar todas igual. Variedad de arranques: "Mira...", "Eso es exactamente lo que...", "La realidad es que...", "Depende de...", "Es un mito que..."
+1. GANCHO OBLIGATORIO EN LA PRIMERA LINEA DEL AVATAR: La primera frase del AVATAR es el hook de todo el video. Debe ser una queja, un dolor, una frustracion o un miedo expresado de forma directa y visceral, como si se lo contara a una amiga. Que cualquier mujer que lo vea piense "eso me pasa exactamente a mi" y no pueda pasar de largo. Ejemplos CORRECTOS: "Estoy harta de pasarme la cuchilla, me deja la piel llena de granitos, que me recomiendas?", "Llevo anos sin poder dejarme el pelo suelto porque se me queda fatal y no se como arreglarlo", "Me da tanta verguenza ensenar las manos que siempre las escondo". INCORRECTO: empezar con una pregunta educada o neutral tipo "Oye queria preguntarte..." o "He visto que haceis...". La primera frase tiene que doler o identificar.
+2. La respuesta del PROFESIONAL al gancho inicial debe reaccionar con sorpresa genuina o con una revelacion que cambie el punto de vista de golpe. Tipo: "En serio todavia haces eso? Pero si desde la primera sesion de laser ya notas un cambio brutal..." o "Espera, te han estado diciendo mal toda la vida, lo que necesitas no es lo que crees..."
+3. Las siguientes preguntas del AVATAR siguen la logica natural de la conversacion, cortas y directas como en un DM.
+4. Las respuestas del PROFESIONAL son directas, claras, sin tecnicismos. Con ejemplos y numeros concretos cuando ayudan. Que suenen a conversacion de amigas, no a manual.
+5. 3 o 4 intercambios en total (pregunta + respuesta = 1 intercambio)
+6. El ultimo intercambio del PROFESIONAL lleva de forma natural al CTA, sin forzar
+7. Sin palabras tecnicas. Nombra el servicio con el nombre mas simple posible
+8. Sin emojis, sin asteriscos, sin guiones al inicio de frases
+9. Maximo {palabras_max_d} palabras en total
+10. PROHIBIDO palabras malsonantes. Usa "desastre", "problema", "dano" en vez de palabrotas
+11. PROHIBIDO resultados exagerados o imposibles. Siempre honesto y creible
+12. Las respuestas del PROFESIONAL no pueden empezar todas igual. Variedad: "Mira...", "En serio todavia...?", "La realidad es que...", "Eso es exactamente...", "Depende de...", "Es un mito que..."
 
 === FORMATO DE RESPUESTA OBLIGATORIO — USA EXACTAMENTE ESTAS ETIQUETAS ===
 
