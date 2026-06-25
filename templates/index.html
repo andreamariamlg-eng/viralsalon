@@ -122,6 +122,14 @@ textarea { resize:vertical; min-height:78px; }
 .chip { background:var(--black5); border:1px solid rgba(255,255,255,0.12); border-radius:20px; padding:4px 12px; font-size:0.73rem; cursor:pointer; color:rgba(255,255,255,0.5); transition:all 0.15s; }
 .chip:hover { border-color:var(--gold); color:var(--gold-light); }
 
+.objetivo-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; }
+.obj-opt { position:relative; }
+.obj-opt input { position:absolute; opacity:0; pointer-events:none; }
+.obj-lbl { display:flex; flex-direction:column; gap:5px; padding:14px 16px; border:1px solid rgba(255,255,255,0.1); border-radius:10px; cursor:pointer; transition:all 0.2s; background:var(--black4); height:100%; }
+.obj-opt input:checked+.obj-lbl { border-color:var(--gold); background:#1a1500; box-shadow:0 0 20px rgba(201,168,76,0.1); }
+.obj-emoji { font-size:1.3rem; }
+.obj-name { font-size:0.83rem; font-weight:800; color:var(--gold-light); }
+.obj-desc { font-size:0.7rem; color:rgba(255,255,255,0.4); line-height:1.4; }
 .hook-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); gap:10px; }
 .hook-opt { position:relative; }
 .hook-opt input { position:absolute; opacity:0; pointer-events:none; }
@@ -321,6 +329,20 @@ textarea { resize:vertical; min-height:78px; }
   </div>
 
   <div class="card">
+    <div class="card-title">🎯 Objetivo del vídeo</div>
+    <p style="font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:16px;">Un salón no necesita 100 vídeos virales. Necesita vídeos con intención. ¿Qué quieres conseguir con este?</p>
+    <div class="objetivo-grid">
+      <div class="obj-opt"><input type="radio" name="objetivo_video" id="obj1" value="seguidores"><label class="obj-lbl" for="obj1"><span class="obj-emoji">👥</span><span class="obj-name">Conseguir seguidores</span><span class="obj-desc">Contenido relatable que se comparte y llega a nuevas personas.</span></label></div>
+      <div class="obj-opt"><input type="radio" name="objetivo_video" id="obj2" value="confianza"><label class="obj-lbl" for="obj2"><span class="obj-emoji">🛡️</span><span class="obj-name">Generar confianza</span><span class="obj-desc">Demuestra criterio profesional. Que sepan que aquí las cuidan bien.</span></label></div>
+      <div class="obj-opt"><input type="radio" name="objetivo_video" id="obj3" value="citas" checked><label class="obj-lbl" for="obj3"><span class="obj-emoji">📅</span><span class="obj-name">Conseguir citas</span><span class="obj-desc">Elimina la última objeción y empuja a reservar hoy.</span></label></div>
+      <div class="obj-opt"><input type="radio" name="objetivo_video" id="obj4" value="venta"><label class="obj-lbl" for="obj4"><span class="obj-emoji">💰</span><span class="obj-name">Vender un tratamiento</span><span class="obj-desc">Todo el guión apunta a este servicio concreto.</span></label></div>
+      <div class="obj-opt"><input type="radio" name="objetivo_video" id="obj5" value="autoridad"><label class="obj-lbl" for="obj5"><span class="obj-emoji">👑</span><span class="obj-name">Crear autoridad</span><span class="obj-desc">Revela lo que otros no saben. Posiciona al salón como referencia.</span></label></div>
+      <div class="obj-opt"><input type="radio" name="objetivo_video" id="obj6" value="recuperar"><label class="obj-lbl" for="obj6"><span class="obj-emoji">💌</span><span class="obj-name">Recuperar clientas</span><span class="obj-desc">Para mujeres que ya te conocen pero llevan tiempo sin venir.</span></label></div>
+      <div class="obj-opt"><input type="radio" name="objetivo_video" id="obj7" value="premium"><label class="obj-lbl" for="obj7"><span class="obj-emoji">💎</span><span class="obj-name">Atraer clienta premium</span><span class="obj-desc">Aspiracional y exclusivo. Para la clienta que no busca lo más barato.</span></label></div>
+    </div>
+  </div>
+
+  <div class="card">
     <div class="card-title">🎣 Tipo de Hook</div>
     <p style="font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:16px;">Las primeras 1-3 frases. Si no detienen el scroll en 2 segundos, el video muere.</p>
     <div class="hook-grid">
@@ -421,6 +443,7 @@ async function generar(){
   const data={
     nombre:gv('nombre'), especialidad:gv('especialidad'), ciudad:gv('ciudad'),
     servicio:gv('servicio'), cliente_ideal:gv('cliente_ideal'), pregunta:gv('pregunta'),
+    objetivo_video:gr('objetivo_video'),
     hook:gr('hook'), tono:gr('tono'), duracion:gr('duracion'),
     palabra_cta:gv('palabra_cta'), regalo:gv('regalo')
   };
