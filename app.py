@@ -91,6 +91,16 @@ HOOKS = {
     "dato_importante": "El hook da un DATO que sorprende. 'Lo que nadie te cuenta sobre [servicio] es que...' o 'Aparte del dinero que te gastas en [alternativa peor], no sabes el daño que te haces.' Algo que no esperaban oír."
 }
 
+OBJETIVOS_VIDEO = {
+    "seguidores": "OBJETIVO — CONSEGUIR SEGUIDORES: El guion debe ser altamente compartible y relatable. Que quien lo vea piense 'tengo que mandarselo a mi amiga' o 'me pasa exactamente esto'. Contenido educativo o emocional puro, sin vender directamente. El CTA puede invitar a guardar el video o a comentar para recibir mas info, nunca a 'comprar ahora'.",
+    "confianza": "OBJETIVO — GENERAR CONFIANZA: El guion debe demostrar criterio profesional honesto. Muestra lo que el salon sabe, lo que nunca haria, lo que otros centros hacen mal. Posiciona al salon como la referencia honesta de su zona. Tono de autoridad cercana. El CTA puede ser suave, invitando a preguntar dudas o a seguir para aprender mas.",
+    "citas": "OBJETIVO — CONSEGUIR CITAS AHORA: El guion debe eliminar la ultima objecion que le frena a reservar y crear urgencia emocional para que tome accion hoy. Cada frase empuja hacia la decision. El CTA debe ser directo y especifico: comentar la palabra clave para recibir informacion o reservar cita sin compromiso.",
+    "venta": "OBJETIVO — VENDER ESTE TRATAMIENTO CONCRETO: El guion debe mostrar el resultado especifico del servicio, resolver el principal miedo sobre el y demostrar que funciona de verdad. Todo apunta a que Sofia pida cita para este tratamiento en concreto. El CTA es directo a la reserva o al envio de informacion sobre ese servicio.",
+    "autoridad": "OBJETIVO — CREAR AUTORIDAD EN EL SECTOR: El guion debe revelar algo que normalmente no se sabe, desmitificar un error comun o mostrar el nivel de conocimiento del salon. Que quien lo vea piense 'este salon sabe mas que nadie, aqui me van a cuidar bien'. No vende directamente, construye la reputacion que luego convierte.",
+    "recuperar": "OBJETIVO — RECUPERAR CLIENTAS ANTIGUAS: El guion debe conectar con mujeres que ya conocen el salon pero llevan tiempo sin venir. Tono cercano y calido, casi como un mensaje de una amiga. Puede evocar lo bien que se sentian antes, novedades que se han perdido, o simplemente hacerles saber que se les echa de menos. El CTA invita a retomar el contacto.",
+    "premium": "OBJETIVO — ATRAER CLIENTA PREMIUM: El guion debe aspirar alto. Habla de resultados excepcionales, experiencia cuidada al detalle, clientas exigentes que saben lo que quieren y no buscan lo mas barato sino lo mejor. Nunca menciones precio. Posiciona al salon como el lugar al que va la mujer que sabe lo que merece. CTA exclusivo y sin presion."
+}
+
 TONOS = {
     "historia_real": {
         "instruccion": "El desarrollo cuenta la historia de una clienta real. Usa un nombre femenino natural (elige uno diferente cada vez de esta lista variada: Sara, Laura, Carmen, Elena, Paula, Marta, Lucía, Ana, Isabel, Rosa, Nuria, Cristina, Sofía, Raquel, Mónica). Estructura: qué le pasaba → qué descubrió o hizo → cómo está ahora. Que quien lo vea piense 'eso me pasa exactamente a mí'. Sin nombres de marcas ni términos técnicos. Como si se lo contaras a una amiga.",
@@ -556,12 +566,14 @@ def generar():
     duracion = data.get("duracion", "corto")
     palabra = data.get("palabra_cta", "INFO")
     regalo = data.get("regalo", "toda la información")
+    objetivo_video = data.get("objetivo_video", "citas")
 
     if not all([esp, servicio, cliente, pregunta, palabra, regalo]):
         return jsonify({"error": "Faltan campos obligatorios"}), 400
 
     tono_data = TONOS.get(tono, TONOS["directa"])
     tono_instruccion = tono_data["instruccion"]
+    objetivo_texto = OBJETIVOS_VIDEO.get(objetivo_video, OBJETIVOS_VIDEO["citas"])
 
     if duracion == "largo":
         palabras_max = 150
@@ -591,6 +603,48 @@ Hablar de tratamientos de belleza DESDE LA HONESTIDAD para ayudar a las mujeres 
 === AVATAR: SOFIA (a quien le hablas) ===
 Mujer de 28-45 anos. Trabaja, tiene familia, lleva una vida donde ella misma queda siempre en ultimo lugar. A las 21:30, desde el sofa, consume Reels de belleza. Eso es cuando te descubre. No compra por precio: compra cuando siente que la entienden y confia en el resultado. Sus miedos antes de pedir cita: que no le quede bien, que le dane el pelo o la piel, que sea mas caro de lo que cree, que pierda el tiempo. Lo que busca: verse bien sin dedicar horas cada manana, sentirse segura, recibir resultados que duren. Lo que la activa: historias reales de mujeres como ella, antes y despues con contexto real, tono cercano y honesto, preguntas que hablan exactamente de lo que le pasa.
 
+=== LO QUE COMPRA SOFIA — NO EL TRATAMIENTO ===
+Sofia NO compra un tratamiento. Compra una de estas cosas:
+- Confianza: saber que va a quedar bien sin sustos
+- Seguridad: que no la van a enganar ni a cobrar de mas
+- Autoestima: verse bien y que se note en como se siente
+- Ahorro de tiempo: levantarse arreglada, no perder horas cada manana
+- Sentirse escuchada: que la entiendan antes de decirle que hacerse
+- Verse bien sin esfuerzo: resultado que dure y que no requiera mantenimiento diario
+Escribe siempre desde LO QUE ELLA GANA emocionalmente, no desde lo que hace el servicio tecnicamente.
+
+=== OBJETIVO DEL GUION — ELIGE UNO ===
+Cada guion debe cumplir principalmente uno de estos cinco objetivos:
+1. EDUCAR: Resolver una duda que buscaría en Google o TikTok. Ej: "3 errores que estan danando tu pelo", "por que tu color no dura", "cuando merece la pena hacerse un tratamiento facial".
+2. ROMPER OBJECIONES: Eliminar el miedo antes de comprar. Ej: "lo que debes saber antes de hacerte laser", "como saber si un centro es profesional", "es caro hacerse un tratamiento estetico".
+3. CREAR CONFIANZA: Mostrar criterio y experiencia profesional. Ej: "lo primero que analizamos antes de recomendar algo", "cosas que nunca hariamos como profesionales", "por que no todos los tratamientos sirven para todas".
+4. CONECTAR EMOCIONALMENTE: Hablar de la transformacion interna, no del servicio. Ej: "no era cambiar su imagen, era volver a sentirse ella", "mujeres que llevan anos cuidando a todos menos a ellas".
+5. GENERAR DESEO: Mostrar el resultado final de forma aspiracional. Ej: "el cambio que hizo que volviera a sonreir", "de pelo apagado a una imagen que representa quien es".
+
+=== PRINCIPIO FUNDAMENTAL: NO CREES DESDE EL SERVICIO ===
+INCORRECTO (nunca hagas esto): "Hoy hacemos un lifting de pestanas precioso."
+CORRECTO (siempre así): "Si cada manana pierdes 15 minutos intentando que tus pestanas se vean bonitas, esto te interesa."
+La diferencia: el incorrecto habla del servicio. El correcto habla del problema de Sofia. Siempre empieza desde el problema, el miedo o el deseo de ella, nunca desde lo que hace el salon.
+
+=== ANGULOS PROHIBIDOS — EXACTAMENTE ESTO NO ===
+Estos son los angulos que nunca funcionan y su alternativa correcta. Aprende el patron:
+PROHIBIDO: "Nuestro centro cuenta con tecnologia avanzada" → CORRECTO: "3 senales de que un centro realmente sabe lo que hace antes de tocar tu piel"
+PROHIBIDO: "Tratamiento facial rejuvenecedor" → CORRECTO: "Si te ves cansada aunque duermas bien, puede que tu piel te este diciendo esto"
+PROHIBIDO: "Nuevo color de temporada" → CORRECTO: "El error que hace que algunas mujeres parezcan mayores despues de cambiar de color"
+PROHIBIDO: "Ven a conocernos y disfruta de nuestros tratamientos" → CORRECTO: "Si todavia no has resuelto esto es porque nadie te ha explicado por que pasa de verdad"
+PROHIBIDO: "Oferta especial esta semana" → CORRECTO: "La razon por la que este problema no mejora con lo que compras en el supermercado"
+PROHIBIDO: "Somos los mejores en [servicio]" → CORRECTO: "Lo primero que analizamos antes de recomendar cualquier tratamiento y que muy pocos centros hacen"
+Patron: nunca el salon, nunca el servicio. Siempre el problema, el miedo o el deseo de Sofia.
+
+=== INVESTIGACION VIRAL — ANALIZA ESTO ANTES DE ESCRIBIR ===
+Antes de escribir una sola palabra del guion, piensa (sin escribirlo en la respuesta):
+1. Que pregunta concreta tiene Sofia sobre este servicio que buscaria en TikTok o Instagram? (no una pregunta generica, una pregunta real y especifica)
+2. Que miedo especifico le frena a pedir cita para este servicio? (el miedo mas visceral, el que no dice en voz alta)
+3. Que comentario dejaria en un video viral sobre este tema? (algo tipo: "me pasa exactamente esto" o "llevo anos con esta duda")
+4. Que objecion concreta elimina este guion? (precio, dano, resultados, tiempo, verguenza, malas experiencias...)
+5. Como se va a sentir Sofia despues de ver este video? (tranquila, con ganas de llamar, curiosa, identificada...)
+Con esas cinco respuestas en mente, escribe el guion. El resultado tiene que sonar como la respuesta exacta a lo que ella estaba buscando.
+
 === LOS 4 ELEMENTOS QUE HACEN UN GUION VIRAL ===
 El guion debe activar AL MENOS DOS de estos cuatro elementos:
 1. MIEDO: Algo que pueden perder, estropear o que les preocupa. Ej: "no me digas que sigues usando cuchilla, el dano que le haces a tu piel..."
@@ -609,6 +663,10 @@ Salon: {nombre}
 Servicio: {servicio}
 Clienta ideal: {cliente}
 Pregunta que le frena a comprar: "{pregunta}"
+
+=== OBJETIVO ESPECIFICO DE ESTE VIDEO ===
+{objetivo_texto}
+Cada decision de estructura, tono, ejemplos y CTA debe estar orientada a conseguir ESTE objetivo. No otro.
 
 GUIONES DE REFERENCIA QUE FUNCIONAN DE VERDAD — ESTOS SON LOS GUIONES REALES DEL SALÓN, COPIA EXACTAMENTE ESTE ESTILO, TONO Y ESTRUCTURA:
 ---
