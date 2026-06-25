@@ -605,6 +605,113 @@ def generar():
     tono_data = TONOS.get(tono, TONOS["directa"])
     tono_instruccion = tono_data["instruccion"]
     objetivo_texto = OBJETIVOS_VIDEO.get(objetivo_video, OBJETIVOS_VIDEO["citas"])
+    formato = data.get("formato", "guion")
+
+    # ── FORMATO DIALOGO Q&A ──────────────────────────────────────────────────────
+    if formato == "dialogo":
+        palabras_max_d = 230 if duracion == "largo" else 155
+
+        prompt_dialogo = f"""Eres guionista de contenido viral para salones de belleza. Tu mision es escribir un dialogo de preguntas y respuestas entre una clienta (AVATAR) y la profesional del salon (PROFESIONAL) para un Reel de Instagram. Este formato funciona muy bien porque la clienta hace las preguntas reales que se hace cualquier mujer antes de reservar, y la profesional destruye mitos y genera confianza respondiendo con honestidad.
+
+=== VOZ Y POSICIONAMIENTO DEL SALON ===
+Salon de {esp} en {ciudad}. Voz cercana, honesta, experta. Como una amiga que sabe mucho, no como una marca. Nunca publicidad. Siempre verdad util que ayuda.
+
+=== AVATAR: SOFIA (la clienta del dialogo) ===
+Mujer de 28-45 anos. Tiene dudas reales sobre {servicio}. Lleva tiempo pensando en hacerse algo pero tiene miedos o creencias erroneas. Sus preguntas son exactamente las que se hace cualquier mujer antes de pedir cita. Habla de forma casual y directa, como en un DM de Instagram. Usa un nombre femenino natural para el avatar (Eli, Sara, Paula, Marta, Carmen, Lucia, Ana... elige uno diferente cada vez).
+
+=== PROFESIONAL (la duena del salon) ===
+Responde con seguridad y cercania. Destruye mitos. Da informacion que sorprende o que nadie suele explicar con claridad. Nunca suena a publicidad ni a vendedora. Cada respuesta genera confianza y acerca a Sofia a reservar cita.
+
+=== OBJETIVO DE ESTE VIDEO ===
+{objetivo_texto}
+
+=== TEMA DEL DIALOGO ===
+Servicio: {servicio}
+Objecion o duda principal de la clienta: "{pregunta}"
+Clienta ideal: {cliente}
+
+=== REGLAS DEL DIALOGO ===
+1. El primer intercambio destruye un mito o revela algo inesperado sobre {servicio} que la mayoria no sabe
+2. Las preguntas del AVATAR son cortas, naturales, con las dudas reales de una clienta. Pueden empezar con el nombre: "Eli: eso que dices de que..." o simplemente la pregunta directa
+3. Las respuestas del PROFESIONAL son directas, claras, sin tecnicismos. Con ejemplos cuando ayudan a entender. Que suenen a conversacion, no a manual
+4. 3 o 4 intercambios (pregunta + respuesta = 1 intercambio)
+5. El ultimo intercambio del PROFESIONAL lleva de forma natural y sin forzar al CTA
+6. Sin palabras tecnicas del sector. Nombra el servicio con el nombre mas simple posible
+7. Sin emojis, sin asteriscos, sin guiones al inicio de frases
+8. Maximo {palabras_max_d} palabras en total
+9. PROHIBIDO palabras malsonantes u ofensivas. Usa "desastre", "problema", "dano" en vez de palabrotas
+10. PROHIBIDO prometer resultados exagerados o imposibles. Siempre honesto y creible
+11. Las respuestas de la PROFESIONAL no pueden empezar todas igual. Variedad de arranques: "Mira...", "Eso es exactamente lo que...", "La realidad es que...", "Depende de...", "Es un mito que..."
+
+=== FORMATO DE RESPUESTA OBLIGATORIO — USA EXACTAMENTE ESTAS ETIQUETAS ===
+
+[DIALOGO]
+AVATAR: escribe aqui la primera pregunta de la clienta
+PROFESIONAL: escribe aqui la primera respuesta de la profesional
+AVATAR: escribe aqui la segunda pregunta de la clienta
+PROFESIONAL: escribe aqui la segunda respuesta de la profesional
+AVATAR: escribe aqui la tercera pregunta de la clienta
+PROFESIONAL: escribe aqui la tercera respuesta de la profesional
+
+[CTA]
+Comenta {palabra} y te {regalo}.
+
+IMPORTANTE: Las etiquetas [DIALOGO] y [CTA] son OBLIGATORIAS. Cada linea del dialogo empieza con AVATAR: o PROFESIONAL: sin excepcion. No escribas nada antes de [DIALOGO] ni despues del CTA."""
+
+        try:
+            response_d = client.messages.create(
+                model="claude-haiku-4-5-20251001",
+                max_tokens=1300,
+                messages=[{"role": "user", "content": prompt_dialogo}]
+            )
+            texto_d = response_d.content[0].text
+
+            dm = re.search(r'\[DIALOGO\]\s*([\s\S]*?)(?=\[CTA\]|$)', texto_d, re.IGNORECASE)
+            cm_d = re.search(r'\[CTA\]\s*([\s\S]*?)$', texto_d, re.IGNORECASE)
+
+            dialogo_txt = dm.group(1).strip() if dm else ""
+            cta_d = cm_d.group(1).strip() if cm_d and cm_d.group(1).strip() else f"Comenta {palabra} y te {regalo}."
+
+            lineas = []
+            for line in dialogo_txt.split('\n'):
+                line = line.strip()
+                if not line:
+                    continue
+                if line.upper().startswith('AVATAR:'):
+                    lineas.append({"role": "avatar", "text": line[7:].strip()})
+                elif line.upper().startswith('PROFESIONAL:'):
+                    lineas.append({"role": "profesional", "text": line[12:].strip()})
+
+            if not lineas:
+                app.logger.error(f"DIALOGO PARSING ERROR: {texto_d[:500]}")
+
+            palabras_d = len(texto_d.replace('[DIALOGO]','').replace('[CTA]','').split())
+
+            guion_d = Guion(
+                user_id=current_user.id,
+                servicio=servicio,
+                hook_tipo="dialogo",
+                dev_tipo="dialogo",
+                hook="[DIALOGO Q&A]",
+                desarrollo=dialogo_txt,
+                cta=cta_d,
+                palabras=palabras_d
+            )
+            db.session.add(guion_d)
+            db.session.commit()
+
+            return jsonify({
+                "formato": "dialogo",
+                "dialogo": lineas,
+                "cta": cta_d,
+                "palabras": palabras_d,
+                "guion_id": guion_d.id,
+                "palabra_cta": palabra,
+                "servicio": servicio
+            })
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
     if duracion == "largo":
         palabras_max = 150
