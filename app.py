@@ -361,6 +361,20 @@ def logout():
 
 @app.route("/suscripcion-caducada")
 def suscripcion_caducada():
+    # Si la usuaria está logueada, re-verificar estado en Stripe en tiempo real
+    # para evitar el bucle cuando acaba de renovar el pago
+    if current_user.is_authenticated and current_user.stripe_customer_id:
+        try:
+            subs = stripe.Subscription.list(customer=current_user.stripe_customer_id, limit=1)
+            if subs.data:
+                nuevo_status = subs.data[0].status
+                if nuevo_status != current_user.subscription_status:
+                    current_user.subscription_status = nuevo_status
+                    db.session.commit()
+                if current_user.puede_acceder():
+                    return redirect(url_for("generador"))
+        except Exception:
+            pass
     return render_template("suscripcion_caducada.html")
 
 @app.route("/olvide-contrasena", methods=["GET", "POST"])
